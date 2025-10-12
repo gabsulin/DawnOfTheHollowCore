@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 2D_Laser_Lit
-  m_Shader: {fileID: -6465566751694194690, guid: 8a91222fc5ee59d46ac7c957dc65631e, type: 3}
+  m_Name: 2D_Laser_Unlit
+  m_Shader: {fileID: -6465566751694194690, guid: 0e810c48474ad72488e0baa03f405bae, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,11 +41,11 @@ Material:
     - _LaserSmoothness: 10
     - _LaserThickness: 30
     m_Colors:
-    - _Color: {r: 2.4293568, g: 0.6249927, b: 2.608238, a: 1}
-    - _LaserSped: {r: -1, g: 0, b: 0, a: 0}
+    - _Color: {r: 2.4413264, g: 0.62452537, b: 2.6116514, a: 1}
+    - _LaserSpeed: {r: -1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &1131594592061707166
+--- !u!114 &8428428541594039342
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
