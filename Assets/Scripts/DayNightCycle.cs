@@ -19,10 +19,10 @@ public class DayNightCycle : MonoBehaviour
 
     void Update()
     {
-        if (globalLight == null) return;
+        if (!globalLight) return;
 
         timeOfDay += Time.deltaTime / (dayLengthInMinutes * 60);
-        if(timeOfDay >= 1)
+        if (timeOfDay >= 1)
             timeOfDay = 0;
 
         float intensity = Mathf.Lerp(dayIntensity, nightIntensity, Mathf.Sin(timeOfDay * Mathf.PI));

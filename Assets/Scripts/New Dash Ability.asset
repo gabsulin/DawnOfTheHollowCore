@@ -17,4 +17,4 @@ MonoBehaviour:
   activeTime: 0.15
   baseCooldownTime: 5
   baseActiveTime: 0.2
-  dashVelocity: 20
+  dashVelocity: 25

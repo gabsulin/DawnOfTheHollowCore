@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -16,6 +18,16 @@ public class PlayerController : MonoBehaviour
     public Vector2 input;
     private Vector2 lastMovementDirection = Vector2.right;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -71,11 +83,6 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
-
-    
-
-    
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rb.linearVelocity = Vector2.zero;

@@ -9,7 +9,9 @@ public class Laser : MonoBehaviour
     public Transform firePoint;
     public GameObject startVFX;
     public GameObject endVFX;
-    
+
+    public LayerMask ignoreLayers;
+
     private List<ParticleSystem> particles = new List<ParticleSystem>();
     private Quaternion rotation;
     void Start()
@@ -18,18 +20,17 @@ public class Laser : MonoBehaviour
         DisableLaser();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             EnableLaser();
         }
-        if(Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1"))
         {
             UpdateLaser();
         }
-        if(Input.GetButtonUp("Fire1"))
+        if (Input.GetButtonUp("Fire1"))
         {
             DisableLaser();
         }
@@ -53,11 +54,20 @@ public class Laser : MonoBehaviour
         lineRenderer.SetPosition(1, mousePos);
 
         Vector2 direction = mousePos - (Vector2)transform.position;
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, direction.normalized, direction.magnitude);
+        RaycastHit2D hit = Physics2D.Raycast(
+            (Vector2)transform.position,
+            direction.normalized,
+            direction.magnitude,
+            ~ignoreLayers
+        );
 
-        if(hit)
+        if (hit)
         {
             lineRenderer.SetPosition(1, hit.point);
+            if (hit.collider.TryGetComponent<OreNode>(out var ore))
+            {
+                ore.TakeDamage(1);
+            }
         }
 
         endVFX.transform.position = lineRenderer.GetPosition(1);
