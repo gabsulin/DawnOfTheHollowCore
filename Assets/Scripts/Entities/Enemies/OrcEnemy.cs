@@ -1,0 +1,43 @@
+using UnityEngine;
+
+public class OrcEnemy : Enemy
+{
+    protected override void Start()
+    {
+        base.Start();
+        player = FindFirstObjectByType<PlayerController>().transform;
+    }
+
+    private void Update()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            return;
+    }
+
+    public override void Attack() { }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && attackHitbox != null)
+        {
+            if (collision.collider.IsTouching(attackHitbox))
+            {
+                PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
+                playerHp.TakeHit(damage);
+
+                // cooldown for next attack
+                attackCooldown = 1.5f;
+
+                // knockback
+                player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                DeactivateAttackHitbox();
+            }
+        }
+    }
+
+    protected override void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 1);
+    }
+}

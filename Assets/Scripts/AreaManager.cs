@@ -18,6 +18,9 @@ public class AreaManager : MonoBehaviour
         [HideInInspector] public GameObject spawnedNpc;
 
         public List<RaritySpawnSettings> raritySettings = new();
+
+        public EnemySpawnGroup enemyGroup;
+
     }
 
     [System.Serializable]
@@ -32,6 +35,12 @@ public class AreaManager : MonoBehaviour
         public float chancePerTry = 1f;
 
         public List<GameObject> orePrefabs;
+    }
+
+    [System.Serializable]
+    public class EnemySpawnGroup
+    {
+        public List<GameObject> enemies;
     }
 
     public Transform player;

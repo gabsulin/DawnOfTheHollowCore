@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7013473044547429389}
   - component: {fileID: 2487558014476921095}
   - component: {fileID: 9080588269903160384}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Blue_crystal1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
