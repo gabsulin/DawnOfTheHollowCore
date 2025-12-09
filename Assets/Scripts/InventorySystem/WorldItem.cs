@@ -1,26 +1,39 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
 public class WorldItem : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer iconRenderer;
-    [SerializeField] private float floatSpeed = 1f;
+    [SerializeField] private float floatSpeed = 2f;
     [SerializeField] private float floatAmplitude = 0.12f;
 
-    private ItemSO item;
-    private int amount;
+    [SerializeField] private ItemSO item;
+    private int amount = 1;
     private Vector3 startPos;
+
+    private void Awake()
+    {
+        RegenerateColliderFromSprite();
+    }
 
     public void Initialize(ItemSO itemData, int itemAmount)
     {
-        item = itemData; amount = itemAmount;
-        if (iconRenderer != null && item != null) iconRenderer.sprite = item.icon;
+        item = itemData;
+        amount = itemAmount;
+
+        if (iconRenderer != null && item != null)
+        {
+            iconRenderer.sprite = item.icon;
+
+            RegenerateColliderFromSprite();
+        }
+
         startPos = transform.position;
     }
 
     private void Update()
     {
-        // aesthetic bob
         if (item != null)
         {
             float y = startPos.y + Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
@@ -44,6 +57,25 @@ public class WorldItem : MonoBehaviour
         {
             int leftover = inv.TryAddItem(item, amount);
             if (leftover == 0) Destroy(gameObject);
+        }
+    }
+
+    private void RegenerateColliderFromSprite()
+    {
+        var poly = GetComponent<PolygonCollider2D>();
+        if (poly == null) return;
+
+        var sr = iconRenderer;
+        if (sr == null || sr.sprite == null) return;
+
+        poly.pathCount = sr.sprite.GetPhysicsShapeCount();
+
+        List<Vector2> path = new List<Vector2>();
+        for (int i = 0; i < poly.pathCount; i++)
+        {
+            path.Clear();
+            sr.sprite.GetPhysicsShape(i, path);
+            poly.SetPath(i, path.ToArray());
         }
     }
 }

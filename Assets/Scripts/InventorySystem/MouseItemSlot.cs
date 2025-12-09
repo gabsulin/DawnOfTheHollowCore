@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class MouseItemSlot : MonoBehaviour
     public static MouseItemSlot Instance { get; private set; }
 
     public Image icon;
-    public UnityEngine.UI.Text amountText;
+    public TMP_Text amountText;
 
     public ItemSO item;
     public int amount;

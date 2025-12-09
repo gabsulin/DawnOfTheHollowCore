@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 [RequireComponent(typeof(Image))]
 public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Image iconImage;
-    public Text amountText;
+    public TMP_Text amountText;
     public Image borderImage;
 
     InventoryManager inventoryManager;

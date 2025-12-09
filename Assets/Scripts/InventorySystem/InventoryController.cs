@@ -19,6 +19,7 @@ public class InventoryController : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(toggleKey)) Toggle();
+        if (open && Input.GetKeyDown(KeyCode.Escape)) Close();
     }
 
     public void Toggle()

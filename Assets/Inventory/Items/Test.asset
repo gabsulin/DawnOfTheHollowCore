@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 1bf171428ef5bb442bf751cf43b6641a, type: 3}
   maxStack: 64
   type: 3
-  rarity: 0
+  rarity: 5
   description: This is a tool.
   value: 0
   tags: []
