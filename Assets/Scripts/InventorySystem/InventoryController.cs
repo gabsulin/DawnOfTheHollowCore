@@ -8,7 +8,7 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private bool pauseOnOpen = true;
 
     private InventoryManager manager;
-    private bool open = false;
+    public bool open = false;
 
     private void Awake()
     {

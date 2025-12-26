@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca5cf7cc07a464740a7d823d8a75167f, type: 3}
-  m_Name: Test
+  m_Name: Test2
   m_EditorClassIdentifier: 
-  itemName: Test
-  icon: {fileID: 21300000, guid: 1bf171428ef5bb442bf751cf43b6641a, type: 3}
+  itemName: Negr
+  icon: {fileID: 21300000, guid: e9939b383a90dc84ca5fdf2e9a40f767, type: 3}
   maxStack: 64
-  type: 3
-  rarity: 3
-  description: This is a tool.
+  type: 0
+  rarity: 4
+  description: 'toto je negr
+
+    sfd'
   value: 0
   tags: []

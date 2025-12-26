@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Test
   m_EditorClassIdentifier: 
   recipeName: Test
-  ingredients: []
-  output: {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
+  ingredients:
+  - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
+  - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
+  output: {fileID: 11400000, guid: 6ae82e1a5555f804796feed4e63c194d, type: 2}
   outputAmount: 1
   loreText: This is a test.
   isUnlocked: 1

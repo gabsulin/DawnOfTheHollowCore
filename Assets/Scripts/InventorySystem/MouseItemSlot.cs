@@ -7,7 +7,6 @@ public class MouseItemSlot : MonoBehaviour
     public static MouseItemSlot Instance { get; private set; }
 
     public Image icon;
-    public TMP_Text amountText;
 
     public ItemSO item;
     public int amount;
@@ -27,11 +26,10 @@ public class MouseItemSlot : MonoBehaviour
     {
         item = i; amount = a;
         icon.sprite = i.icon; icon.enabled = true;
-        amountText.text = a > 1 ? a.ToString() : "";
     }
 
     public void Clear()
     {
-        item = null; amount = 0; icon.enabled = false; amountText.text = "";
+        item = null; amount = 0; icon.enabled = false;
     }
 }

@@ -10,7 +10,8 @@ public class CraftingPool : MonoBehaviour
 
     [Header("Pool")]
     public int maxPoolItems = 9;
-    private List<ItemSO> poolItems = new List<ItemSO>();
+    [SerializeField] private List<ItemSO> poolItems = new List<ItemSO>();
+    public IReadOnlyList<ItemSO> CurrentItems => poolItems;
 
     [Header("VFX")]
     public ParticleSystem acceptVfx;
@@ -22,28 +23,39 @@ public class CraftingPool : MonoBehaviour
 
     public bool AddItem(ItemSO item)
     {
-        if (poolItems.Count >= maxPoolItems) return false;
+        if (poolItems.Count >= maxPoolItems)
+        {
+            Debug.Log("[CRAFTING] Pool full — cannot add item");
+            return false;
+        }
         poolItems.Add(item);
+        Debug.Log($"[CRAFTING] Added item: {item.itemName} (Pool now has {poolItems.Count} items)");
         OnItemAdded?.Invoke(item);
-        if (acceptVfx) acceptVfx.Play();
+        //if (acceptVfx) acceptVfx.Play();
         return true;
     }
-
+    public bool TryAcceptItem(ItemSO item)
+    {
+        if (item == null) return false;
+        return AddItem(item);
+    }
     public void AttemptCraft()
     {
         var match = FindMatchingRecipe();
         if (match != null)
         {
+            Debug.Log($"[CRAFTING] Recipe matched! Crafting {match.outputAmount}x {match.output.itemName}");
             Consume(match);
             GiveOutput(match.output, match.outputAmount);
             OnCraftResult?.Invoke(true, match.output);
-            if (coreAnimator) coreAnimator.SetTrigger("Craft");
+            //if (coreAnimator) coreAnimator.SetTrigger("Craft");
         }
         else
         {
+            Debug.Log("[CRAFTING] No recipe matched.");
             OnCraftResult?.Invoke(false, null);
-            if (coreAnimator) coreAnimator.SetTrigger("Reject");
-            if (rejectVfx) rejectVfx.Play();
+            //if (coreAnimator) coreAnimator.SetTrigger("Reject");
+            //if (rejectVfx) rejectVfx.Play();
         }
     }
 
@@ -80,6 +92,7 @@ public class CraftingPool : MonoBehaviour
 
     void Consume(RecipeSO recipe)
     {
+        Debug.Log("[CRAFTING] Consuming ingredients…");
         var need = new Dictionary<string, int>();
         foreach (var ing in recipe.ingredients)
         {

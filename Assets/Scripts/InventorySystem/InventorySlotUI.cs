@@ -4,7 +4,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 
 [RequireComponent(typeof(Image))]
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventorySlotUI : MonoBehaviour,
+    IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image iconImage;
     public TMP_Text amountText;
@@ -14,20 +15,47 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     InventoryUI parentUI;
     public int slotIndex;
 
+    private bool isHovering = false;
+
     public void Initialize(InventoryManager inv, int index, InventoryUI parent)
     {
-        inventoryManager = inv; slotIndex = index; parentUI = parent;
+        inventoryManager = inv;
+        slotIndex = index;
+        parentUI = parent;
     }
 
     public void Refresh(InventorySlot data)
     {
         if (data.IsEmpty)
         {
-            iconImage.enabled = false; amountText.text = ""; borderImage.enabled = false; return;
+            iconImage.enabled = false;
+            amountText.text = "";
+            borderImage.enabled = false;
+
+            ForceTooltipRefresh();
+            return;
         }
-        iconImage.enabled = true; iconImage.sprite = data.item.icon;
+
+        iconImage.enabled = true;
+        iconImage.sprite = data.item.icon;
+
         amountText.text = data.amount > 1 ? data.amount.ToString() : "";
-        borderImage.enabled = true; borderImage.color = GetRarityColor(data.item);
+        borderImage.enabled = true;
+        borderImage.color = GetRarityColor(data.item);
+
+        ForceTooltipRefresh();
+    }
+
+    private void ForceTooltipRefresh()
+    {
+        if (!isHovering) return;
+
+        var slot = inventoryManager.slots[slotIndex];
+
+        if (!slot.IsEmpty)
+            Tooltip.Instance.Show(slot.item);
+        else
+            Tooltip.Instance.Hide();
     }
 
     Color GetRarityColor(ItemSO it)
@@ -48,10 +76,13 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
         var slot = inventoryManager.slots[slotIndex];
         if (eventData.button == PointerEventData.InputButton.Right && !slot.IsEmpty)
         {
-            // drop single
             var dropper = inventoryManager.GetComponent<ItemDropper>();
-            if (dropper != null) dropper.Drop(slot.item, 1, inventoryManager.transform.position + Vector3.down * 0.5f);
-            slot.amount -= 1; if (slot.amount <= 0) slot.Clear();
+            if (dropper != null)
+                dropper.DropAtCursor(slot.item, 1);
+
+            slot.amount -= 1;
+            if (slot.amount <= 0) slot.Clear();
+
             parentUI.RefreshAll();
         }
     }
@@ -60,67 +91,103 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHa
     {
         var slot = inventoryManager.slots[slotIndex];
         if (slot.IsEmpty) return;
+
         MouseItemSlot.Instance.Set(slot.item, slot.amount);
         slot.Clear();
         parentUI.RefreshAll();
+
+        ForceTooltipRefresh();
     }
 
-    public void OnDrag(PointerEventData eventData) { /* visuals handled by MouseItemSlot */ }
+    public void OnDrag(PointerEventData eventData)
+    {
+    }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         var result = eventData.pointerCurrentRaycast.gameObject;
+
         if (result == null)
         {
-            // dropped outside -> drop to world
-            if (MouseItemSlot.Instance.item != null)
-            {
-                var dropper = inventoryManager.GetComponent<ItemDropper>();
-                if (dropper != null) dropper.Drop(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount, inventoryManager.transform.position + Vector3.down * 0.5f);
-                MouseItemSlot.Instance.Clear();
-                parentUI.RefreshAll();
-            }
+            DropStackAtCursor();
             return;
         }
 
         var otherSlot = result.GetComponent<InventorySlotUI>();
+
         if (otherSlot != null && otherSlot.inventoryManager == inventoryManager)
         {
-            // merge or swap
-            var target = inventoryManager.slots[otherSlot.slotIndex];
-            if (!target.IsEmpty && target.item == MouseItemSlot.Instance.item)
-            {
-                int can = target.item.maxStack - target.amount;
-                int move = Mathf.Min(can, MouseItemSlot.Instance.amount);
-                target.amount += move;
-                MouseItemSlot.Instance.amount -= move;
-                if (MouseItemSlot.Instance.amount > 0)
-                {
-                    // put remainder back to original (find slot)
-                    int idx = inventoryManager.FindFirstAvailableSlot(MouseItemSlot.Instance.item);
-                    if (idx >= 0) inventoryManager.slots[idx].Set(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount);
-                }
-            }
-            else
-            {
-                // swap with target
-                var tmpItem = target.item; var tmpAmt = target.amount;
-                target.Set(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount);
-                var originalSlotIndex = slotIndex; // note: original slot is emptied already
-                inventoryManager.slots[originalSlotIndex].Set(tmpItem, tmpAmt);
-            }
-            MouseItemSlot.Instance.Clear();
-            parentUI.RefreshAll();
+            HandleSlotDrop(otherSlot);
             return;
         }
 
-        // dropped on non-slot (e.g. world) -> drop
+        DropStackAtCursor();
+    }
+
+    private void DropStackAtCursor()
+    {
         if (MouseItemSlot.Instance.item != null)
         {
             var dropper = inventoryManager.GetComponent<ItemDropper>();
-            if (dropper != null) dropper.Drop(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount, inventoryManager.transform.position + Vector3.down * 0.5f);
+            if (dropper != null)
+                dropper.DropAtCursor(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount);
+
             MouseItemSlot.Instance.Clear();
             parentUI.RefreshAll();
         }
+
+        ForceTooltipRefresh();
+    }
+
+    private void HandleSlotDrop(InventorySlotUI otherSlot)
+    {
+        var target = inventoryManager.slots[otherSlot.slotIndex];
+        var heldItem = MouseItemSlot.Instance.item;
+        var heldAmount = MouseItemSlot.Instance.amount;
+
+        if (!target.IsEmpty && target.item == heldItem)
+        {
+            int can = target.item.maxStack - target.amount;
+            int move = Mathf.Min(can, heldAmount);
+
+            target.amount += move;
+            heldAmount -= move;
+
+            if (heldAmount > 0)
+            {
+                int idx = inventoryManager.FindFirstAvailableSlot(heldItem);
+                if (idx >= 0)
+                    inventoryManager.slots[idx].Set(heldItem, heldAmount);
+            }
+        }
+        else
+        {
+            var tmpItem = target.item;
+            var tmpAmt = target.amount;
+
+            target.Set(heldItem, heldAmount);
+            inventoryManager.slots[slotIndex].Set(tmpItem, tmpAmt);
+        }
+
+        MouseItemSlot.Instance.Clear();
+        parentUI.RefreshAll();
+
+        ForceTooltipRefresh();
+        otherSlot.ForceTooltipRefresh();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovering = true;
+
+        var slot = inventoryManager.slots[slotIndex];
+        if (!slot.IsEmpty)
+            Tooltip.Instance.Show(slot.item);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovering = false;
+        Tooltip.Instance.Hide();
     }
 }

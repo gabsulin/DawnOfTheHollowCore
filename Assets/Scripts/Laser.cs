@@ -9,6 +9,7 @@ public class Laser : MonoBehaviour
     public Transform firePoint;
     public GameObject startVFX;
     public GameObject endVFX;
+    private InventoryController inventoryController;
 
     public LayerMask ignoreLayers;
 
@@ -18,15 +19,16 @@ public class Laser : MonoBehaviour
     {
         FillLists();
         DisableLaser();
+        inventoryController = FindFirstObjectByType<InventoryController>();
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !inventoryController.open)
         {
             EnableLaser();
         }
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && !inventoryController.open)
         {
             UpdateLaser();
         }
