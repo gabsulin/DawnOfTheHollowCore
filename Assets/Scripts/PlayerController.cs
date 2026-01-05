@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public bool canAttack = true;
 
     public bool isAttacking = false;
-    private float attackTimer = 0f;
 
     public Vector2 input;
     private Vector2 lastMovementDirection = Vector2.right;
@@ -87,4 +86,10 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
     }
+
+    public void ApplyMoveSpeedUpgrade(float amount)
+    {
+        moveSpeed += amount;
+    }
+
 }

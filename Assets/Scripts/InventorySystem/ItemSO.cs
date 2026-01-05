@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum ItemType { Ore, Crystal, BioResidue, Tool, Consumable, CoreFragment, Material }
+public enum ItemType { Ore, Crystal, BioResidue, Tool, Consumable, CoreFragment, Material, Upgrade }
 public enum Rarity { Common, Uncommon, Rare, Epic, Legendary, Mythic }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "DoHC/Item")]
@@ -16,6 +16,12 @@ public class ItemSO : ScriptableObject
     public int value;
     public List<string> tags = new List<string>();
 
-    // For save lookup convenience, use asset name by default
     public string SaveId => name;
+
+    [Header("Upgrade Stats")]
+    public float moveSpeedBonus;
+    public float miningSpeedMultiplier;
+    public float maxHealthBonus;
+    public float maxShieldBonus;
+    public int damageBonus;
 }

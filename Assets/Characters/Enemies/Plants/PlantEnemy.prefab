@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5969194234882803539}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6325547847944683710}
   - component: {fileID: 1708296440144258490}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 830773383302971171}
   - component: {fileID: -2773960482695958378}
   - component: {fileID: 5094302577776344880}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: PlantEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -338,6 +338,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 579301425342891306}
@@ -345,6 +347,7 @@ MonoBehaviour:
   attackHitbox: {fileID: 1708296440144258490}
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
   seedPrefab: {fileID: -4868299414993006088, guid: f97fee7983806d94c86236b875b69711, type: 3}
   spawnPoint: {fileID: 5969194234882803539}

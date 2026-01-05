@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6891046113294148205}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2606574746872852814}
   - component: {fileID: 6547645756288221313}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 2355526504795340203}
   - component: {fileID: -1117748208855994021}
   - component: {fileID: 2145122268759229545}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: PurplePlantEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -339,6 +339,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 131275768835225371}
@@ -346,6 +348,7 @@ MonoBehaviour:
   attackHitbox: {fileID: 6547645756288221313}
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
   seedPrefab: {fileID: -4868299414993006088, guid: f97fee7983806d94c86236b875b69711, type: 3}
   spawnPoint: {fileID: 6891046113294148205}

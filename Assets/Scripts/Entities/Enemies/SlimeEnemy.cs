@@ -23,7 +23,7 @@ public class SlimeEnemy : Enemy
     public override void Attack()
     {
         currentState = EnemyState.Attack;
-        if(!isJumping)
+        if (!isJumping)
             StartCoroutine(JumpAttackRoutine());
     }
 
@@ -49,16 +49,28 @@ public class SlimeEnemy : Enemy
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (currentState == EnemyState.Attack && collision.gameObject.CompareTag("Player") && (attackHitbox != null || collision.collider.IsTouching(attackHitbox)))
+        if (currentState == EnemyState.Attack && (attackHitbox != null || collision.collider.IsTouching(attackHitbox)))
         {
-            PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
-            playerHp.TakeHit(damage);
-            rb.linearVelocity = Vector3.zero;
-            player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
-            currentState = EnemyState.Idle;
-            ExecuteIdleState();
-            attackCooldown = 0f;
-            //shake.StartShake(force: 0.1f);
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
+                playerHp.TakeHit(damage);
+                rb.linearVelocity = Vector3.zero;
+                player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                currentState = EnemyState.Idle;
+                ExecuteIdleState();
+                attackCooldown = 0f;
+                //shake.StartShake(force: 0.1f);
+            }
+            if (collision.gameObject.GetComponent<Core>() != null)
+            {
+                var hp = collision.gameObject.GetComponent<CoreHpSystem>();
+                if (hp != null) hp.TakeHit(damage);
+
+                attackCooldown = 1.5f;
+                DeactivateAttackHitbox();
+            }
+
         }
     }
 }

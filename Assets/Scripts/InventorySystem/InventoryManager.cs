@@ -25,13 +25,11 @@ public class InventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    // Try to add amount; returns leftover (0 = all added)
     public int TryAddItem(ItemSO item, int amount)
     {
         if (item == null || amount <= 0) return amount;
         int remaining = amount;
 
-        // fill existing stacks
         for (int i = 0; i < slots.Count && remaining > 0; i++)
         {
             var s = slots[i];
@@ -44,7 +42,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // new stacks
         for (int i = 0; i < slots.Count && remaining > 0; i++)
         {
             var s = slots[i];
@@ -60,7 +57,6 @@ public class InventoryManager : MonoBehaviour
         return remaining;
     }
 
-    // Remove amount of item; returns true if removed
     public bool RemoveItem(ItemSO item, int amount)
     {
         if (item == null || amount <= 0) return false;
@@ -133,7 +129,6 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            // swap
             var tmpItem = to.item; var tmpAmount = to.amount;
             to.Set(from.item, from.amount);
             from.Set(tmpItem, tmpAmount);
@@ -160,7 +155,6 @@ public class InventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    // Raw setter (used by load system)
     public void SetSlot(int index, ItemSO item, int amount)
     {
         if (index < 0 || index >= slots.Count) return;

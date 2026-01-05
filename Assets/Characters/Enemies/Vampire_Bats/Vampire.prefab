@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 2167734540869775012}
   - component: {fileID: -7956425805977529486}
   - component: {fileID: 9071178449290649545}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vampire
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -196,6 +196,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 8453397808427362264}
@@ -203,6 +205,7 @@ MonoBehaviour:
   attackHitbox: {fileID: 0}
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
   centerOfAttack: {fileID: 5206422437837541055}
   attackRadius: 2
@@ -276,7 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5206422437837541055}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: CenterOfAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2863597513802323056}
   - component: {fileID: 3540201540738872106}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WalkingCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

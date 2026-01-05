@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3615763938845573286}
   - component: {fileID: 2494798285007672744}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 3922064657865030142}
   - component: {fileID: -416463071141442028}
   - component: {fileID: 4141358424001483043}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BlueOrc
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -283,14 +283,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 705921775409918681}
   rb: {fileID: 2055154843014068991}
   attackHitbox: {fileID: 2494798285007672744}
-  attackTimer: 0
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
 --- !u!114 &8538503913594190782
 MonoBehaviour:

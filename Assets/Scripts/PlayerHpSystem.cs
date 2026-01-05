@@ -16,8 +16,8 @@ public class PlayerHpSystem : MonoBehaviour
     GameObject deathScreen;
     Camera cam;*/
 
-    [HideInInspector] public float currentHp;
-    [HideInInspector] public float currentShields;
+    /*[HideInInspector]*/ public float currentHp;
+    /*[HideInInspector]*/ public float currentShields;
     public float maxHp;
     public float maxShields;
 
@@ -171,9 +171,21 @@ public class PlayerHpSystem : MonoBehaviour
         currentShields = Mathf.Min(currentShields, maxShields);
         isRegeneratingShields = false;
     }
-    public void ApplyShieldRechargeUpgrade(float multiplier)
+    /*public void ApplyShieldRechargeUpgrade(float multiplier)
     {
         shieldRegenTime *= 1f / multiplier;
         startShieldRegenTime *= 1f / multiplier * 2.5f;
+    }*/
+
+    public void ApplyMaxHealthUpgrade(float amount)
+    {
+        maxHp += amount;
+        currentHp += amount;   // heal a bit when upgraded
     }
+    public void ApplyMaxShieldUpgrade(float amount)
+    {
+        maxShields += amount;
+        currentShields += amount;
+    }
+
 }

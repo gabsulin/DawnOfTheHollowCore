@@ -74,8 +74,21 @@ public class InventorySlotUI : MonoBehaviour,
     public void OnPointerClick(PointerEventData eventData)
     {
         var slot = inventoryManager.slots[slotIndex];
-        if (eventData.button == PointerEventData.InputButton.Right && !slot.IsEmpty)
+        if (slot.IsEmpty) return;
+
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
+            if (slot.item.type == ItemType.Upgrade)
+            {
+                UpgradeManager.Instance.ApplyUpgrade(slot.item);
+
+                slot.amount -= 1;
+                if (slot.amount <= 0) slot.Clear();
+
+                parentUI.RefreshAll();
+                return;
+            }
+
             var dropper = inventoryManager.GetComponent<ItemDropper>();
             if (dropper != null)
                 dropper.DropAtCursor(slot.item, 1);

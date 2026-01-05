@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5217375842171628144}
   - component: {fileID: 2383378161222033709}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 5848874389747993646}
   - component: {fileID: 6562345208985211318}
   - component: {fileID: 8034254858137058555}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: FireSlime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -263,14 +263,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 4839080652312123136}
   rb: {fileID: 8003401066421047489}
   attackHitbox: {fileID: 2383378161222033709}
-  attackTimer: 0
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
   jumpHeight: 1
   jumpDuration: 0.5

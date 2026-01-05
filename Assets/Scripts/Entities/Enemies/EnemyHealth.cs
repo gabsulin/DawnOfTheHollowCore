@@ -50,6 +50,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        Debug.Log("chcip");
         (AudioManager.Instance)?.PlaySFX("EnemyDeath");
         if (!isAddedToGameStats)
         {

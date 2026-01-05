@@ -36,7 +36,7 @@ public class PlantEnemy : Enemy
                 var seed = Instantiate(seedPrefab, spawnPoint.position, Quaternion.identity);
                 seed.AddForce(rotatedDirection * 5, ForceMode2D.Impulse);
             }
-            
+
         }
         ExecuteIdleState();
     }
@@ -52,16 +52,30 @@ public class PlantEnemy : Enemy
     }
     public override void OnCollisionEnter2D(Collision2D collision)
     {
-        if (currentState == EnemyState.Attack && collision.gameObject.CompareTag("Player") && (attackHitbox != null || collision.collider.IsTouching(attackHitbox)))
+        if (currentState == EnemyState.Attack && (attackHitbox != null || collision.collider.IsTouching(attackHitbox)))
         {
-            PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
-            playerHp.TakeHit(damage);
-            currentState = EnemyState.Idle;
-            attackCooldown = 0f;
-            //shake.StartShake(force: 0.1f);
-            player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
-            ExecuteIdleState();
-            DeactivateAttackHitbox();
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
+                playerHp.TakeHit(damage);
+                currentState = EnemyState.Idle;
+                attackCooldown = 0f;
+                //shake.StartShake(force: 0.1f);
+                player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                ExecuteIdleState();
+                DeactivateAttackHitbox();
+            }
+
+            if (collision.gameObject.GetComponent<Core>() != null)
+            {
+                // core takes damage
+                var hp = collision.gameObject.GetComponent<CoreHpSystem>(); // if you have this
+                if (hp != null) hp.TakeHit(damage);
+
+                attackCooldown = 1.5f;
+                DeactivateAttackHitbox();
+            }
+
         }
     }
 

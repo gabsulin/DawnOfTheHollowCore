@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1303588456740025412}
   - component: {fileID: 5009364802588119640}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8151624271133117760}
   - component: {fileID: -6590725740623981426}
   - component: {fileID: 2918194451891197130}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -263,14 +263,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 5967395661672471901}
   rb: {fileID: 3073693108258908040}
   attackHitbox: {fileID: 5009364802588119640}
-  attackTimer: 0
   attackCooldown: 1
   damage: 1
+  playerAggroRange: 4
   currentState: 0
   jumpHeight: 1
   jumpDuration: 0.3
