@@ -3,7 +3,7 @@ using UnityEngine;
 public class CoreHpSystem : MonoBehaviour
 {
     public int maxHp = 100;
-    private int currentHp;
+    public int currentHp;
 
     void Start()
     {

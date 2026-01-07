@@ -6,6 +6,7 @@ public class Laser : MonoBehaviour
     public enum LaserMode { Off, Attack, Mine }
     public LaserMode mode = LaserMode.Off;
 
+    [Header("References")]
     public Camera cam;
     public LineRenderer lineRenderer;
     public Transform firePoint;
@@ -14,9 +15,15 @@ public class Laser : MonoBehaviour
 
     private InventoryController inventoryController;
 
+    [Header("Layer Settings")]
     public LayerMask ignoreLayers;
 
+    [Header("Damage Settings")]
     public int laserDamage = 1;
+
+    [Header("Laser Colors")]
+    public Color attackColor = Color.red;
+    public Color miningColor = Color.cyan;
 
     private List<ParticleSystem> particles = new List<ParticleSystem>();
     private Quaternion rotation;
@@ -24,17 +31,22 @@ public class Laser : MonoBehaviour
     private float miningCooldown = 0.08f;
     private float miningTimer = 0f;
 
+    private MaterialPropertyBlock mpb;
+
     void Start()
     {
         FillLists();
         DisableLaser();
         inventoryController = FindFirstObjectByType<InventoryController>();
+        mpb = new MaterialPropertyBlock();
     }
 
     void Update()
     {
-        if (inventoryController.open) return;
+        if (inventoryController != null && inventoryController.open)
+            return;
 
+        // no double-fire  
         if (Input.GetButton("Fire1") && Input.GetButton("Fire2"))
         {
             DisableLaser();
@@ -42,6 +54,7 @@ public class Laser : MonoBehaviour
             return;
         }
 
+        // --- ATTACK MODE ---
         if (Input.GetButtonDown("Fire1"))
         {
             mode = LaserMode.Attack;
@@ -57,6 +70,7 @@ public class Laser : MonoBehaviour
             mode = LaserMode.Off;
         }
 
+        // --- MINING MODE ---
         if (Input.GetButtonDown("Fire2"))
         {
             mode = LaserMode.Mine;
@@ -74,6 +88,11 @@ public class Laser : MonoBehaviour
 
         RotateToMouse();
     }
+
+    // ============================================================
+    // --------------------- LASER LOGIC ---------------------------
+    // ============================================================
+
     private void UpdateLaser_Attack()
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -102,7 +121,6 @@ public class Laser : MonoBehaviour
             endVFX.transform.position = mousePos;
         }
     }
-
 
     private void UpdateLaser_Mine()
     {
@@ -140,10 +158,14 @@ public class Laser : MonoBehaviour
         }
     }
 
+    // ============================================================
+    // --------------------- VISUALS -------------------------------
+    // ============================================================
 
     void EnableLaser()
     {
         lineRenderer.enabled = true;
+        SetLaserModeVisuals();
 
         foreach (var ps in particles)
             ps.Play();
@@ -157,6 +179,45 @@ public class Laser : MonoBehaviour
             ps.Stop();
     }
 
+    private void SetLaserModeVisuals()
+    {
+        if (!lineRenderer) return;
+
+        Color color = mode switch
+        {
+            LaserMode.Attack => attackColor,
+            LaserMode.Mine => miningColor,
+            _ => Color.white
+        };
+
+        // --- Shader color via property block ---
+        lineRenderer.GetPropertyBlock(mpb);
+        mpb.SetColor("_Color", color);
+        lineRenderer.SetPropertyBlock(mpb);
+
+        // --- VFX ---
+        ApplyColorToVFX(startVFX, color);
+        ApplyColorToVFX(endVFX, color);
+    }
+
+    private void ApplyColorToVFX(GameObject vfxObject, Color color)
+    {
+        if (!vfxObject) return;
+
+        foreach (Transform child in vfxObject.transform)
+        {
+            if (child.TryGetComponent(out ParticleSystem ps))
+            {
+                var main = ps.main;
+                main.startColor = color;
+            }
+        }
+    }
+
+    // ============================================================
+    // --------------------- UTILITY -------------------------------
+    // ============================================================
+
     private void RotateToMouse()
     {
         Vector2 direction = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -167,18 +228,19 @@ public class Laser : MonoBehaviour
 
     private void FillLists()
     {
+        particles.Clear();
+
         foreach (Transform child in startVFX.transform)
-        {
-            ParticleSystem ps = child.GetComponent<ParticleSystem>();
-            if (ps) particles.Add(ps);
-        }
+            if (child.TryGetComponent(out ParticleSystem ps1)) particles.Add(ps1);
 
         foreach (Transform child in endVFX.transform)
-        {
-            ParticleSystem ps = child.GetComponent<ParticleSystem>();
-            if (ps) particles.Add(ps);
-        }
+            if (child.TryGetComponent(out ParticleSystem ps2)) particles.Add(ps2);
     }
+
+    // ============================================================
+    // --------------------- UPGRADE METHODS -----------------------
+    // ============================================================
+
     public void ApplyDamageUpgrade(int amount)
     {
         laserDamage += amount;
@@ -188,5 +250,5 @@ public class Laser : MonoBehaviour
     {
         miningCooldown *= 1f / multiplier;
     }
-
 }
+ 

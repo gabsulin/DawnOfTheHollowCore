@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rarity: 3
-  maxHP: 500
+  maxHP: 200
   currentHP: 0
   dropPrefab: {fileID: 0}
   dropAmount: 1

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f8880a7176cff4040abacd4f4f031971
+guid: 37f8e6270457f0641be6aa73878cfb97
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4609764937589784581
-    second: shoes_0
+      213: 1069851512857850424
+    second: fb1099_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shoes_0
+      name: fb1099_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 17
-        height: 10
+        width: 32
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bfff8ec7633d600c0800000000000000
-      internalID: -4609764937589784581
+      spriteID: 8327e4a5840e8de00800000000000000
+      internalID: 1069851512857850424
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      shoes_0: -4609764937589784581
+      fb1099_0: 1069851512857850424
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
