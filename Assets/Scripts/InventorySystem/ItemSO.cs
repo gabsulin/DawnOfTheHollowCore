@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public enum ItemType { Ore, Crystal, BioResidue, Tool, Consumable, CoreFragment, Material, Upgrade }
-public enum Rarity { Common, Uncommon, Rare, Epic, Legendary, Mythic }
+public enum Rarity { Common, Rare, Epic, Legendary, Mythic }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "DoHC/Item")]
 public class ItemSO : ScriptableObject

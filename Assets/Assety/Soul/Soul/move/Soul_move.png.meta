@@ -309,7 +309,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Soul_move_0: -1332666447150824850
+      Soul_move_1: 3104991852624351118
+      Soul_move_2: -7417501270560850793
+      Soul_move_3: 3590019649244057385
+      Soul_move_4: -2951330320255634743
+      Soul_move_5: -7716677557880241095
+      Soul_move_6: -3732094065070848776
+      Soul_move_7: 7834479212922733002
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

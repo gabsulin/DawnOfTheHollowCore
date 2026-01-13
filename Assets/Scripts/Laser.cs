@@ -16,7 +16,8 @@ public class Laser : MonoBehaviour
     private InventoryController inventoryController;
 
     [Header("Layer Settings")]
-    public LayerMask ignoreLayers;
+    public LayerMask ignorePlayerLayer;
+    public LayerMask ignoreAttackHitboxLayer;
 
     [Header("Damage Settings")]
     public int laserDamage = 1;
@@ -39,6 +40,9 @@ public class Laser : MonoBehaviour
         DisableLaser();
         inventoryController = FindFirstObjectByType<InventoryController>();
         mpb = new MaterialPropertyBlock();
+
+        // Important fix: triggers should never block raycasts
+        Physics2D.queriesHitTriggers = false;
     }
 
     void Update()
@@ -46,7 +50,6 @@ public class Laser : MonoBehaviour
         if (inventoryController != null && inventoryController.open)
             return;
 
-        // no double-fire  
         if (Input.GetButton("Fire1") && Input.GetButton("Fire2"))
         {
             DisableLaser();
@@ -54,7 +57,6 @@ public class Laser : MonoBehaviour
             return;
         }
 
-        // --- ATTACK MODE ---
         if (Input.GetButtonDown("Fire1"))
         {
             mode = LaserMode.Attack;
@@ -70,7 +72,6 @@ public class Laser : MonoBehaviour
             mode = LaserMode.Off;
         }
 
-        // --- MINING MODE ---
         if (Input.GetButtonDown("Fire2"))
         {
             mode = LaserMode.Mine;
@@ -90,9 +91,8 @@ public class Laser : MonoBehaviour
     }
 
     // ============================================================
-    // --------------------- LASER LOGIC ---------------------------
+    // ATTACK LASER
     // ============================================================
-
     private void UpdateLaser_Attack()
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -100,11 +100,13 @@ public class Laser : MonoBehaviour
 
         lineRenderer.SetPosition(0, firePoint.position);
 
+        int finalMask = ~(ignorePlayerLayer | ignoreAttackHitboxLayer);
+
         RaycastHit2D hit = Physics2D.Raycast(
             firePoint.position,
             direction,
             Vector2.Distance(firePoint.position, mousePos),
-            ~ignoreLayers
+            finalMask
         );
 
         if (hit)
@@ -122,6 +124,9 @@ public class Laser : MonoBehaviour
         }
     }
 
+    // ============================================================
+    // MINING LASER
+    // ============================================================
     private void UpdateLaser_Mine()
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -129,11 +134,13 @@ public class Laser : MonoBehaviour
 
         lineRenderer.SetPosition(0, firePoint.position);
 
+        int finalMask = ~(ignorePlayerLayer | ignoreAttackHitboxLayer);
+
         RaycastHit2D hit = Physics2D.Raycast(
             firePoint.position,
             direction,
             Vector2.Distance(firePoint.position, mousePos),
-            ~ignoreLayers
+            finalMask
         );
 
         if (hit)
@@ -159,9 +166,8 @@ public class Laser : MonoBehaviour
     }
 
     // ============================================================
-    // --------------------- VISUALS -------------------------------
+    // VISUALS
     // ============================================================
-
     void EnableLaser()
     {
         lineRenderer.enabled = true;
@@ -190,12 +196,10 @@ public class Laser : MonoBehaviour
             _ => Color.white
         };
 
-        // --- Shader color via property block ---
         lineRenderer.GetPropertyBlock(mpb);
         mpb.SetColor("_Color", color);
         lineRenderer.SetPropertyBlock(mpb);
 
-        // --- VFX ---
         ApplyColorToVFX(startVFX, color);
         ApplyColorToVFX(endVFX, color);
     }
@@ -215,9 +219,8 @@ public class Laser : MonoBehaviour
     }
 
     // ============================================================
-    // --------------------- UTILITY -------------------------------
+    // UTILS
     // ============================================================
-
     private void RotateToMouse()
     {
         Vector2 direction = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -238,9 +241,8 @@ public class Laser : MonoBehaviour
     }
 
     // ============================================================
-    // --------------------- UPGRADE METHODS -----------------------
+    // UPGRADES
     // ============================================================
-
     public void ApplyDamageUpgrade(int amount)
     {
         laserDamage += amount;
@@ -251,4 +253,3 @@ public class Laser : MonoBehaviour
         miningCooldown *= 1f / multiplier;
     }
 }
- 

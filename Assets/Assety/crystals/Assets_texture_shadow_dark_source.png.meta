@@ -1084,7 +1084,46 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Assets_texture_shadow_dark_source_0: -3946104839860042650
+      Assets_texture_shadow_dark_source_1: 2474479401782943447
+      Assets_texture_shadow_dark_source_10: -6637383778108436009
+      Assets_texture_shadow_dark_source_11: -1159860302161789048
+      Assets_texture_shadow_dark_source_12: 5268149414607210614
+      Assets_texture_shadow_dark_source_13: -8107841781305220416
+      Assets_texture_shadow_dark_source_14: -4548117409902934133
+      Assets_texture_shadow_dark_source_15: -8840056736046958895
+      Assets_texture_shadow_dark_source_16: -5488894708959589530
+      Assets_texture_shadow_dark_source_17: -7216270769981108356
+      Assets_texture_shadow_dark_source_18: -8619985174619681329
+      Assets_texture_shadow_dark_source_19: 2623481011445286970
+      Assets_texture_shadow_dark_source_2: -6199559939577930649
+      Assets_texture_shadow_dark_source_20: -6481630590334427396
+      Assets_texture_shadow_dark_source_21: 9070734217870310057
+      Assets_texture_shadow_dark_source_22: 8260751453839523216
+      Assets_texture_shadow_dark_source_23: 7932720608709607355
+      Assets_texture_shadow_dark_source_24: 3240625064958559543
+      Assets_texture_shadow_dark_source_25: 6689427564878710514
+      Assets_texture_shadow_dark_source_26: 8427250465165245161
+      Assets_texture_shadow_dark_source_27: 7368451586727126740
+      Assets_texture_shadow_dark_source_28: -898295290060957319
+      Assets_texture_shadow_dark_source_29: -2691904788024162601
+      Assets_texture_shadow_dark_source_3: 8236230878069637159
+      Assets_texture_shadow_dark_source_30: -1582376029573859845
+      Assets_texture_shadow_dark_source_31: -8434531458963588840
+      Assets_texture_shadow_dark_source_32: 6753963308982143200
+      Assets_texture_shadow_dark_source_33: -3449527115904670765
+      Assets_texture_shadow_dark_source_34: -369190783777730775
+      Assets_texture_shadow_dark_source_35: -2026018052922134772
+      Assets_texture_shadow_dark_source_36: 1412392762714327880
+      Assets_texture_shadow_dark_source_37: -7602161714993136425
+      Assets_texture_shadow_dark_source_38: -7605517294754679996
+      Assets_texture_shadow_dark_source_4: -7575170073022009557
+      Assets_texture_shadow_dark_source_5: 8040770589733368191
+      Assets_texture_shadow_dark_source_6: -2585666762609850735
+      Assets_texture_shadow_dark_source_7: 7110400631474614267
+      Assets_texture_shadow_dark_source_8: -4709163314396589525
+      Assets_texture_shadow_dark_source_9: -1697802851069014529
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

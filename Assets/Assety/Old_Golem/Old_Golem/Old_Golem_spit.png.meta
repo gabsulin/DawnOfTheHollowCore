@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -93,7 +93,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -284,7 +284,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Old_Golem_spit_0: 403094762868795332
+      Old_Golem_spit_1: 956825759893903036
+      Old_Golem_spit_2: 5975638500869926440
+      Old_Golem_spit_3: -7413465717295703429
+      Old_Golem_spit_4: -5070386865954729180
+      Old_Golem_spit_5: 2566236862400614611
+      Old_Golem_spit_6: -1930268796871567644
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

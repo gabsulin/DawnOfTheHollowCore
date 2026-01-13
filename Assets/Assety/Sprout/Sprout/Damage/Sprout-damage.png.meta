@@ -234,7 +234,12 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Sprout-damage_0: 4712213296946640038
+      Sprout-damage_1: -8328311283221583426
+      Sprout-damage_2: 7229937259508987647
+      Sprout-damage_3: -3919723969740395219
+      Sprout-damage_4: -5988495155328815294
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

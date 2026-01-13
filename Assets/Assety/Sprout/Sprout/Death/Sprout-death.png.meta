@@ -334,7 +334,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Sprout-death_0: -6065978726886318337
+      Sprout-death_1: 5852450720202428579
+      Sprout-death_2: 7802507756762246168
+      Sprout-death_3: 4497068023943850584
+      Sprout-death_4: -1140653583618636383
+      Sprout-death_5: 137874056877904061
+      Sprout-death_6: 3372615674488627773
+      Sprout-death_7: -6917015683313581293
+      Sprout-death_8: -5090183417727969383
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

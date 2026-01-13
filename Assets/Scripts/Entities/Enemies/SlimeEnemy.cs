@@ -70,7 +70,31 @@ public class SlimeEnemy : Enemy
                 attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (currentState == EnemyState.Attack && (attackHitbox != null || collision.IsTouching(attackHitbox)))
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                PlayerHpSystem playerHp = collision.GetComponent<PlayerHpSystem>();
+                playerHp.TakeHit(damage);
+                rb.linearVelocity = Vector3.zero;
+                player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                currentState = EnemyState.Idle;
+                ExecuteIdleState();
+                attackCooldown = 0f;
+                //shake.StartShake(force: 0.1f);
+            }
+            if (collision.gameObject.GetComponent<Core>() != null)
+            {
+                var hp = collision.gameObject.GetComponent<CoreHpSystem>();
+                if (hp != null) hp.TakeHit(damage);
 
+                attackCooldown = 1.5f;
+                DeactivateAttackHitbox();
+            }
         }
     }
 }

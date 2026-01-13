@@ -17,4 +17,12 @@ MonoBehaviour:
   activeTime: 0.15
   baseCooldownTime: 5
   baseActiveTime: 0.2
-  dashVelocity: 25
+  dashVelocity: 30
+  dashDuration: 0.2
+  lockMovementDuringDash: 1
+  stopDashOnWallHit: 1
+  createAfterimage: 0
+  afterimageInterval: 0.05
+  dashSFX: Dash
+  grantInvincibility: 1
+  invincibilityDuration: 0.2

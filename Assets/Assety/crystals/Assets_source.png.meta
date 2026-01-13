@@ -1109,7 +1109,47 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Assets_source_0: 9144028783702388824
+      Assets_source_1: -1821185575649913669
+      Assets_source_10: 3053427640951278719
+      Assets_source_11: 7850996238020137190
+      Assets_source_12: -1189312971641686769
+      Assets_source_13: -3700612741719304986
+      Assets_source_14: 4371480628217192026
+      Assets_source_15: -5551740426717907698
+      Assets_source_16: 5588549934677334839
+      Assets_source_17: 603103086360969319
+      Assets_source_18: -3037993745299264950
+      Assets_source_19: 4429100980112850552
+      Assets_source_2: 6550661231971407781
+      Assets_source_20: -3741166628077756235
+      Assets_source_21: 2358919524515309327
+      Assets_source_22: 2009640642854624204
+      Assets_source_23: 7446097048842991139
+      Assets_source_24: 8019392925922527575
+      Assets_source_25: -6256613815413827282
+      Assets_source_26: -4008648459380728294
+      Assets_source_27: 570374979840098012
+      Assets_source_28: 7876662805580881217
+      Assets_source_29: 6488048385791445486
+      Assets_source_3: 3130234009663391133
+      Assets_source_30: -7474032728414710733
+      Assets_source_31: -4997897626724585537
+      Assets_source_32: -4304571663098909008
+      Assets_source_33: -2305900047338661051
+      Assets_source_34: -9100335479034121026
+      Assets_source_35: -6857801485664709751
+      Assets_source_36: 6511331933149708499
+      Assets_source_37: -8357892175919067867
+      Assets_source_38: 1975299156603134959
+      Assets_source_39: 1442072340396596905
+      Assets_source_4: 6651148189723929792
+      Assets_source_5: -1880021742642478715
+      Assets_source_6: 1756883741281904058
+      Assets_source_7: -3109747816184552135
+      Assets_source_8: -2366593085506404056
+      Assets_source_9: 7322508618745859509
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

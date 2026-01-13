@@ -1084,7 +1084,46 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Assets_shadow_source_0: -1089632313086522278
+      Assets_shadow_source_1: -1460959863559472697
+      Assets_shadow_source_10: -8746029988761738148
+      Assets_shadow_source_11: -6535077136163879461
+      Assets_shadow_source_12: 7218542615449659004
+      Assets_shadow_source_13: -958811082963351871
+      Assets_shadow_source_14: 4800223950028578905
+      Assets_shadow_source_15: 5236099163764853184
+      Assets_shadow_source_16: 6666706034756827761
+      Assets_shadow_source_17: 6635123017256142454
+      Assets_shadow_source_18: 7654598179888042083
+      Assets_shadow_source_19: -1813903213767250114
+      Assets_shadow_source_2: -3706929023732110761
+      Assets_shadow_source_20: 3602120497189699896
+      Assets_shadow_source_21: 9033540314286851959
+      Assets_shadow_source_22: -9217455972567860307
+      Assets_shadow_source_23: 4932518399802517068
+      Assets_shadow_source_24: 2457343006433455633
+      Assets_shadow_source_25: -6691115856427836444
+      Assets_shadow_source_26: 3578719521776444817
+      Assets_shadow_source_27: 8616925925393054132
+      Assets_shadow_source_28: -713750514635780496
+      Assets_shadow_source_29: 5751991238534777173
+      Assets_shadow_source_3: -3699062711339790446
+      Assets_shadow_source_30: 7593653328820204924
+      Assets_shadow_source_31: 4320019085025854485
+      Assets_shadow_source_32: 136680856773774770
+      Assets_shadow_source_33: 6023705633471365041
+      Assets_shadow_source_34: -8944103630822142538
+      Assets_shadow_source_35: -795553431354389320
+      Assets_shadow_source_36: -3448227320554532058
+      Assets_shadow_source_37: -118040120762407092
+      Assets_shadow_source_38: -3510162351583935496
+      Assets_shadow_source_4: 5766290334219618373
+      Assets_shadow_source_5: 2748708004874032815
+      Assets_shadow_source_6: -8864727930556664025
+      Assets_shadow_source_7: -4251364492162253080
+      Assets_shadow_source_8: -2172841890546683384
+      Assets_shadow_source_9: 2983168104447336196
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

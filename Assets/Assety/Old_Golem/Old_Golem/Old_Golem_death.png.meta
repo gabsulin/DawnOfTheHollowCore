@@ -289,7 +289,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -327,7 +327,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -2234,7 +2234,92 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Old_Golem_death_0: -8795282582845764243
+      Old_Golem_death_1: -6637468490446954545
+      Old_Golem_death_10: 5122547999690301410
+      Old_Golem_death_11: 7955245570883658586
+      Old_Golem_death_12: -5049308175351559347
+      Old_Golem_death_13: -3947704314330719529
+      Old_Golem_death_14: 3083078265724179129
+      Old_Golem_death_15: 741868284556283329
+      Old_Golem_death_16: 1130496299415428255
+      Old_Golem_death_17: 653428804583460334
+      Old_Golem_death_18: -5761667462914042176
+      Old_Golem_death_19: 8501934890470046747
+      Old_Golem_death_2: -6710656760816753226
+      Old_Golem_death_20: -6245321413857388309
+      Old_Golem_death_21: -2524425726992394509
+      Old_Golem_death_22: -6373430114371541763
+      Old_Golem_death_23: -8054968379223925735
+      Old_Golem_death_24: -6926842407750073736
+      Old_Golem_death_25: -4923595328181657534
+      Old_Golem_death_26: 2309593141345960063
+      Old_Golem_death_27: -3854008949138424005
+      Old_Golem_death_28: -4993218253406382123
+      Old_Golem_death_29: 1977597479170639365
+      Old_Golem_death_3: -6969436019107603964
+      Old_Golem_death_30: -1667479706962381967
+      Old_Golem_death_31: 6965663832493191201
+      Old_Golem_death_32: -4969215375356003000
+      Old_Golem_death_33: 7967157771178050896
+      Old_Golem_death_34: 8060481647580418985
+      Old_Golem_death_35: 3640830320673033335
+      Old_Golem_death_36: 5200531615986308178
+      Old_Golem_death_37: -8892937053822038581
+      Old_Golem_death_38: -2985285924436276134
+      Old_Golem_death_39: 1646779214505777426
+      Old_Golem_death_4: 5564738261682950123
+      Old_Golem_death_40: -5522131898250531756
+      Old_Golem_death_41: 360955123639942289
+      Old_Golem_death_42: 6819056838626312110
+      Old_Golem_death_43: -3802943689663443459
+      Old_Golem_death_44: 3266088314007278944
+      Old_Golem_death_45: -2804618847049180547
+      Old_Golem_death_46: -5701843404980197998
+      Old_Golem_death_47: -8399421583856191969
+      Old_Golem_death_48: -1323825839843280778
+      Old_Golem_death_49: 6387804768860604232
+      Old_Golem_death_5: -931843399073966158
+      Old_Golem_death_50: 4694112654930354664
+      Old_Golem_death_51: -8084506096668456149
+      Old_Golem_death_52: 5861677889351114462
+      Old_Golem_death_53: 7980467525647999610
+      Old_Golem_death_54: 3499098438698347828
+      Old_Golem_death_55: -5238124740935116588
+      Old_Golem_death_56: -8775747917281217307
+      Old_Golem_death_57: -3998191475362183440
+      Old_Golem_death_58: 4621560293290350740
+      Old_Golem_death_59: 219718384344528568
+      Old_Golem_death_6: 2251715643841041659
+      Old_Golem_death_60: -6720268319019993273
+      Old_Golem_death_61: -6915461867703651645
+      Old_Golem_death_62: 4779333147332773834
+      Old_Golem_death_63: 5966596639662476259
+      Old_Golem_death_64: 8580987460073879676
+      Old_Golem_death_65: 7507147489324184253
+      Old_Golem_death_66: -6357491139852376086
+      Old_Golem_death_67: 2345397341563239325
+      Old_Golem_death_68: -4649176883606361177
+      Old_Golem_death_69: -7963890217293652660
+      Old_Golem_death_7: -4083904813159725749
+      Old_Golem_death_70: 5044464949179217360
+      Old_Golem_death_71: -4340064273345525982
+      Old_Golem_death_72: 4875011421619131615
+      Old_Golem_death_73: 8053448897766911912
+      Old_Golem_death_74: 3622414571020377636
+      Old_Golem_death_75: 7140959387317254712
+      Old_Golem_death_76: -2782433565277791790
+      Old_Golem_death_77: 2046230407866298534
+      Old_Golem_death_78: 1695713314136099199
+      Old_Golem_death_79: 3301357436417651757
+      Old_Golem_death_8: -7856400930752201174
+      Old_Golem_death_80: -8485541416728716237
+      Old_Golem_death_81: -8793952321872797917
+      Old_Golem_death_82: -837083306437821631
+      Old_Golem_death_83: -8886562121533613660
+      Old_Golem_death_84: 8107413186202751624
+      Old_Golem_death_9: 5653155384272450459
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

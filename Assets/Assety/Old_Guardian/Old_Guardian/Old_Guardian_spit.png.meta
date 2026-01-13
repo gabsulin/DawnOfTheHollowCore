@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -96,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -309,7 +309,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Old_Guardian_spit_0: 1353176525764537387
+      Old_Guardian_spit_1: -8690353987843369879
+      Old_Guardian_spit_2: 1973617074142947197
+      Old_Guardian_spit_3: 1111971165863587393
+      Old_Guardian_spit_4: -6300155654085850728
+      Old_Guardian_spit_5: 6420610047089219788
+      Old_Guardian_spit_6: 509326664441496524
+      Old_Guardian_spit_7: 3192881020392657855
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

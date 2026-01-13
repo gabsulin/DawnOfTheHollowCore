@@ -41,7 +41,6 @@ public class Tooltip : MonoBehaviour
     {
         switch (r)
         {
-            case Rarity.Uncommon: return Color.green;
             case Rarity.Rare: return Color.cyan;
             case Rarity.Epic: return Color.magenta;
             case Rarity.Legendary: return new Color(1f, 0.6f, 0f);

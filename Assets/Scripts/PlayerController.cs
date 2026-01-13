@@ -1,21 +1,28 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Components")]
     public static PlayerController Instance { get; private set; }
-
     private Rigidbody2D rb;
     private Animator animator;
 
-    public float moveSpeed;
+    [Header("Movement Settings")]
+    [SerializeField] public float moveSpeed = 5f;
+
+    [Header("State")]
     public bool canMove = true;
     public bool canAttack = true;
-
     public bool isAttacking = false;
 
     public Vector2 input;
     private Vector2 lastMovementDirection = Vector2.right;
+    private Vector2 currentVelocity;
+
+    private Camera mainCamera;
+
+    private static readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+    private static readonly int IsDeadHash = Animator.StringToHash("IsDead");
 
     private void Awake()
     {
@@ -24,72 +31,141 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
-    }
 
-    private void Start()
-    {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        mainCamera = Camera.main;
+
+        if (rb != null)
+        {
+            rb.gravityScale = 0f;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
     }
 
     private void Update()
     {
-        if (canMove) HandleMovement();
+        if (canMove)
+        {
+            HandleInput();
+        }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            animator.SetBool("IsDead", true);
-            canMove = false;
+            TriggerDeath();
         }
     }
 
-    private void HandleMovement()
+    private void FixedUpdate()
     {
-        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-
-        if (input.magnitude > 0)
+        if (canMove)
         {
-            transform.position += (Vector3)(input * moveSpeed * Time.deltaTime);
+            ApplyMovement();
+        }
+    }
+
+    private void HandleInput()
+    {
+        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        if (input.magnitude > 1f)
+        {
+            input.Normalize();
+        }
+
+        if (input.magnitude > 0.01f)
+        {
             lastMovementDirection = input;
-            FlipCharacter(input.x);
-            animator.SetBool("IsMoving", true);
+            animator.SetBool(IsMovingHash, true);
         }
         else
         {
-            animator.SetBool("IsMoving", false);
-
-            if (!isAttacking)
-            {
-                FlipCharacter(lastMovementDirection.x);
-            }
+            animator.SetBool(IsMovingHash, false);
         }
 
+        FlipCharacter();
     }
 
-
-    private void FlipCharacter(float directionX)
+    private void ApplyMovement()
     {
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (mouseWorldPos.x > transform.position.x)
+        if (input.magnitude > 0.01f)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            currentVelocity = input * moveSpeed;
+            rb.linearVelocity = currentVelocity;
         }
-        else if (mouseWorldPos.x < transform.position.x)
+        else
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    private void FlipCharacter()
+    {
+        if (mainCamera == null) return;
+
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+        float direction = mouseWorldPos.x - transform.position.x;
+
+        if (Mathf.Abs(direction) > 0.05f)
+        {
+            transform.localScale = new Vector3(
+                direction > 0 ? 1 : -1,
+                1,
+                1
+            );
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        rb.linearVelocity = Vector2.zero;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+    public void TriggerDeath()
+    {
+        animator.SetBool(IsDeadHash, true);
+        canMove = false;
+        canAttack = false;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+
+        if (!enabled && rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
     public void ApplyMoveSpeedUpgrade(float amount)
     {
-        moveSpeed += amount;
+        moveSpeed = Mathf.Max(0f, moveSpeed + amount);
     }
 
+    public Vector2 GetLastMovementDirection()
+    {
+        return lastMovementDirection;
+    }
+
+    public Vector2 GetCurrentInput()
+    {
+        return input;
+    }
+
+    public void ApplyKnockback(Vector2 force)
+    {
+        if (rb != null)
+        {
+            rb.AddForce(force, ForceMode2D.Impulse);
+        }
+    }
 }

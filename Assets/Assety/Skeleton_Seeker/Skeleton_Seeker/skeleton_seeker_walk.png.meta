@@ -259,7 +259,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      skeleton_seeker_walk_0: 1843118504893400886
+      skeleton_seeker_walk_1: 2902860917087766669
+      skeleton_seeker_walk_2: -5870647021314986159
+      skeleton_seeker_walk_3: 8606094474783147747
+      skeleton_seeker_walk_4: -3554589852627955530
+      skeleton_seeker_walk_5: -2670274548788617775
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

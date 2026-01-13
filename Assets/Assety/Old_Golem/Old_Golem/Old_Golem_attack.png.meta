@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -99,7 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -334,7 +334,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Old_Golem_attack_0: -4806518976096860800
+      Old_Golem_attack_1: 1058590069076596370
+      Old_Golem_attack_2: -3926441909566697096
+      Old_Golem_attack_3: 4126298292101290025
+      Old_Golem_attack_4: 2418702809175375909
+      Old_Golem_attack_5: 6313855135034777525
+      Old_Golem_attack_6: 4612801480294205046
+      Old_Golem_attack_7: -5568385429157316698
+      Old_Golem_attack_8: -1526670534437935071
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

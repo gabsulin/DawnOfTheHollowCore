@@ -359,7 +359,17 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Soul_attack_0: 1760654338195807569
+      Soul_attack_1: -1990405536830085753
+      Soul_attack_2: -5385745422630102110
+      Soul_attack_3: 5947870472703592743
+      Soul_attack_4: 7216013642641773225
+      Soul_attack_5: 2668739347984876344
+      Soul_attack_6: 8271040221026034094
+      Soul_attack_7: -6469563435501047947
+      Soul_attack_8: -6649586921299343840
+      Soul_attack_9: 2777661721433355861
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
