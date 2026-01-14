@@ -20,7 +20,7 @@ MonoBehaviour:
   description: Right click on item to apply upgrade.
   value: 0
   tags: []
-  moveSpeedBonus: 1
+  moveSpeedBonus: 5
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
   maxShieldBonus: 0

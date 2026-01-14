@@ -16,7 +16,7 @@ MonoBehaviour:
   ingredients:
   - {fileID: 11400000, guid: 6ae82e1a5555f804796feed4e63c194d, type: 2}
   - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
-  output: {fileID: 11400000, guid: 18bef0ccd5004b443bed224d61e99394, type: 2}
+  output: {fileID: 11400000, guid: 37360169225975146830b3d73ce79a15, type: 2}
   outputAmount: 1
   loreText: mrdka
   isUnlocked: 1
