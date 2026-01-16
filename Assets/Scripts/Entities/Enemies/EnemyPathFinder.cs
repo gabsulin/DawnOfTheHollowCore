@@ -4,8 +4,6 @@ using UnityEngine;
 public class EnemyPathfinder : MonoBehaviour
 {
     public Transform player;
-    private Transform currentTarget;
-    private Core coreObject;
     public PlayerHpSystem playerHp;
     public Animator animator;
     public GridManager grid;
@@ -29,18 +27,6 @@ public class EnemyPathfinder : MonoBehaviour
     private void Start()
     {
         player = FindFirstObjectByType<PlayerController>().transform;
-
-        var coreFound = FindFirstObjectByType<Core>();
-        if (coreFound != null)
-        {
-            currentTarget = coreFound.transform;
-            coreObject = coreFound;
-        }
-
-        // fallback
-        if (currentTarget == null)
-            currentTarget = player;
-
         playerHp = FindFirstObjectByType<PlayerHpSystem>();
         animator = GetComponent<Animator>();
         grid = FindFirstObjectByType<GridManager>();
@@ -49,13 +35,14 @@ public class EnemyPathfinder : MonoBehaviour
         enemy = GetComponent<Enemy>();
     }
 
-
     void Update()
     {
-        currentTarget = enemy.GetCurrentTarget();
         if (playerHp.isDead) return;
 
-        distance = Vector2.Distance(transform.position, currentTarget.position);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            return;     
+
+        distance = Vector2.Distance(transform.position, player.position);
         attackCooldown -= Time.deltaTime;
         pathTimer -= Time.deltaTime;
 
@@ -65,7 +52,7 @@ public class EnemyPathfinder : MonoBehaviour
         if (pathTimer <= 0f)
         {
             Vector2Int enemyPos = grid.WorldToGrid(transform.position);
-            Vector2Int playerPos = grid.WorldToGrid(currentTarget.position);
+            Vector2Int playerPos = grid.WorldToGrid(player.position);
 
             currentPath = AStarPathFinder.FindPath(enemyPos, playerPos, grid, 1000);
 
@@ -98,7 +85,7 @@ public class EnemyPathfinder : MonoBehaviour
 
             if (attackCooldown <= 0f)
             {
-                AttackTarget();
+                AttackPlayer();
             }
         }
     }
@@ -122,7 +109,7 @@ public class EnemyPathfinder : MonoBehaviour
             pathIndex++;
     }
 
-    void AttackTarget()
+    void AttackPlayer()
     {
         animator.SetTrigger("Attack");
         animator.SetBool("IsMoving", false);
@@ -132,7 +119,6 @@ public class EnemyPathfinder : MonoBehaviour
 
         enemy.ActivateAttackHitbox();
     }
-
 
     void OnDrawGizmos()
     {

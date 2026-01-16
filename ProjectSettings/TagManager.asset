@@ -18,8 +18,8 @@ TagManager:
   - 
   - IgnoreDamage
   - EnemyAttackLayer
-  - 
-  - 
+  - Minimap
+  - MinimapPlayer
   - 
   - 
   - 

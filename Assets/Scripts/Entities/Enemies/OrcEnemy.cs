@@ -10,11 +10,13 @@ public class OrcEnemy : Enemy
 
     private void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-            return;
+        // nothing animation-related here anymore
     }
 
-    public override void Attack() { }
+    public override void Attack()
+    {
+        // handled by EnemyPathfinder
+    }
 
     public override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -33,15 +35,6 @@ public class OrcEnemy : Enemy
                 DeactivateAttackHitbox();
             }
         }
-        if (collision.gameObject.GetComponent<Core>() != null)
-        {
-            var hp = collision.gameObject.GetComponent<CoreHpSystem>();
-            if (hp != null) hp.TakeHit(damage);
-
-            attackCooldown = 1.5f;
-            DeactivateAttackHitbox();
-        }
-
     }
 
     protected override void OnDrawGizmos()

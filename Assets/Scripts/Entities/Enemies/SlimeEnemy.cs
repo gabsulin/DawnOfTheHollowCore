@@ -31,7 +31,9 @@ public class SlimeEnemy : Enemy
     {
         isJumping = true;
         Vector2 startPos = transform.position;
-        Vector2 targetPos = player.position;
+        /*Transform target = GetCurrentTarget();
+        Vector2 targetPos = target.position;*/
+        Vector2 targetPos = player.position;    
 
         float timer = 0f;
         while (timer < jumpDuration)
