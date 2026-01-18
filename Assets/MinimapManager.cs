@@ -284,4 +284,4 @@ public class MinimapManager : MonoBehaviour
             Gizmos.DrawWireCube(new Vector3(camPos.x, camPos.y, 0), size);
         }
     }
-}
+}   

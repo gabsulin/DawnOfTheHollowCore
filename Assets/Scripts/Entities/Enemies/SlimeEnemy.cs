@@ -8,18 +8,18 @@ public class SlimeEnemy : Enemy
     public float jumpDuration = 0.5f;
     private bool isJumping = false;
 
-    //CameraShake shake;
     protected override void Start()
     {
+        base.Start();
         attackCooldown = animator.GetFloat("AttackCooldown");
-        player = FindFirstObjectByType<PlayerController>().transform;
-        //shake = GetComponent<CameraShake>();
     }
+
     private void Update()
     {
         attackCooldown += Time.deltaTime;
         animator.SetFloat("AttackCooldown", attackCooldown);
     }
+
     public override void Attack()
     {
         currentState = EnemyState.Attack;
@@ -31,16 +31,16 @@ public class SlimeEnemy : Enemy
     {
         isJumping = true;
         Vector2 startPos = transform.position;
-        /*Transform target = GetCurrentTarget();
-        Vector2 targetPos = target.position;*/
-        Vector2 targetPos = player.position;    
+
+        Transform currentTarget = GetCurrentTarget();
+        Vector2 targetPos = currentTarget.position;
 
         float timer = 0f;
         while (timer < jumpDuration)
         {
             timer += Time.deltaTime;
             float t = timer / jumpDuration;
-            float height = 4 * jumpHeight * t * (1 - t); // parabolická výška
+            float height = 4 * jumpHeight * t * (1 - t);
             transform.position = Vector3.Lerp(startPos, targetPos + new Vector2(0.1f, 0.1f), t) + Vector3.up * height;
             yield return null;
         }
@@ -62,18 +62,17 @@ public class SlimeEnemy : Enemy
                 currentState = EnemyState.Idle;
                 ExecuteIdleState();
                 attackCooldown = 0f;
-                //shake.StartShake(force: 0.1f);
             }
             if (collision.gameObject.GetComponent<Core>() != null)
             {
                 var hp = collision.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-
                 attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (currentState == EnemyState.Attack && (attackHitbox != null || collision.IsTouching(attackHitbox)))
@@ -87,13 +86,11 @@ public class SlimeEnemy : Enemy
                 currentState = EnemyState.Idle;
                 ExecuteIdleState();
                 attackCooldown = 0f;
-                //shake.StartShake(force: 0.1f);
             }
             if (collision.gameObject.GetComponent<Core>() != null)
             {
                 var hp = collision.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-
                 attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }

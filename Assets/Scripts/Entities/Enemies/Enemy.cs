@@ -13,7 +13,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
-    public Transform aimTarget; // restored for PlantEnemy
+    public Transform aimTarget;
     public GridManager grid;
     public Animator animator;
     public Rigidbody2D rb;
@@ -22,6 +22,12 @@ public abstract class Enemy : MonoBehaviour
     public Collider2D attackHitbox;
     public float attackCooldown = 1.5f;
     public int damage = 1;
+    public float playerAggroRange = 4f;
+
+    public Transform core;
+    public Core coreObject;
+
+
 
     public EnemyState currentState = EnemyState.Idle;
 
@@ -29,14 +35,36 @@ public abstract class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
         player = FindFirstObjectByType<PlayerController>().transform;
+
+        var coreFound = FindFirstObjectByType<Core>();
+        if (coreFound != null)
+        {
+            core = coreFound.transform;
+            coreObject = coreFound;
+        }
+
         grid = FindFirstObjectByType<GridManager>();
 
         if (attackHitbox != null)
             attackHitbox.enabled = false;
     }
 
-    // universal attack entry point
+    public Transform GetCurrentTarget()
+    {
+        if (core == null || coreObject == null || coreObject.isDead)
+            return player;
+
+        float distToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distToPlayer < playerAggroRange)
+            return player;
+
+        return core;
+    }
+
+
     public abstract void Attack();
 
     public virtual void ActivateAttackHitbox()

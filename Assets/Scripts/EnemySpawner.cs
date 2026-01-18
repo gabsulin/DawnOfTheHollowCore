@@ -5,7 +5,6 @@ public class EnemySpawner : MonoBehaviour
 {
     public AreaManager areaManager;
     public Transform player;
-    public float spawnRadius = 10f;
     public int baseEnemiesPerWave = 5;
     public float spawnDelay = 0.5f;
 
@@ -46,40 +45,64 @@ public class EnemySpawner : MonoBehaviour
     {
         while (isNight)
         {
-            float dist = Vector2.Distance(Vector2.zero, player.position);
-            var area = GetArea(dist);
+            List<AreaManager.Area> unlockedAreas = GetUnlockedAreas();
 
-            if (area == null || !area.unlocked)
+            if (unlockedAreas.Count == 0)
             {
                 yield return new WaitForSeconds(1f);
                 continue;
             }
 
-            // must have enemies here
-            if (area.enemyGroup == null ||
-                area.enemyGroup.enemies == null ||
-                area.enemyGroup.enemies.Count == 0)
-            {
-                yield return new WaitForSeconds(2f);
-                continue;
-            }
-
-            int mult = Mathf.Max(1, area.id);
-            int waveSize = Mathf.RoundToInt(
+            int highestAreaId = GetHighestUnlockedAreaId(unlockedAreas);
+            int mult = Mathf.Max(1, highestAreaId);
+            int totalWaveSize = Mathf.RoundToInt(
                 baseEnemiesPerWave * (1f + nightCount * 0.2f) * mult
             );
 
-            for (int i = 0; i < waveSize; i++)
+            int enemiesPerArea = Mathf.Max(1, totalWaveSize / unlockedAreas.Count);
+
+            foreach (var area in unlockedAreas)
             {
-                SpawnEnemy(area);
-                yield return new WaitForSeconds(spawnDelay);
+                for (int i = 0; i < enemiesPerArea; i++)
+                {
+                    SpawnEnemyInArea(area);
+                    yield return new WaitForSeconds(spawnDelay);
+                }
             }
 
             yield return new WaitForSeconds(Mathf.Max(5f, 15f - nightCount * 0.5f));
         }
     }
 
-    void SpawnEnemy(AreaManager.Area area)
+    List<AreaManager.Area> GetUnlockedAreas()
+    {
+        List<AreaManager.Area> unlocked = new();
+
+        foreach (var area in areaManager.areas)
+        {
+            if (area.unlocked && area.enemyGroup != null &&
+                area.enemyGroup.enemies != null &&
+                area.enemyGroup.enemies.Count > 0)
+            {
+                unlocked.Add(area);
+            }
+        }
+
+        return unlocked;
+    }
+
+    int GetHighestUnlockedAreaId(List<AreaManager.Area> unlockedAreas)
+    {
+        int highest = 0;
+        foreach (var area in unlockedAreas)
+        {
+            if (area.id > highest)
+                highest = area.id;
+        }
+        return highest;
+    }
+
+    void SpawnEnemyInArea(AreaManager.Area area)
     {
         if (area.enemyGroup == null ||
             area.enemyGroup.enemies == null ||
@@ -90,19 +113,16 @@ public class EnemySpawner : MonoBehaviour
             Random.Range(0, area.enemyGroup.enemies.Count)
         ];
 
-        Vector2 spawnPos = (Vector2)player.position +
-                            Random.insideUnitCircle.normalized * spawnRadius;
+        Vector2 spawnPos = RandomPositionInArea(area);
 
         GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
         activeEnemies.Add(enemy);
     }
 
-    AreaManager.Area GetArea(float dist)
+    Vector2 RandomPositionInArea(AreaManager.Area area)
     {
-        foreach (var a in areaManager.areas)
-            if (dist >= a.innerRadius && dist < a.outerRadius)
-                return a;
-
-        return areaManager.areas[0];
+        float radius = Random.Range(area.innerRadius, area.outerRadius);
+        float angle = Random.Range(0f, Mathf.PI * 2);
+        return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
     }
 }

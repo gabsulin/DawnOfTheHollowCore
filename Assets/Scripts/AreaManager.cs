@@ -20,7 +20,6 @@ public class AreaManager : MonoBehaviour
         public List<RaritySpawnSettings> raritySettings = new();
 
         public EnemySpawnGroup enemyGroup;
-
     }
 
     [System.Serializable]
@@ -43,9 +42,13 @@ public class AreaManager : MonoBehaviour
         public List<GameObject> enemies;
     }
 
+    [Header("References")]
     public Transform player;
+    public Transform crystalsParent;
+
     public List<Area> areas;
 
+    [Header("NPC Settings")]
     public float npcSpawnRadius = 5f;
 
     Area currentArea;
@@ -54,6 +57,9 @@ public class AreaManager : MonoBehaviour
     {
         if (areas.Count > 0)
             areas[0].unlocked = true;
+
+        if (crystalsParent == null)
+            Debug.LogWarning("Crystals parent is NOT assigned. Ores will be unparented.");
 
         foreach (var area in areas)
         {
@@ -91,15 +97,14 @@ public class AreaManager : MonoBehaviour
         if (!area.unlocked)
             area.unlocked = true;
 
-        if (area.npcForThisArea != null)
+        if (area.npcForThisArea != null && area.spawnedNpc == null)
         {
-            if (area.spawnedNpc == null)
-            {
-                Vector2 spawnPos = (Vector2)player.position + Random.insideUnitCircle * npcSpawnRadius;
-                area.spawnedNpc = Instantiate(area.npcForThisArea, spawnPos, Quaternion.identity);
-            }
+            Vector2 spawnPos = (Vector2)player.position + Random.insideUnitCircle * npcSpawnRadius;
+            area.spawnedNpc = Instantiate(area.npcForThisArea, spawnPos, Quaternion.identity);
         }
     }
+
+    // ===================== ORE SPAWNING =====================
 
     public void SpawnOresInArea(Area area)
     {
@@ -114,7 +119,13 @@ public class AreaManager : MonoBehaviour
                 {
                     GameObject prefab = settings.orePrefabs[Random.Range(0, settings.orePrefabs.Count)];
                     Vector2 pos = RandomPositionInArea(area);
-                    Instantiate(prefab, pos, Quaternion.identity);
+
+                    GameObject ore = Instantiate(
+                        prefab,
+                        pos,
+                        Quaternion.identity,
+                        crystalsParent
+                    );
                 }
             }
         }
@@ -127,7 +138,8 @@ public class AreaManager : MonoBehaviour
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
     }
 
-    // --------------- GIZMOS ----------------
+    // ===================== GIZMOS =====================
+
     void OnDrawGizmos()
     {
         if (areas == null) return;

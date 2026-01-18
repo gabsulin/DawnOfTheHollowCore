@@ -3,103 +3,193 @@ using UnityEngine;
 
 public class EnemyPathfinder : MonoBehaviour
 {
-    public Transform player;
+    [Header("References")]
     public PlayerHpSystem playerHp;
     public Animator animator;
     public GridManager grid;
-    Rigidbody2D rb;
-    EnemyFlip flip;
 
+    [Header("Movement Settings")]
     public float moveSpeed = 2f;
-    public float maxDistance = 2f;
+    public float attackRange = 2f;
 
-    private float distance;
+    [Header("Pathfinding Settings")]
+    public float pathUpdateInterval = 0.5f;
+    public float targetMovementThreshold = 1.5f;
+    public int maxPathfindingIterations = 500;
+
+    [Header("Combat Settings")]
+    public float attackCooldownDuration = 1.5f;
+
+    private Rigidbody2D rb;
+    private EnemyFlip flip;
+    private Enemy enemy;
 
     private List<Vector2Int> currentPath = new List<Vector2Int>();
     private int pathIndex = 0;
 
     private float pathTimer = 0f;
-    private float pathInterval = 0.25f;
     private float attackCooldown = 1.5f;
 
-    Enemy enemy;
+    private Transform currentTarget;
+    private Vector3 lastTargetPosition;
+    private Vector2Int lastEnemyGridPos;
+    private bool hasCalculatedFirstPath = false;
+
+    private static readonly int AnimAttack = Animator.StringToHash("Attack");
+    private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
+    private static readonly int AnimIsIdle = Animator.StringToHash("IsIdle");
+    private static readonly int AnimDie = Animator.StringToHash("Die");
+    private const string AttackStateName = "Attack";
 
     private void Start()
     {
-        player = FindFirstObjectByType<PlayerController>().transform;
         playerHp = FindFirstObjectByType<PlayerHpSystem>();
         animator = GetComponent<Animator>();
         grid = FindFirstObjectByType<GridManager>();
         rb = GetComponent<Rigidbody2D>();
         flip = GetComponent<EnemyFlip>();
         enemy = GetComponent<Enemy>();
+
+        pathTimer = Random.Range(0f, pathUpdateInterval * 0.5f);
+
+        if (enemy != null)
+        {
+            currentTarget = enemy.GetCurrentTarget();
+            if (currentTarget != null)
+            {
+                lastTargetPosition = currentTarget.position;
+            }
+        }
+
+        lastEnemyGridPos = grid != null ? grid.WorldToGrid(transform.position) : Vector2Int.zero;
     }
 
     void Update()
     {
-        if (playerHp.isDead) return;
+        if (enemy != null)
+        {
+            currentTarget = enemy.GetCurrentTarget();
+        }
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-            return;     
+        if (playerHp == null || playerHp.isDead) return;
 
-        distance = Vector2.Distance(transform.position, player.position);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName(AttackStateName))
+            return;
+
+        float distanceToTarget = currentTarget != null
+            ? Vector2.Distance(transform.position, currentTarget.position)
+            : float.MaxValue;
+
         attackCooldown -= Time.deltaTime;
         pathTimer -= Time.deltaTime;
 
-        flip.LookAtPlayer();
+        if (flip != null)
+            flip.LookAtPlayer();
 
-        // --- PATHFIND ---
-        if (pathTimer <= 0f)
+        if (ShouldRecalculatePath())
         {
-            Vector2Int enemyPos = grid.WorldToGrid(transform.position);
-            Vector2Int playerPos = grid.WorldToGrid(player.position);
-
-            currentPath = AStarPathFinder.FindPath(enemyPos, playerPos, grid, 1000);
-
-            pathIndex = 0;
-            for (int i = 0; i < currentPath.Count; i++)
-            {
-                if (currentPath[i] == enemyPos)
-                {
-                    pathIndex = i;
-                    break;
-                }
-            }
-
-            pathTimer = pathInterval;
+            RecalculatePath();
         }
 
-        // --- MOVEMENT & ATTACK ---
         if (ShouldMove())
         {
-            animator.ResetTrigger("Attack");
-            animator.SetBool("IsMoving", true);
-            animator.SetBool("IsIdle", false);
+            animator.ResetTrigger(AnimAttack);
+            animator.SetBool(AnimIsMoving, true);
+            animator.SetBool(AnimIsIdle, false);
 
             MoveToNextNode();
         }
         else
         {
-            animator.SetBool("IsMoving", false);
-            animator.SetBool("IsIdle", true);
+            animator.SetBool(AnimIsMoving, false);
+            animator.SetBool(AnimIsIdle, true);
 
-            if (attackCooldown <= 0f)
+            if (distanceToTarget <= attackRange && attackCooldown <= 0f)
             {
-                AttackPlayer();
+                AttackTarget();
             }
         }
     }
 
+    bool ShouldRecalculatePath()
+    {
+        if (!hasCalculatedFirstPath)
+            return true;
+
+        if (pathTimer > 0f || currentTarget == null || grid == null)
+            return false;
+
+        float distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+        if (distanceToTarget <= attackRange && currentPath != null && currentPath.Count > 0)
+            return false;
+
+        if (lastTargetPosition != Vector3.zero)
+        {
+            float targetMovedDistance = Vector3.Distance(currentTarget.position, lastTargetPosition);
+
+            if (targetMovedDistance < targetMovementThreshold && currentPath != null && currentPath.Count > 0)
+                return false;
+        }
+
+        Vector2Int currentGridPos = grid.WorldToGrid(transform.position);
+        if (currentGridPos == lastEnemyGridPos && currentPath != null && currentPath.Count > 0)
+            return false;
+
+        return true;
+    }
+
+    void RecalculatePath()
+    {
+        Vector2Int enemyPos = grid.WorldToGrid(transform.position);
+        Vector2Int targetPos = grid.WorldToGrid(currentTarget.position);
+
+        if (enemyPos == targetPos)
+        {
+            currentPath.Clear();
+            pathIndex = 0;
+            pathTimer = pathUpdateInterval;
+            hasCalculatedFirstPath = true;
+            return;
+        }
+
+        currentPath = AStarPathFinder.FindPath(enemyPos, targetPos, grid, maxPathfindingIterations);
+
+        pathIndex = 0;
+
+        if (currentPath != null && currentPath.Count > 0)
+        {
+            pathIndex = 0;
+        }
+
+        lastTargetPosition = currentTarget.position;
+        lastEnemyGridPos = enemyPos;
+        pathTimer = pathUpdateInterval;
+        hasCalculatedFirstPath = true;
+    }
+
     bool ShouldMove()
     {
-        return currentPath.Count > 1 &&
-               pathIndex < currentPath.Count - 1 &&
-               distance > maxDistance &&
-               !animator.GetBool("Die");
+        if (currentPath == null || currentPath.Count <= 1 || pathIndex >= currentPath.Count - 1)
+            return false;
+
+        if (animator.GetBool(AnimDie))
+            return false;
+
+        float distanceToTarget = currentTarget != null
+            ? Vector2.Distance(transform.position, currentTarget.position)
+            : float.MaxValue;
+
+        if (distanceToTarget <= attackRange)
+            return false;
+
+        return true;
     }
 
     void MoveToNextNode()
     {
+        if (pathIndex + 1 >= currentPath.Count)
+            return;
+
         Vector2Int nextStep = currentPath[pathIndex + 1];
         Vector2 targetWorld = grid.GridToWorld(nextStep);
 
@@ -109,15 +199,16 @@ public class EnemyPathfinder : MonoBehaviour
             pathIndex++;
     }
 
-    void AttackPlayer()
+    void AttackTarget()
     {
-        animator.SetTrigger("Attack");
-        animator.SetBool("IsMoving", false);
-        animator.SetBool("IsIdle", false);
+        animator.SetTrigger(AnimAttack);
+        animator.SetBool(AnimIsMoving, false);
+        animator.SetBool(AnimIsIdle, false);
 
-        attackCooldown = 1.5f;
+        attackCooldown = attackCooldownDuration;
 
-        enemy.ActivateAttackHitbox();
+        if (enemy != null)
+            enemy.ActivateAttackHitbox();
     }
 
     void OnDrawGizmos()

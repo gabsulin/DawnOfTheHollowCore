@@ -35,6 +35,15 @@ public class OrcEnemy : Enemy
                 DeactivateAttackHitbox();
             }
         }
+        if (collision.gameObject.GetComponent<Core>() != null)
+        {
+            var hp = collision.gameObject.GetComponent<CoreHpSystem>();
+            if (hp != null) hp.TakeHit(damage);
+
+            attackCooldown = 1.5f;
+            DeactivateAttackHitbox();
+        }
+
     }
 
     protected override void OnDrawGizmos()

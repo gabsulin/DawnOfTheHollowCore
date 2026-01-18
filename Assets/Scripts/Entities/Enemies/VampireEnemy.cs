@@ -5,10 +5,8 @@ public class VampireEnemy : Enemy
     [Header("Vampire Settings")]
     [SerializeField] public Transform centerOfAttack;
     [SerializeField] float attackRadius;
-
     [SerializeField] GameObject batPrefab;
     public bool hasRevived = false;
-    //CameraShake shake;
 
     public void HandleDeath()
     {
@@ -32,10 +30,8 @@ public class VampireEnemy : Enemy
 
     protected override void Start()
     {
+        base.Start();
         attackCooldown = animator.GetFloat("AttackCooldown");
-        player = FindFirstObjectByType<PlayerController>().transform;
-        //shake = GetComponent<CameraShake>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -48,13 +44,20 @@ public class VampireEnemy : Enemy
     {
         currentState = EnemyState.Attack;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(centerOfAttack.position, attackRadius);
+
         foreach (Collider2D collider in colliders)
         {
             if (collider.CompareTag("Player"))
             {
                 var playerHp = collider.GetComponent<PlayerHpSystem>();
-                if (playerHp != null) playerHp.TakeHit(1);
-                //if (shake != null) shake.StartShake(force: 0.2f);
+                if (playerHp != null) playerHp.TakeHit(damage);
+            }
+            if (collider.gameObject.GetComponent<Core>() != null)
+            {
+                var hp = collider.gameObject.GetComponent<CoreHpSystem>();
+                if (hp != null) hp.TakeHit(damage);
+                attackCooldown = 1.5f;
+                DeactivateAttackHitbox();
             }
         }
     }
@@ -70,7 +73,7 @@ public class VampireEnemy : Enemy
         }
         else
         {
-            Debug.LogError("Bat prefab nemá pøipojený Bat skript!");
+            Debug.LogError("Bat prefab doesn't have Bat script attached!");
         }
 
         hasRevived = true;
@@ -88,10 +91,11 @@ public class VampireEnemy : Enemy
             enemyHealth.RestoreFullHealth();
         }
 
-        Debug.Log(gameObject.name + " byl reaktivován na pozici " + revivalPosition);
+        Debug.Log(gameObject.name + " was reactivated at position " + revivalPosition);
     }
 
     public override void OnCollisionEnter2D(Collision2D collision) { }
+
     protected override void OnDrawGizmos()
     {
         if (centerOfAttack != null)
