@@ -308,8 +308,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  core: {fileID: 0}
-  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 2461002572209112637}
@@ -317,7 +315,9 @@ MonoBehaviour:
   attackHitbox: {fileID: 5905488914511009062}
   attackCooldown: 1
   damage: 1
-  playerAggroRange: 4
+  playerAggroRange: 10
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   currentState: 0
   seedPrefab: {fileID: -4868299414993006088, guid: f97fee7983806d94c86236b875b69711, type: 3}
   spawnPoint: {fileID: 4005863894305154355}
@@ -336,12 +336,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a15badaf564f1429d79952e2482adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   playerHp: {fileID: 0}
   animator: {fileID: 0}
   grid: {fileID: 0}
   moveSpeed: 13
-  maxDistance: 7
+  attackRange: 6
+  pathUpdateInterval: 0.5
+  targetMovementThreshold: 1.5
+  maxPathfindingIterations: 500
+  attackCooldownDuration: 1.5
 --- !u!114 &977418769993609790
 MonoBehaviour:
   m_ObjectHideFlags: 0
