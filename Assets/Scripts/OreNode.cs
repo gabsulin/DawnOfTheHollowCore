@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class OreNode : MonoBehaviour
 {
-    public enum Rarity { Common, Uncommon, Rare, Mythic }
+    public enum Rarity { Common, Rare, Epic, Legendary, Mythic }
     public Rarity rarity;
 
     public int maxHP = 20;

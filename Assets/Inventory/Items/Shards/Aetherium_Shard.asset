@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca5cf7cc07a464740a7d823d8a75167f, type: 3}
+  m_Name: Aetherium_Shard
+  m_EditorClassIdentifier: 
+  itemName: Aetherium Shard
+  icon: {fileID: 21300000, guid: 2cce6ab7886937542b9a05419e6b6311, type: 3}
+  maxStack: 24
+  type: 6
+  rarity: 0
+  description: A faintly glowing fragment saturated with ambient energy, light as
+    breath and hard to grasp.
+  value: 0
+  tags: []
+  moveSpeedBonus: 0
+  miningSpeedMultiplier: 0
+  maxHealthBonus: 0
+  maxShieldBonus: 0
+  damageBonus: 0

@@ -295,6 +295,47 @@ public class AreaManager : MonoBehaviour
 
     public void SpawnOresInArea(Area area)
     {
+        if (area.raritySettings == null || area.raritySettings.Count == 0)
+            return;
+
+        // =============================
+        // 1) GUARANTEE HIGHEST RARITY
+        // =============================
+
+        RaritySpawnSettings highestRaritySettings = null;
+
+        foreach (var settings in area.raritySettings)
+        {
+            if (highestRaritySettings == null ||
+                settings.rarity > highestRaritySettings.rarity)
+            {
+                highestRaritySettings = settings;
+            }
+        }
+
+        if (highestRaritySettings != null &&
+            highestRaritySettings.orePrefabs != null &&
+            highestRaritySettings.orePrefabs.Count > 0)
+        {
+            GameObject guaranteedPrefab =
+                highestRaritySettings.orePrefabs[
+                    Random.Range(0, highestRaritySettings.orePrefabs.Count)
+                ];
+
+            Vector2 guaranteedPos = RandomPositionInArea(area);
+
+            Instantiate(
+                guaranteedPrefab,
+                guaranteedPos,
+                Quaternion.identity,
+                crystalsParent
+            );
+        }
+
+        // =============================
+        // 2) NORMAL RNG SPAWNING
+        // =============================
+
         foreach (var settings in area.raritySettings)
         {
             if (settings.orePrefabs == null || settings.orePrefabs.Count == 0)
@@ -304,10 +345,14 @@ public class AreaManager : MonoBehaviour
             {
                 if (Random.value <= settings.chancePerTry)
                 {
-                    GameObject prefab = settings.orePrefabs[Random.Range(0, settings.orePrefabs.Count)];
+                    GameObject prefab =
+                        settings.orePrefabs[
+                            Random.Range(0, settings.orePrefabs.Count)
+                        ];
+
                     Vector2 pos = RandomPositionInArea(area);
 
-                    GameObject ore = Instantiate(
+                    Instantiate(
                         prefab,
                         pos,
                         Quaternion.identity,
@@ -317,6 +362,7 @@ public class AreaManager : MonoBehaviour
             }
         }
     }
+
 
     Vector2 RandomPositionInArea(Area area)
     {
