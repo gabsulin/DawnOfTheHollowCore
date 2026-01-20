@@ -11,17 +11,32 @@ public class WorldItem : MonoBehaviour
 
     [Header("Pickup Settings")]
     [SerializeField] private float pickupDelay = 0.8f;
-    private float pickupAvailableTime = 0f;
 
     [Header("Item Data")]
     [SerializeField] private ItemSO item;
     private int amount = 1;
 
     private Vector3 startPos;
+    private float pickupAvailableTime = 0f;
+    private float timeOffset;
+    private InventoryManager cachedInventory;
+    private PolygonCollider2D polyCollider;
 
     private void Awake()
     {
+        polyCollider = GetComponent<PolygonCollider2D>();
         RegenerateColliderFromSprite();
+
+        timeOffset = Random.Range(0f, Mathf.PI * 2f);
+    }
+
+    private void Start()
+    {
+        // Fallback: if Initialize() wasn't called, set startPos here
+        if (startPos == Vector3.zero)
+        {
+            startPos = transform.position;
+        }
     }
 
     public void Initialize(ItemSO itemData, int itemAmount)
@@ -36,6 +51,8 @@ public class WorldItem : MonoBehaviour
         }
 
         startPos = transform.position;
+        float initialY = startPos.y + Mathf.Sin(Time.time * floatSpeed + timeOffset) * floatAmplitude;
+        transform.position = new Vector3(startPos.x, initialY, startPos.z);
 
         pickupAvailableTime = Time.time;
     }
@@ -49,7 +66,7 @@ public class WorldItem : MonoBehaviour
     {
         if (item != null)
         {
-            float y = startPos.y + Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
+            float y = startPos.y + Mathf.Sin(Time.time * floatSpeed + timeOffset) * floatAmplitude;
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
         }
     }
@@ -67,33 +84,46 @@ public class WorldItem : MonoBehaviour
 
     public void TryPickup(GameObject player)
     {
-        var inv = player.GetComponent<InventoryManager>();
-        if (inv == null) inv = FindFirstObjectByType<InventoryManager>();
-
-        if (inv != null)
+        if (cachedInventory == null)
         {
-            int leftover = inv.TryAddItem(item, amount);
+            cachedInventory = player.GetComponent<InventoryManager>();
+            if (cachedInventory == null)
+            {
+                cachedInventory = FindFirstObjectByType<InventoryManager>();
+            }
+        }
+
+        if (cachedInventory != null)
+        {
+            int leftover = cachedInventory.TryAddItem(item, amount);
             if (leftover == 0)
+            {
                 Destroy(gameObject);
+            }
+            else if (leftover < amount)
+            {
+                amount = leftover;
+            }
         }
     }
 
     private void RegenerateColliderFromSprite()
     {
-        var poly = GetComponent<PolygonCollider2D>();
-        if (poly == null) return;
+        if (polyCollider == null || iconRenderer == null || iconRenderer.sprite == null)
+            return;
 
-        var sr = iconRenderer;
-        if (sr == null || sr.sprite == null) return;
+        int shapeCount = iconRenderer.sprite.GetPhysicsShapeCount();
+        if (shapeCount == 0)
+            return;
 
-        poly.pathCount = sr.sprite.GetPhysicsShapeCount();
-
+        polyCollider.pathCount = shapeCount;
         List<Vector2> path = new List<Vector2>();
-        for (int i = 0; i < poly.pathCount; i++)
+
+        for (int i = 0; i < shapeCount; i++)
         {
             path.Clear();
-            sr.sprite.GetPhysicsShape(i, path);
-            poly.SetPath(i, path.ToArray());
+            iconRenderer.sprite.GetPhysicsShape(i, path);
+            polyCollider.SetPath(i, path);
         }
     }
 }
