@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76620c232c9d4f24eb009fe1bb881342, type: 3}
   m_Name: MiningUpgrade
   m_EditorClassIdentifier: 
-  recipeName: 
-  ingredients: []
-  output: {fileID: 0}
-  outputAmount: 1
+  recipeName: Mining Upgrade
+  ingredients:
+  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+  output: {fileID: 11400000, guid: 7c5ebb6fe24534748be50f0b53966e91, type: 2}
+  outputAmount: 10
   loreText: 
-  isUnlocked: 0
+  isUnlocked: 1
   craftingTier: 1

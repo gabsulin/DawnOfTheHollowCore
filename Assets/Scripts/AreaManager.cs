@@ -46,11 +46,27 @@ public class AreaManager : MonoBehaviour
         public List<GameObject> enemies;
     }
 
+    [System.Serializable]
+    public class SpawnableObject
+    {
+        public GameObject prefab;
+        [Tooltip("Radius around this object where nothing else can spawn")]
+        public float clearanceRadius = 1f;
+    }
+
     [Header("References")]
     public Transform player;
     public Transform crystalsParent;
+    public Transform objectsParent;
 
     public List<Area> areas;
+
+    [Header("Object Spawning")]
+    public List<SpawnableObject> objectsToSpawn = new();
+    [Tooltip("How many attempts to find a valid position before giving up")]
+    public int maxSpawnAttempts = 50;
+    [Tooltip("Minimum distance between any two spawned objects")]
+    public float minSpacingBetweenObjects = 0.5f;
 
     [Header("NPC Settings")]
     public float npcSpawnRadius = 2f;
@@ -79,6 +95,10 @@ public class AreaManager : MonoBehaviour
     Sprite cachedMinimapSprite;
     int minimapLayerInt;
 
+    // Track all spawned positions for collision checking
+    List<Vector2> spawnedPositions = new();
+    List<float> spawnedRadii = new();
+
     void Start()
     {
         foreach (var area in areas)
@@ -93,6 +113,9 @@ public class AreaManager : MonoBehaviour
         if (crystalsParent == null)
             Debug.LogWarning("Crystals parent is NOT assigned. Ores will be unparented.");
 
+        if (objectsParent == null)
+            Debug.LogWarning("Objects parent is NOT assigned. Objects will be unparented.");
+
         minimapLayerInt = LayerMask.NameToLayer(minimapLayer);
         if (minimapLayerInt == -1)
         {
@@ -105,6 +128,10 @@ public class AreaManager : MonoBehaviour
             cachedMinimapSprite = GetMinimapSprite();
         }
 
+        // SPAWN OBJECTS FIRST (they're bigger and need more space)
+        SpawnAllObjects();
+
+        // THEN SPAWN ORES (they'll avoid the objects)
         foreach (var area in areas)
         {
             SpawnOresInArea(area);
@@ -156,6 +183,112 @@ public class AreaManager : MonoBehaviour
                 CreateMinimapIconForNPC(area.spawnedNpc);
             }
         }
+    }
+
+    // ===================== OBJECT SPAWNING =====================
+
+    void SpawnAllObjects()
+    {
+        if (objectsToSpawn == null || objectsToSpawn.Count == 0)
+        {
+            Debug.LogWarning("[AreaManager] No objects to spawn!");
+            return;
+        }
+
+        int successfulSpawns = 0;
+        int failedSpawns = 0;
+
+        // Shuffle objects for random distribution
+        List<SpawnableObject> shuffledObjects = new List<SpawnableObject>(objectsToSpawn);
+        for (int i = shuffledObjects.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            var temp = shuffledObjects[i];
+            shuffledObjects[i] = shuffledObjects[j];
+            shuffledObjects[j] = temp;
+        }
+
+        foreach (var spawnableObj in shuffledObjects)
+        {
+            if (spawnableObj.prefab == null)
+            {
+                Debug.LogWarning("[AreaManager] Null prefab in objectsToSpawn list!");
+                continue;
+            }
+
+            Vector2 validPosition;
+            if (TryFindValidPositionAcrossMap(spawnableObj.clearanceRadius, out validPosition))
+            {
+                GameObject spawned = Instantiate(
+                    spawnableObj.prefab,
+                    validPosition,
+                    Quaternion.identity,
+                    objectsParent
+                );
+
+                // Track this position for future collision checks
+                spawnedPositions.Add(validPosition);
+                spawnedRadii.Add(spawnableObj.clearanceRadius);
+
+                successfulSpawns++;
+            }
+            else
+            {
+                Debug.LogWarning($"[AreaManager] Failed to find valid position for {spawnableObj.prefab.name} after {maxSpawnAttempts} attempts!");
+                failedSpawns++;
+            }
+        }
+
+        Debug.Log($"[AreaManager] Object spawning complete: {successfulSpawns} successful, {failedSpawns} failed");
+    }
+
+    bool TryFindValidPositionAcrossMap(float objectRadius, out Vector2 position)
+    {
+        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
+        {
+            // Pick a random area (excluding area 0)
+            Area randomArea = GetRandomAreaExcludingFirst();
+            if (randomArea == null)
+            {
+                position = Vector2.zero;
+                return false;
+            }
+
+            Vector2 candidatePos = RandomPositionInArea(randomArea);
+
+            // Check if this position is too close to any already spawned object
+            bool isTooClose = false;
+            for (int i = 0; i < spawnedPositions.Count; i++)
+            {
+                float requiredDistance = objectRadius + spawnedRadii[i] + minSpacingBetweenObjects;
+                float distanceSqr = (candidatePos - spawnedPositions[i]).sqrMagnitude;
+
+                if (distanceSqr < requiredDistance * requiredDistance)
+                {
+                    isTooClose = true;
+                    break;
+                }
+            }
+
+            if (!isTooClose)
+            {
+                position = candidatePos;
+                return true;
+            }
+        }
+
+        position = Vector2.zero;
+        return false;
+    }
+
+    Area GetRandomAreaExcludingFirst()
+    {
+        if (areas == null || areas.Count <= 1)
+            return null;
+
+        // Get random area from index 1 onwards (skip area 0)
+        int randomIndex = Random.Range(1, areas.Count);
+        return areas[randomIndex];
     }
 
     // ===================== MINIMAP ICON =====================
@@ -322,7 +455,7 @@ public class AreaManager : MonoBehaviour
                     Random.Range(0, highestRaritySettings.orePrefabs.Count)
                 ];
 
-            Vector2 guaranteedPos = RandomPositionInArea(area);
+            Vector2 guaranteedPos = GetValidOrePosition(area);
 
             Instantiate(
                 guaranteedPrefab,
@@ -350,7 +483,7 @@ public class AreaManager : MonoBehaviour
                             Random.Range(0, settings.orePrefabs.Count)
                         ];
 
-                    Vector2 pos = RandomPositionInArea(area);
+                    Vector2 pos = GetValidOrePosition(area);
 
                     Instantiate(
                         prefab,
@@ -363,6 +496,33 @@ public class AreaManager : MonoBehaviour
         }
     }
 
+    Vector2 GetValidOrePosition(Area area)
+    {
+        // Try to find a position that doesn't overlap with spawned objects
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            Vector2 candidatePos = RandomPositionInArea(area);
+
+            bool isTooClose = false;
+            for (int i = 0; i < spawnedPositions.Count; i++)
+            {
+                float distanceSqr = (candidatePos - spawnedPositions[i]).sqrMagnitude;
+                float minDistSqr = spawnedRadii[i] * spawnedRadii[i];
+
+                if (distanceSqr < minDistSqr)
+                {
+                    isTooClose = true;
+                    break;
+                }
+            }
+
+            if (!isTooClose)
+                return candidatePos;
+        }
+
+        // If we can't find a perfect spot after 10 tries, just return a random position
+        return RandomPositionInArea(area);
+    }
 
     Vector2 RandomPositionInArea(Area area)
     {
@@ -384,6 +544,16 @@ public class AreaManager : MonoBehaviour
 
             Gizmos.color = new Color(1f, 1f, 1f, 0.3f);
             DrawCircle(Vector3.zero, area.outerRadius);
+        }
+
+        // Draw spawned object positions in the editor
+        if (Application.isPlaying && spawnedPositions != null)
+        {
+            Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
+            for (int i = 0; i < spawnedPositions.Count; i++)
+            {
+                DrawCircle(spawnedPositions[i], spawnedRadii[i]);
+            }
         }
     }
 
