@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Speed Upgrade
   ingredients:
-  - {fileID: 11400000, guid: 6ae82e1a5555f804796feed4e63c194d, type: 2}
-  - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
+  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+  - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
   output: {fileID: 11400000, guid: 37360169225975146830b3d73ce79a15, type: 2}
   outputAmount: 1
-  loreText: mrdka
+  loreText: 
   isUnlocked: 1
   craftingTier: 1

@@ -4,9 +4,10 @@ using UnityEngine.UI;
 public class CoreHpSystem : MonoBehaviour
 {
     [SerializeField] Image hpBar;
-
+    [SerializeField] Animator animator;
     public int maxHp = 100;
     public int currentHp;
+    public bool isDead = false;
 
     void Start()
     {
@@ -24,6 +25,14 @@ public class CoreHpSystem : MonoBehaviour
     }
     private void Die()
     {
-        Destroy(gameObject);
+        animator.SetBool("isDead", true);
+        isDead = true;
+        EndGame(1);
+    }
+
+    private void EndGame(int reason)
+    {
+        //1 - Core destroyed 2 - Player merged with core
+        //GameManager.Instance.EndGame(reason);
     }
 }

@@ -337,9 +337,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHp: {fileID: 0}
+  coreHp: {fileID: 0}
   animator: {fileID: 0}
   grid: {fileID: 0}
-  moveSpeed: 13
+  moveSpeed: 6
   attackRange: 6
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
@@ -359,7 +360,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   currentHealth: 0
-  coinPrefab: {fileID: 179157823112342523, guid: 5c9742279d057ca46bbd5697c76645f9, type: 3}
 --- !u!114 &-2870435634484964336
 MonoBehaviour:
   m_ObjectHideFlags: 0

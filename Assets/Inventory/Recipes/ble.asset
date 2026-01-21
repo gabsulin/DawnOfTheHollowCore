@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76620c232c9d4f24eb009fe1bb881342, type: 3}
+  m_Name: ble
+  m_EditorClassIdentifier: 
+  recipeName: 
+  ingredients:
+  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+  output: {fileID: 11400000, guid: 7c5ebb6fe24534748be50f0b53966e91, type: 2}
+  outputAmount: 20
+  loreText: 
+  isUnlocked: 1
+  craftingTier: 1

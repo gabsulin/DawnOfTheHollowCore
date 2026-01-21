@@ -47,15 +47,13 @@ public class UpgradeManager : MonoBehaviour
 
         if (item.maxHealthBonus != 0)
         {
-            hp.maxHp += item.maxHealthBonus;
-            hp.currentHp += item.maxHealthBonus;
+            hp.ApplyMaxHealthUpgrade(item.maxHealthBonus);
             Debug.Log($"Max HP + {item.maxHealthBonus}");
         }
 
         if (item.maxShieldBonus != 0)
         {
-            hp.maxShields += item.maxShieldBonus;
-            hp.currentShields += item.maxShieldBonus;
+            hp.ApplyMaxShieldUpgrade(item.maxShieldBonus);
             Debug.Log($"Max Shields + {item.maxShieldBonus}");
         }
 

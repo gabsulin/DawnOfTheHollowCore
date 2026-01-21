@@ -283,8 +283,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  core: {fileID: 0}
-  coreObject: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 705921775409918681}
@@ -293,6 +291,8 @@ MonoBehaviour:
   attackCooldown: 1
   damage: 1
   playerAggroRange: 4
+  core: {fileID: 0}
+  coreObject: {fileID: 0}
   currentState: 0
 --- !u!114 &8538503913594190782
 MonoBehaviour:
@@ -306,12 +306,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a15badaf564f1429d79952e2482adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   playerHp: {fileID: 0}
+  coreHp: {fileID: 0}
   animator: {fileID: 0}
   grid: {fileID: 0}
-  moveSpeed: 14
-  maxDistance: 0.75
+  moveSpeed: 8
+  attackRange: 2
+  pathUpdateInterval: 0.5
+  targetMovementThreshold: 1.5
+  maxPathfindingIterations: 500
+  attackCooldownDuration: 1.5
 --- !u!114 &3922064657865030142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,7 +330,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   currentHealth: 0
-  coinPrefab: {fileID: 179157823112342523, guid: 5c9742279d057ca46bbd5697c76645f9, type: 3}
 --- !u!114 &-416463071141442028
 MonoBehaviour:
   m_ObjectHideFlags: 0

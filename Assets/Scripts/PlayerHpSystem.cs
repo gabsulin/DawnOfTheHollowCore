@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +7,13 @@ public class PlayerHpSystem : MonoBehaviour
 {
     PlayerController playerController;
 
-    /*[SerializeField] Image hpBar;
+    [SerializeField] Image hpBar;
     [SerializeField] Image shieldsBar;
     [SerializeField] TMP_Text hpTMP;
     [SerializeField] TMP_Text shieldsTMP;
-    [SerializeField] TMP_Text damageNumber;
+    //[SerializeField] TMP_Text damageNumber;
     GameObject deathScreen;
-    Camera cam;*/
+    Camera cam;
 
     /*[HideInInspector]*/ public float currentHp;
     /*[HideInInspector]*/ public float currentShields;
@@ -40,30 +39,8 @@ public class PlayerHpSystem : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<PlayerController>();
+        UpdateUI();
     }
-
-    /*public void AssignUIElements()
-    {
-        cam = GameObject.Find("DeathCamera").GetComponent<Camera>();
-        cam.gameObject.SetActive(false);
-        GameObject canvas = GameObject.Find("Canvas");
-
-        if (canvas != null)
-        {
-            hpBar = canvas.transform.Find("HealthBar/Health").GetComponent<Image>();
-            hpTMP = canvas.transform.Find("HealthBar/HpAmount").GetComponent<TMP_Text>();
-            shieldsBar = canvas.transform.Find("Shieldbar/Shields").GetComponent<Image>();
-            shieldsTMP = canvas.transform.Find("Shieldbar/ShieldsAmount").GetComponent<TMP_Text>();
-            deathScreen = canvas.transform.Find("DeathScreen").gameObject;
-            deathScreen.SetActive(false);
-            Debug.Log("nasel se canvas a priradily se gameobjecty");
-        }
-        else
-        {
-            Debug.LogError("Canvas not found! Make sure your Canvas is named correctly.");
-        }
-    }
-
     public void UpdateUI()
     {
         if (hpBar != null && shieldsBar != null && hpTMP != null && shieldsTMP != null)
@@ -78,7 +55,7 @@ public class PlayerHpSystem : MonoBehaviour
         {
             Debug.LogError("UI Elements are not assigned in PlayerHpSystem!");
         }
-    }*/
+    }
 
     private void Update()
     {
@@ -92,50 +69,32 @@ public class PlayerHpSystem : MonoBehaviour
 
     public void TakeHit(int damage)
     {
+        if (isImmune || isDead) return;
+
         (AudioManager.Instance)?.PlaySFX("Hit");
         wasntHit = 0;
-        if (!isImmune)
+
+        if (currentShields > 0)
         {
-            if (currentShields > 0)
-            {
-                int overflowDmg = damage - (int)currentShields;
-
-                currentShields -= damage;
-
-                if (currentShields <= 0) currentShields = 0;
-
-                //shieldsBar.fillAmount = currentShields / maxShields;
-                //shieldsTMP.text = $"{currentShields.ToString()}/{maxShields.ToString()}";
-
-                if (overflowDmg > 0)
-                {
-                    currentHp -= overflowDmg;
-
-                    //hpBar.fillAmount = currentHp / maxHp;
-                    //hpTMP.text = $"{currentHp.ToString()}/{maxHp.ToString()}";
-
-                    if (currentHp <= 0)
-                    {
-                        currentHp = 0;
-                        //hpTMP.text = $"{currentHp.ToString()}/{maxHp.ToString()}";
-                        Die();
-                    }
-                }
-            }
-            else
-            {
-                currentHp -= damage;
-                //hpBar.fillAmount = currentHp / maxHp;
-                //hpTMP.text = $"{currentHp.ToString()}/{maxHp.ToString()}";
-                if (currentHp <= 0)
-                {
-                    currentHp = 0;
-                    //hpTMP.text = $"{currentHp.ToString()}/{maxHp.ToString()}";
-                    Die();
-                }
-            }
+            float shieldDamage = Mathf.Min(currentShields, damage);
+            currentShields -= shieldDamage;
+            damage -= (int)shieldDamage;
         }
+
+        if (damage > 0)
+        {
+            currentHp -= damage;
+        }
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Die();
+        }
+
+        UpdateUI();
     }
+
 
     private void Die()
     {
@@ -162,8 +121,7 @@ public class PlayerHpSystem : MonoBehaviour
         while (currentShields < maxShields && !isDead && wasntHit >= startShieldRegenTime)
         {
             currentShields += 1;
-            //shieldsBar.fillAmount = currentShields / maxShields;
-            //shieldsTMP.text = $"{currentShields.ToString()}/{maxShields.ToString()}";
+            UpdateUI();
 
             yield return new WaitForSeconds(shieldRegenTime);
         }
@@ -180,12 +138,14 @@ public class PlayerHpSystem : MonoBehaviour
     public void ApplyMaxHealthUpgrade(float amount)
     {
         maxHp += amount;
-        currentHp += amount;   // heal a bit when upgraded
+        currentHp += amount;
+        UpdateUI();
     }
     public void ApplyMaxShieldUpgrade(float amount)
     {
         maxShields += amount;
         currentShields += amount;
+        UpdateUI();
     }
 
 }

@@ -5,6 +5,7 @@ public class EnemyPathfinder : MonoBehaviour
 {
     [Header("References")]
     public PlayerHpSystem playerHp;
+    public CoreHpSystem coreHp;
     public Animator animator;
     public GridManager grid;
 
@@ -44,6 +45,7 @@ public class EnemyPathfinder : MonoBehaviour
     private void Start()
     {
         playerHp = FindFirstObjectByType<PlayerHpSystem>();
+        coreHp = FindFirstObjectByType<CoreHpSystem>();
         animator = GetComponent<Animator>();
         grid = FindFirstObjectByType<GridManager>();
         rb = GetComponent<Rigidbody2D>();
@@ -104,7 +106,7 @@ public class EnemyPathfinder : MonoBehaviour
             animator.SetBool(AnimIsMoving, false);
             animator.SetBool(AnimIsIdle, true);
 
-            if (distanceToTarget <= attackRange && attackCooldown <= 0f)
+            if (distanceToTarget <= attackRange && attackCooldown <= 0f && !playerHp.isDead && !coreHp.isDead)
             {
                 AttackTarget();
             }

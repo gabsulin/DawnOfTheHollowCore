@@ -13,6 +13,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
+    private PlayerHpSystem playerHp;
     public Transform aimTarget;
     public GridManager grid;
     public Animator animator;
@@ -37,6 +38,7 @@ public abstract class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         player = FindFirstObjectByType<PlayerController>().transform;
+        playerHp = FindFirstObjectByType<PlayerHpSystem>();
 
         var coreFound = FindFirstObjectByType<Core>();
         if (coreFound != null)
@@ -53,8 +55,11 @@ public abstract class Enemy : MonoBehaviour
 
     public Transform GetCurrentTarget()
     {
-        if (core == null || coreObject == null || coreObject.isDead)
+        if (core == null || coreObject == null)
             return player;
+
+        if(playerHp.isDead)
+            return core;
 
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
