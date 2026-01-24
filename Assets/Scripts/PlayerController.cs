@@ -160,12 +160,4 @@ public class PlayerController : MonoBehaviour
     {
         return input;
     }
-
-    public void ApplyKnockback(Vector2 force)
-    {
-        if (rb != null)
-        {
-            rb.AddForce(force, ForceMode2D.Impulse);
-        }
-    }
 }

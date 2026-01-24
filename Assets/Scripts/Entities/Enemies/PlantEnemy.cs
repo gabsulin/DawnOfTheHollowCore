@@ -7,8 +7,6 @@ public class PlantEnemy : Enemy
     [SerializeField] Transform spawnPoint;
     [SerializeField] float[] angles;
 
-    PlayerHpSystem playerHp;
-
     protected override void Start()
     {
         base.Start();

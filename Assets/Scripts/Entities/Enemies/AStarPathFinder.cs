@@ -31,14 +31,13 @@ public class AStarPathFinder : MonoBehaviour
         }
 
         var openSet = new PriorityQueue<Vector2Int>();
+        var closedSet = new HashSet<Vector2Int>();
         var cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
         var gScore = new Dictionary<Vector2Int, float>();
-        var fScore = new Dictionary<Vector2Int, float>();
 
         openSet.Enqueue(start, 0);
         gScore[start] = 0;
-        fScore[start] = Heuristic(start, goal);
 
         int iterations = 0;
         while (openSet.Count > 0 && iterations < maxIterations)
@@ -49,11 +48,16 @@ public class AStarPathFinder : MonoBehaviour
             if (current == goal)
                 return ReconstructPath(cameFrom, current);
 
+            closedSet.Add(current);
+
             foreach (Vector2Int neighbour in GetNeighbours(current, grid))
             {
+                if (closedSet.Contains(neighbour))
+                    continue;
+
                 float moveCost = 1.0f;
                 if (Mathf.Abs(neighbour.x - current.x) == 1 && Mathf.Abs(neighbour.y - current.y) == 1)
-                    moveCost = 1.4142f;
+                    moveCost = 1.414f;
 
                 float tentativeScore = gScore[current] + moveCost;
 
@@ -61,10 +65,12 @@ public class AStarPathFinder : MonoBehaviour
                 {
                     cameFrom[neighbour] = current;
                     gScore[neighbour] = tentativeScore;
-                    fScore[neighbour] = tentativeScore + Heuristic(neighbour, goal);
+                    float fScore = tentativeScore + Heuristic(neighbour, goal);
 
                     if (!openSet.Contains(neighbour))
-                        openSet.Enqueue(neighbour, fScore[neighbour]);
+                        openSet.Enqueue(neighbour, fScore);
+                    else
+                        openSet.UpdatePriority(neighbour, fScore);
                 }
             }
         }
@@ -73,32 +79,35 @@ public class AStarPathFinder : MonoBehaviour
 
     static float Heuristic(Vector2Int a, Vector2Int b)
     {
-        return Vector2Int.Distance(a, b);
+        int dx = Mathf.Abs(a.x - b.x);
+        int dy = Mathf.Abs(a.y - b.y);
+
+        return (dx + dy) + (1.414f - 2) * Mathf.Min(dx, dy);
     }
+    private static readonly Vector2Int[] Directions = new Vector2Int[]
+{
+    Vector2Int.down, Vector2Int.up,
+    Vector2Int.left, Vector2Int.right,
+    new Vector2Int(1,1), new Vector2Int(-1,1),
+    new Vector2Int(1,-1), new Vector2Int(-1,-1)
+};
+
     static List<Vector2Int> GetNeighbours(Vector2Int pos, GridManager grid)
     {
-        List<Vector2Int> directions = new List<Vector2Int>
-        {
-            Vector2Int.down, Vector2Int.up,
-            Vector2Int.left, Vector2Int.right,
-            new Vector2Int(1,1), new Vector2Int(-1,1),
-            new Vector2Int(1,-1), new Vector2Int(-1,-1)
-        };
+        List<Vector2Int> neighbours = new List<Vector2Int>(8);
 
-        List<Vector2Int> neighbours = new List<Vector2Int>();
-
-        foreach (Vector2Int dir in directions)
+        foreach (Vector2Int dir in Directions)
         {
             Vector2Int next = pos + dir;
+
             if (Mathf.Abs(dir.x) == 1 && Mathf.Abs(dir.y) == 1)
             {
                 Vector2Int side1 = pos + new Vector2Int(dir.x, 0);
                 Vector2Int side2 = pos + new Vector2Int(0, dir.y);
                 if (!grid.IsWalkable(side1) || !grid.IsWalkable(side2))
                     continue;
-
-                
             }
+
             if (grid.IsWalkable(next))
                 neighbours.Add(next);
         }

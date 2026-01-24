@@ -13,7 +13,7 @@ public abstract class Enemy : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
-    private PlayerHpSystem playerHp;
+    public PlayerHpSystem playerHp;
     public Transform aimTarget;
     public GridManager grid;
     public Animator animator;
@@ -91,15 +91,6 @@ public abstract class Enemy : MonoBehaviour
     }
 
     public abstract void OnCollisionEnter2D(Collision2D collision);
-
-    public virtual void ApplyKnockback(Vector2 sourcePosition, float force)
-    {
-        if (rb != null)
-        {
-            Vector2 dir = ((Vector2)transform.position - sourcePosition).normalized;
-            rb.AddForce(dir * force, ForceMode2D.Impulse);
-        }
-    }
 
     protected virtual void OnDrawGizmos()
     {
