@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6353557678412777378}
   - component: {fileID: 6317160302783649383}
   - component: {fileID: 7417585785727993683}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Chanterelles1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

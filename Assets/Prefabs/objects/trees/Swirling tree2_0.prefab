@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4229146785949838951}
   - component: {fileID: 3253954457530453572}
   - component: {fileID: 8754927730153127036}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Swirling tree2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

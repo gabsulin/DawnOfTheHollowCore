@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5876527815249209919}
   - component: {fileID: 817695243288221321}
   - component: {fileID: 8322409539449032547}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_idol_deer_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

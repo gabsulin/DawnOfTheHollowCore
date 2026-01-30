@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6756614131012149901}
   - component: {fileID: 2716552122493580006}
   - component: {fileID: 5525123020714554447}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tree_idol_dragon_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

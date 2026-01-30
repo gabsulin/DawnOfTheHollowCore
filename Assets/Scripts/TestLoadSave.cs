@@ -8,9 +8,9 @@ public class TestLoadSave : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
-            SaveSystemJSON.SaveInventory(inv);
+            SaveSystemJSONExtended.SaveGame(inv);
 
         if (Input.GetKeyDown(KeyCode.F9))
-            SaveSystemJSON.LoadInventory(inv, out var recipes);
+            SaveSystemJSONExtended.LoadGame(inv);
     }
 }

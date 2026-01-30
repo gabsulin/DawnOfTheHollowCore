@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5133320676111346456}
   - component: {fileID: 838121402856167612}
   - component: {fileID: 92552674918431536}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Curved_tree1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

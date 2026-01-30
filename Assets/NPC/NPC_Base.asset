@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022b5572ae95c9c4680f902d062e211e, type: 3}
+  m_Name: NPC_Base
+  m_EditorClassIdentifier: 
+  npcName: Bagisant Offondront
+  dialogueLines:
+  - 'It''s still warm.
+
+    That means you''re alive too.'
+  - Light returns, but something's always missing. Always.
+  - "The Core doesn\u2019t speak with words.\nIt answers with continuance."
+  - "As long as it stands, so do you.\nDon\u2019t forget that."
+  recipesToUnlock:
+  - {fileID: 11400000, guid: e8a098de0aff9454aa61f728e501f75b, type: 2}
+  ambientDialogue:
+  - "I do not sleep. I only\u2026 root"
+  - "Don\u2019t look at the dark too long. It looks back."
+  - Rest while the light holds. It burns fuel to keep you warm.
+  - The crystals on my back are humming. The Core is happy.

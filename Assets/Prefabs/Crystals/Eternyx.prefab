@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3802526036488884800}
   - component: {fileID: 224171302538265650}
   - component: {fileID: -9131653096436574608}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Eternyx
   m_TagString: Untagged
   m_Icon: {fileID: 0}

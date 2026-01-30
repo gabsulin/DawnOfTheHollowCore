@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3081501857011493739}
   - component: {fileID: 3582713025109941321}
   - component: {fileID: 2211223154529815603}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Blue-green_balls_tree1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -15,12 +15,12 @@ TagManager:
   - Player
   - Collision
   - Walking
-  - 
+  - Objects
   - IgnoreDamage
   - EnemyAttackLayer
   - Minimap
   - MinimapPlayer
-  - 
+  - Boss
   - 
   - 
   - 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5323165428634044085}
   - component: {fileID: -2388408173444184321}
   - component: {fileID: -9200484649131422952}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Assets_texture_shadow_dark_source_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}

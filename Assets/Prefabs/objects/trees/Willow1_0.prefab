@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3887283298768514901}
   - component: {fileID: 5769393182908949465}
   - component: {fileID: 7111467714745943153}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Willow1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

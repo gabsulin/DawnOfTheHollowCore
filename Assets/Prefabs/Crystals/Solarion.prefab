@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2403795383466182604}
   - component: {fileID: 2652864974667313107}
   - component: {fileID: -7929190188485707542}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Solarion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

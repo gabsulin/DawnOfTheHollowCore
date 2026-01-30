@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2677734045389984800}
   - component: {fileID: 115599784940563790}
   - component: {fileID: 4178453547479440343}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Luminous_tree1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

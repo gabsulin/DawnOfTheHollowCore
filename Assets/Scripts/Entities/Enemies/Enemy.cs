@@ -53,7 +53,7 @@ public abstract class Enemy : MonoBehaviour
             attackHitbox.enabled = false;
     }
 
-    public Transform GetCurrentTarget()
+    public virtual Transform GetCurrentTarget()
     {
         if (core == null || coreObject == null)
             return player;

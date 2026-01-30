@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2080865595654749923}
   - component: {fileID: 242515361154661088}
   - component: {fileID: -1879240605301873095}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cave_objects_source_84
   m_TagString: Untagged
   m_Icon: {fileID: 0}

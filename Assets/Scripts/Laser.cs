@@ -116,6 +116,8 @@ public class Laser : MonoBehaviour
 
             if (hit.collider.TryGetComponent<EnemyHealth>(out EnemyHealth enemy))
                 enemy.TakeDamage(laserDamage);
+            if (hit.collider.TryGetComponent<BossHpSystem>(out BossHpSystem boss))
+                boss.TakeHit(laserDamage);
         }
         else
         {

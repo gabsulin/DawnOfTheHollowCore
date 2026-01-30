@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4575466885002826627}
   - component: {fileID: 11877693649895919}
   - component: {fileID: 5435108759561294971}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: White-red_mushroom2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8878456908583091185}
   - component: {fileID: 7952597497558267560}
   - component: {fileID: 6668586275762950449}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Living gazebo1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

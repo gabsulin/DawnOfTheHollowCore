@@ -1,30 +1,30 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
 
 public class SeekerBoss : Enemy
 {
     [Header("Seeker Boss Settings")]
-    [SerializeField] private float chaseSpeed = 3f;
-    [SerializeField] private float attackRange = 1.5f;
+    [SerializeField] private float chaseSpeed = 4.5f;
+    [SerializeField] private float attackRange = 2f;
 
     [Header("Pathfinding")]
-    [SerializeField] private float pathUpdateInterval = 0.3f;
-    [SerializeField] private float targetMovementThreshold = 1f;
+    [SerializeField] private float pathUpdateInterval = 0.2f;
+    [SerializeField] private float targetMovementThreshold = 0.8f;
     [SerializeField] private int maxPathfindingIterations = 500;
 
     [Header("Boss Stats")]
-    [SerializeField] private int maxHealth = 100;
     [SerializeField] private float spawnDuration = 1.5f;
     [SerializeField] private float deathDuration = 2f;
 
     [Header("Attack Settings")]
     [SerializeField] private Transform centerOfAttack;
-    [SerializeField] private float attackRadius = 5f;
+    [SerializeField] private float attackRadius = 3f;
+
+    [Header("Boss HP")]
+    [SerializeField] private BossHpSystem bossHpSystem;
 
     private SeekerState currentBossState;
-    private int currentHealth;
 
     private List<Vector2Int> currentPath = new List<Vector2Int>();
     private int pathIndex = 0;
@@ -60,17 +60,29 @@ public class SeekerBoss : Enemy
         base.Start();
 
         flip = GetComponent<EnemyFlip>();
-        currentHealth = maxHealth;
 
         pathTimer = Random.Range(0f, pathUpdateInterval * 0.5f);
         lastGridPos = grid != null ? grid.WorldToGrid(transform.position) : Vector2Int.zero;
 
+        if (centerOfAttack == null)
+            centerOfAttack = transform;
+
+        if (bossHpSystem == null)
+            bossHpSystem = FindFirstObjectByType<BossHpSystem>();
+
         StartCoroutine(SpawnSequence());
     }
-
+    public override Transform GetCurrentTarget()
+    {
+        return player;
+    }
     void Update()
     {
         if (currentBossState == SeekerState.Spawn || currentBossState == SeekerState.Death)
+            return;
+
+        // Check if boss is dead
+        if (bossHpSystem != null && bossHpSystem.isDead)
             return;
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName(AttackStateName))
@@ -113,7 +125,7 @@ public class SeekerBoss : Enemy
             }
         }
     }
-    
+
     bool ShouldRecalculatePath(Transform currentTarget)
     {
         if (!hasCalculatedFirstPath)
@@ -225,20 +237,8 @@ public class SeekerBoss : Enemy
         ChangeState(SeekerState.Idle);
     }
 
-    public void TakeDamage(int damageAmount)
-    {
-        if (currentBossState == SeekerState.Death || currentBossState == SeekerState.Spawn)
-            return;
-
-        currentHealth -= damageAmount;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
+    // Called by BossHpSystem when health reaches 0
+    public void OnDeath()
     {
         ChangeState(SeekerState.Death);
 
@@ -249,7 +249,6 @@ public class SeekerBoss : Enemy
             animator.SetBool(AnimIsIdle, false);
         }
 
-        // Disable collision
         if (GetComponent<Collider2D>() != null)
             GetComponent<Collider2D>().enabled = false;
 
@@ -286,39 +285,50 @@ public class SeekerBoss : Enemy
                     break;
             }
         }
+    }
 
-        Debug.Log($"Seeker Boss: {newState}");
+    public string GetCurrentBossState()
+    {
+        return currentBossState.ToString();
     }
 
     public override void Attack()
     {
-        currentBossState = SeekerState.Attack;
+        // Called by animation event
         Collider2D[] colliders = Physics2D.OverlapCircleAll(centerOfAttack.position, attackRadius);
 
         foreach (Collider2D collider in colliders)
         {
             if (collider.CompareTag("Player"))
             {
-
                 var playerHp = collider.GetComponent<PlayerHpSystem>();
-                if (playerHp != null) playerHp.TakeHit(damage);
+                if (playerHp != null)
+                    playerHp.TakeHit(damage);
             }
+
             if (collider.gameObject.GetComponent<Core>() != null)
             {
                 var hp = collider.gameObject.GetComponent<CoreHpSystem>();
-                if (hp != null) hp.TakeHit(damage);
-                attackCooldown = 1.5f;
+                if (hp != null)
+                    hp.TakeHit(damage);
             }
         }
     }
-
+    
     public override void OnCollisionEnter2D(Collision2D collision) { }
 
     void OnDrawGizmos()
     {
-        // Draw attack range
+        // Draw attack range (when boss starts attack)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        // Draw attack radius (actual damage area)
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
+        if (centerOfAttack != null)
+            Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
+        else
+            Gizmos.DrawWireSphere(transform.position, attackRadius);
 
         // Draw current path
         if (currentPath != null && currentPath.Count > 0 && grid != null)

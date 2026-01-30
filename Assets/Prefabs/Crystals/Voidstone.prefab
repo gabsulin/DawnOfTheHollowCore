@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 869427107696474255}
   - component: {fileID: 933455416940558217}
   - component: {fileID: -3085691160031659049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Voidstone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

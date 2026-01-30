@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022b5572ae95c9c4680f902d062e211e, type: 3}
+  m_Name: NPC_Area1
+  m_EditorClassIdentifier: 
+  npcName: "Kundrl\xE1r Fondr\u0161uk"
+  dialogueLines:
+  - "These materials didn\u2019t change on their own.\nThey reacted."
+  - 'The Core reshaped everything around it.
+
+    Not violently.
+
+    Necessarily.'
+  - "You\u2019re using what it left behind.\nThat\u2019s not an accident."
+  recipesToUnlock:
+  - {fileID: 11400000, guid: 4893b07bab2bd0d4f9a5d5fc5abf4b80, type: 2}
+  ambientDialogue:
+  - Fascinating... the molecular structure is vibrating
+  - "Don\u2019t touch that! It hasn't stabilized yet."
+  - "I used to think this was magic. Now I know it\u2019s just\u2026 heavy math."
+  - The ore remembers what it used to be. I can hear it.

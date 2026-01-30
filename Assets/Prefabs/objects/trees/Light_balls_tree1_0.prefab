@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 544552707158235254}
   - component: {fileID: 7517613383508294447}
   - component: {fileID: 2367128130727424379}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light_balls_tree1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
