@@ -26,13 +26,17 @@ public class InventoryController : MonoBehaviour
     {
         open = !open;
         if (inventoryUI) inventoryUI.SetActive(open);
-        if (pauseOnOpen) Time.timeScale = open ? 0f : 1f;
+
+        if (pauseOnOpen)
+            Time.timeScale = open ? 0f : 1f;
     }
 
     public void Close()
     {
         open = false;
         if (inventoryUI) inventoryUI.SetActive(false);
-        if (pauseOnOpen) Time.timeScale = 1f;
+
+        if (pauseOnOpen)
+            Time.timeScale = 1f;
     }
 }

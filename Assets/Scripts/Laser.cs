@@ -41,14 +41,20 @@ public class Laser : MonoBehaviour
         inventoryController = FindFirstObjectByType<InventoryController>();
         mpb = new MaterialPropertyBlock();
 
-        // Important fix: triggers should never block raycasts
         Physics2D.queriesHitTriggers = false;
     }
 
     void Update()
     {
-        if (inventoryController != null && inventoryController.open)
+        if (IsPlayerBlocked())
+        {
+            if (mode != LaserMode.Off)
+            {
+                DisableLaser();
+                mode = LaserMode.Off;
+            }
             return;
+        }
 
         if (Input.GetButton("Fire1") && Input.GetButton("Fire2"))
         {
@@ -88,6 +94,16 @@ public class Laser : MonoBehaviour
         }
 
         RotateToMouse();
+    }
+    private bool IsPlayerBlocked()
+    {
+        if (inventoryController != null && inventoryController.open)
+            return true;
+
+        if (DialogueUI.Instance != null && DialogueUI.Instance.IsShowingDialogue())
+            return true;
+
+        return false;
     }
 
     // ============================================================

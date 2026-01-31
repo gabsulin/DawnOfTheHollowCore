@@ -9,6 +9,8 @@ public class AbilityHolder : MonoBehaviour
     [SerializeField] Image abilityBar;
 
     Rigidbody2D rb;
+
+    private InventoryController inventoryController;
     enum AbilityState
     {
         ready,
@@ -25,6 +27,7 @@ public class AbilityHolder : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        inventoryController = FindFirstObjectByType<InventoryController>();
     }
 
     public void AssignBar()
@@ -42,7 +45,7 @@ public class AbilityHolder : MonoBehaviour
         switch (state)
         {
             case AbilityState.ready:
-                if (Input.GetKeyDown(key))
+                if (Input.GetKeyDown(key) && !IsPlayerBlocked())
                 {
                     ability.Activate(gameObject);
                     state = AbilityState.active;
@@ -83,7 +86,20 @@ public class AbilityHolder : MonoBehaviour
                 break;
         }
     }
+    private bool IsPlayerBlocked()
+    {
+        if (inventoryController != null && inventoryController.open)
+        {
+            return true;
+        }
 
+        if (DialogueUI.Instance != null && DialogueUI.Instance.IsShowingDialogue())
+        {
+            return true;
+        }
+
+        return false;
+    }
     private void ResetAbility()
     {
         if (ability is DashAbility)

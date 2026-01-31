@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -30,12 +30,14 @@ public class DialogueUI : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
         Instance = this;
+
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
+
         if (nextButton != null)
             nextButton.onClick.AddListener(AdvanceDialogue);
     }
@@ -44,6 +46,7 @@ public class DialogueUI : MonoBehaviour
     {
         if (!isShowingDialogue) return;
 
+        // Handle ambient dialogue timer
         if (isAmbientDialogue)
         {
             ambientTimer -= Time.deltaTime;
@@ -53,16 +56,30 @@ public class DialogueUI : MonoBehaviour
             }
             return;
         }
-        if (Input.GetKeyDown(advanceKey) || Input.GetKeyDown(KeyCode.Space))
+
+        // Advance dialogue with key press or mouse click
+        if (Input.GetKeyDown(advanceKey) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
         {
             AdvanceDialogue();
         }
     }
+
+    /// <summary>
+    /// PUBLIC METHOD: Check if dialogue is currently showing (for Laser script)
+    /// Returns true for main dialogue, false for ambient dialogue
+    /// </summary>
+    public bool IsShowingDialogue()
+    {
+        // Only return true for main dialogue (not ambient)
+        // Ambient dialogue is just flavor text and shouldn't block actions
+        return isShowingDialogue && !isAmbientDialogue;
+    }
+
     public void StartDialogue(NPCData npcData, System.Action onComplete)
     {
         if (npcData == null || npcData.dialogueLines == null || npcData.dialogueLines.Count == 0)
         {
-            Debug.LogWarning("NPCData is null or has no dialogue lines.");
+            Debug.LogWarning("[DialogueUI] No dialogue lines available");
             return;
         }
 
@@ -73,12 +90,14 @@ public class DialogueUI : MonoBehaviour
         isShowingDialogue = true;
         isAmbientDialogue = false;
 
+        // Disable player movement during dialogue
         if (PlayerController.Instance != null)
             PlayerController.Instance.SetMovementEnabled(false);
 
         ShowDialoguePanel();
         DisplayCurrentLine();
     }
+
     public void ShowAmbientDialogue(string npcName, string text)
     {
         currentNPC = null;
@@ -90,8 +109,10 @@ public class DialogueUI : MonoBehaviour
 
         if (npcNameText != null)
             npcNameText.text = npcName;
+
         if (dialogueText != null)
             dialogueText.text = text;
+
         if (nextArrow != null)
             nextArrow.SetActive(false);
     }
@@ -101,6 +122,7 @@ public class DialogueUI : MonoBehaviour
         if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
     }
+
     private void DisplayCurrentLine()
     {
         if (currentLineIndex >= currentDialogueLines.Count)
@@ -113,6 +135,7 @@ public class DialogueUI : MonoBehaviour
 
         if (npcNameText != null)
             npcNameText.text = currentNPC.npcName;
+
         if (dialogueText != null)
             dialogueText.text = line;
 
@@ -120,12 +143,15 @@ public class DialogueUI : MonoBehaviour
         if (nextArrow != null)
             nextArrow.SetActive(hasMoreLines);
     }
+
     private void AdvanceDialogue()
     {
-        if(isAmbientDialogue) return;
-        if(!isShowingDialogue) return;
+        if (isAmbientDialogue) return;
+        if (!isShowingDialogue) return;
+
         currentLineIndex++;
-        if(currentLineIndex >= currentDialogueLines.Count)
+
+        if (currentLineIndex >= currentDialogueLines.Count)
         {
             CompleteDialogue();
         }
@@ -134,26 +160,34 @@ public class DialogueUI : MonoBehaviour
             DisplayCurrentLine();
         }
     }
+
     private void CompleteDialogue()
     {
         HideDialogue();
-        if(PlayerController.Instance != null)
+
+        // Re-enable player movement
+        if (PlayerController.Instance != null)
             PlayerController.Instance.SetMovementEnabled(true);
 
+        // Trigger completion callback (unlocks recipes)
         onDialogueComplete?.Invoke();
 
+        // Clear state
         currentNPC = null;
         currentDialogueLines = null;
         onDialogueComplete = null;
     }
+
     private void HideDialogue()
     {
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
+
         isShowingDialogue = false;
         isAmbientDialogue = false;
         currentLineIndex = 0;
     }
+
     public void ForceClose()
     {
         HideDialogue();

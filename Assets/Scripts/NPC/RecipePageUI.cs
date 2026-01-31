@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class RecipePageUI : MonoBehaviour
 {
@@ -22,13 +22,16 @@ public class RecipePageUI : MonoBehaviour
     {
         if (showRecipesButton != null)
             showRecipesButton.onClick.AddListener(ShowRecipePage);
+
         if (showInventoryButton != null)
             showInventoryButton.onClick.AddListener(ShowInventoryPage);
+
         if (RecipeManager.Instance != null)
             RecipeManager.Instance.OnRecipesChanged += RefreshRecipeDisplay;
 
         ShowInventoryPage();
     }
+
     private void OnDestroy()
     {
         if (RecipeManager.Instance != null)
@@ -39,17 +42,22 @@ public class RecipePageUI : MonoBehaviour
     {
         if (inventoryPage != null)
             inventoryPage.SetActive(false);
+
         if (recipePage != null)
             recipePage.SetActive(true);
+
         RefreshRecipeDisplay();
     }
+
     public void ShowInventoryPage()
     {
         if (recipePage != null)
             recipePage.SetActive(false);
+
         if (inventoryPage != null)
             inventoryPage.SetActive(true);
     }
+
     private void RefreshRecipeDisplay()
     {
         foreach (var card in spawnedCards)
@@ -64,45 +72,83 @@ public class RecipePageUI : MonoBehaviour
             ShowNoRecipesMessage(true);
             return;
         }
+
         List<RecipeSO> unlockedRecipes = RecipeManager.Instance.GetUnlockedRecipes();
+
         if (unlockedRecipes.Count == 0)
         {
             ShowNoRecipesMessage(true);
             return;
         }
+
         ShowNoRecipesMessage(false);
 
         foreach (var recipe in unlockedRecipes)
         {
             if (recipe == null) continue;
+
             GameObject card = Instantiate(recipeCardPrefab, recipeListParent.transform);
             spawnedCards.Add(card);
+
             SetupRecipeCard(card, recipe);
         }
     }
+
     private void SetupRecipeCard(GameObject card, RecipeSO recipe)
     {
-        var outputImage = card.transform.Find("OutputImage")?.GetComponent<Image>();
-        var outputText = card.transform.Find("OutputText")?.GetComponent<TMP_Text>();
-        var ingredientsParent = card.transform.Find("IngredientsPanel");
-        var ingredientSlotPrefab = card.transform.Find("IngredientSlotPrefab")?.gameObject;
+        Image outputImage = null;
+        TMP_Text outputText = null;
+        Transform ingredientsParent = null;
+        GameObject ingredientSlotPrefab = null;
+
+        var outputImageTransform = card.transform.Find("OutputImage");
+        if (outputImageTransform == null)
+            outputImageTransform = card.transform.Find("OutputSection/OutputImage");
+        if (outputImageTransform != null)
+            outputImage = outputImageTransform.GetComponent<Image>();
+
+        var outputTextTransform = card.transform.Find("OutputText");
+        if (outputTextTransform == null)
+            outputTextTransform = card.transform.Find("OutputSection/OutputText");
+        if (outputTextTransform != null)
+            outputText = outputTextTransform.GetComponent<TMP_Text>();
+
+        ingredientsParent = card.transform.Find("IngredientsPanel");
+
+        if (ingredientsParent != null)
+        {
+            var slotTransform = ingredientsParent.Find("IngredientSlotPrefab");
+            if (slotTransform != null)
+                ingredientSlotPrefab = slotTransform.gameObject;
+        }
 
         if (outputImage != null && recipe.output != null)
         {
             outputImage.sprite = recipe.output.icon;
             outputImage.enabled = true;
+            outputImage.color = Color.white;
         }
+
         if (outputText != null)
         {
             string outputName = recipe.output != null ? recipe.output.itemName : recipe.recipeName;
-            outputText.text = $"{outputName} x {recipe.outputAmount}";
+            outputText.text = $"{outputName} x{recipe.outputAmount}";
         }
+
+        Debug.Log($"[RecipeCard] Setting up: {recipe.recipeName}");
+        Debug.Log($"  - Output Image found: {outputImage != null}");
+        Debug.Log($"  - Output Text found: {outputText != null}");
+        Debug.Log($"  - Ingredients Parent found: {ingredientsParent != null}");
+        Debug.Log($"  - Ingredient Slot Prefab found: {ingredientSlotPrefab != null}");
+
         if (ingredientsParent != null && ingredientSlotPrefab != null)
         {
             ingredientSlotPrefab.SetActive(false);
+
             foreach (var ingredient in recipe.ingredients)
             {
                 if (ingredient == null) continue;
+
                 GameObject slot = Instantiate(ingredientSlotPrefab, ingredientsParent);
                 slot.SetActive(true);
 
@@ -113,16 +159,17 @@ public class RecipePageUI : MonoBehaviour
                 {
                     icon.sprite = ingredient.icon;
                     icon.enabled = true;
+                    icon.color = Color.white;
                 }
 
                 if (count != null)
                 {
-                    /*count.text = $"x1 {ingredient.amount}";*/
-                    count.text = $"x1";
+                    count.text = "x1";
                 }
             }
         }
     }
+
     private void ShowNoRecipesMessage(bool show)
     {
         if (noRecipesText != null)
