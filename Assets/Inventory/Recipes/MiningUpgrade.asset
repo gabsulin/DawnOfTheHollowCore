@@ -21,5 +21,5 @@ MonoBehaviour:
   output: {fileID: 11400000, guid: 7c5ebb6fe24534748be50f0b53966e91, type: 2}
   outputAmount: 1
   loreText: 
-  isUnlocked: 1
+  isUnlocked: 0
   craftingTier: 1
