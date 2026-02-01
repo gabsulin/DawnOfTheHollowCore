@@ -12,7 +12,6 @@ public class BossHpSystem : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int maxHealth = 150;
     private int currentHealth;
-    private bool isActive = false;
     public bool isDead = false;
 
     void Start()

@@ -17,25 +17,59 @@ public class DayNightCycle : MonoBehaviour
     public static event Action OnNightStart;
     public static event Action OnDayStart;
 
+    private int bossFightNight = 20;
+    private bool nightIncremented = false;
+    private bool eternalNight = false;
+
     void Update()
     {
         if (!globalLight) return;
 
-        timeOfDay += Time.deltaTime / (dayLengthInMinutes * 60);
-        if (timeOfDay >= 1)
-            timeOfDay = 0;
+        float previousTimeOfDay = timeOfDay;
+
+        if (!eternalNight)
+        {
+            timeOfDay += Time.deltaTime / (dayLengthInMinutes * 60);
+            if (timeOfDay >= 1f)
+                timeOfDay = 0;
+        }
 
         float intensity = Mathf.Lerp(dayIntensity, nightIntensity, Mathf.Sin(timeOfDay * Mathf.PI));
         globalLight.intensity = intensity;
 
         bool currentlyNight = timeOfDay > 0.5f;
+
         if (currentlyNight != isNight)
         {
+
             isNight = currentlyNight;
+
             if (isNight)
-                OnNightStart?.Invoke();
+            {
+                if (!nightIncremented)
+                {
+                    NightCounter.currentNight++;
+                    nightIncremented = true;
+
+                    OnNightStart?.Invoke();
+
+                    if (NightCounter.currentNight >= bossFightNight)
+                    {
+                        eternalNight = true;
+                        Debug.Log("Eternal night has begun!");
+                    }
+                }
+            }
             else
+            {
                 OnDayStart?.Invoke();
+                nightIncremented = false;
+            }
         }
     }
+}
+
+partial class NightCounter
+{
+    public static int currentNight = 0;
 }

@@ -97,14 +97,16 @@ public class EnemyPathfinder : MonoBehaviour
         {
             animator.ResetTrigger(AnimAttack);
             animator.SetBool(AnimIsMoving, true);
-            animator.SetBool(AnimIsIdle, false);
+            if (animator.HasState(0, AnimIsIdle))
+                animator.SetBool(AnimIsIdle, false);
 
             MoveToNextNode();
         }
         else
         {
             animator.SetBool(AnimIsMoving, false);
-            animator.SetBool(AnimIsIdle, true);
+            if(animator.HasState(0, AnimIsIdle))
+                animator.SetBool(AnimIsIdle, true);
 
             if (distanceToTarget <= attackRange && attackCooldown <= 0f && !playerHp.isDead && !coreHp.isDead)
             {
@@ -205,7 +207,8 @@ public class EnemyPathfinder : MonoBehaviour
     {
         animator.SetTrigger(AnimAttack);
         animator.SetBool(AnimIsMoving, false);
-        animator.SetBool(AnimIsIdle, false);
+        if (animator.HasState(0, AnimIsIdle))
+            animator.SetBool(AnimIsIdle, false);
 
         attackCooldown = attackCooldownDuration;
 
