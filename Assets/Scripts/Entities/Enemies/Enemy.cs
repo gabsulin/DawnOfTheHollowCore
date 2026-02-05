@@ -21,7 +21,6 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("Attack Settings")]
     public Collider2D attackHitbox;
-    public float attackCooldown = 1.5f;
     public int damage = 1;
     public float playerAggroRange = 4f;
 

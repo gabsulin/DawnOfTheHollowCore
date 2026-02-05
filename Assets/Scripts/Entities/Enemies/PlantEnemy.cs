@@ -10,7 +10,6 @@ public class PlantEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        attackCooldown = animator.GetFloat("AttackCooldown");
         playerHp = FindFirstObjectByType<PlayerHpSystem>();
 
         if (player != null)
@@ -22,8 +21,6 @@ public class PlantEnemy : Enemy
 
     private void Update()
     {
-        attackCooldown += Time.deltaTime;
-        animator.SetFloat("AttackCooldown", attackCooldown);
     }
 
     public override void Attack()
@@ -68,7 +65,6 @@ public class PlantEnemy : Enemy
                 PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
                 playerHp.TakeHit(damage);
                 currentState = EnemyState.Idle;
-                attackCooldown = 0f;
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                 ExecuteIdleState();
                 DeactivateAttackHitbox();
@@ -78,7 +74,6 @@ public class PlantEnemy : Enemy
             {
                 var hp = collision.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-                attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
         }

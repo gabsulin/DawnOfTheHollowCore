@@ -20,8 +20,7 @@ MonoBehaviour:
   - Light returns, but something's always missing. Always.
   - "The Core doesn\u2019t speak with words.\nIt answers with continuance."
   - "As long as it stands, so do you.\nDon\u2019t forget that."
-  recipesToUnlock:
-  - {fileID: 11400000, guid: e8a098de0aff9454aa61f728e501f75b, type: 2}
+  recipesToUnlock: []
   ambientDialogue:
   - "I do not sleep. I only\u2026 root"
   - "Don\u2019t look at the dark too long. It looks back."

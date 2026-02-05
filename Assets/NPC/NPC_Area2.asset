@@ -17,8 +17,12 @@ MonoBehaviour:
   - We thought guarding it was enough.
   - "Turns out\u2026\nnothing like this survives by being guarded forever."
   - Something always has to step closer.
+  - 'Check out the recipe page in your inventory..
+
+    You might find something
+    new there!'
   recipesToUnlock:
-  - {fileID: 11400000, guid: f0c535d535ee3ad40b718f2509ca7e6e, type: 2}
+  - {fileID: 11400000, guid: 4893b07bab2bd0d4f9a5d5fc5abf4b80, type: 2}
   ambientDialogue:
   - Your shadow is getting longer. Just an observation.
   - The ones before you... they had such hope. It was delicious.

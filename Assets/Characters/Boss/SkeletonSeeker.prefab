@@ -584,14 +584,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   rb: {fileID: 0}
   attackHitbox: {fileID: 0}
-  attackCooldown: 1.5
   damage: 1
   playerAggroRange: 15
   core: {fileID: 0}
   coreObject: {fileID: 0}
   currentState: 0
   chaseSpeed: 10
-  attackRange: 10
+  attackRange: 8
   pathUpdateInterval: 0.3
   targetMovementThreshold: 1
   maxPathfindingIterations: 500
@@ -599,6 +598,7 @@ MonoBehaviour:
   deathDuration: 2
   centerOfAttack: {fileID: 6736245313996134378}
   attackRadius: 10
+  attackCooldown: 1.5
   bossHpSystem: {fileID: 199897329214237875}
 --- !u!114 &199897329214237875
 MonoBehaviour:

@@ -31,13 +31,10 @@ public class VampireEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        attackCooldown = animator.GetFloat("AttackCooldown");
     }
 
     private void Update()
     {
-        attackCooldown += Time.deltaTime;
-        animator.SetFloat("AttackCooldown", attackCooldown);
     }
 
     public override void Attack()
@@ -56,7 +53,6 @@ public class VampireEnemy : Enemy
             {
                 var hp = collider.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-                attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
         }

@@ -10,18 +10,22 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDelay = 0.5f;
 
     [Header("Spawn Limits")]
-    [Tooltip("Maximum number of enemies that can be active at once")]
     public int maxActiveEnemies = 50;
 
     bool isNight = false;
     int nightCount = NightCounter.currentNight;
     List<GameObject> activeEnemies = new();
 
-    Coroutine spawnCoroutine; // Track the coroutine!
+    Coroutine spawnCoroutine;
 
+    [Header("Boss")]
     [SerializeField] GameObject bossPrefab;
     [SerializeField] Transform bossSpawnPoint;
+    [SerializeField] BossPositionIndicator bossIndicator;
+    [SerializeField] GameObject bossIndicatorUI;
+
     public bool bossSpawned = false;
+    private Transform bossTransform;
 
     void OnEnable()
     {
@@ -41,9 +45,7 @@ public class EnemySpawner : MonoBehaviour
         nightCount = NightCounter.currentNight;
 
         if (spawnCoroutine != null)
-        {
             StopCoroutine(spawnCoroutine);
-        }
 
         spawnCoroutine = StartCoroutine(SpawnWave());
         TrySpawnBoss();
@@ -63,6 +65,9 @@ public class EnemySpawner : MonoBehaviour
             if (enemy) Destroy(enemy);
 
         activeEnemies.Clear();
+
+        if (bossIndicator != null)
+            bossIndicator.SetBoss(null);
     }
 
     void TrySpawnBoss()
@@ -71,14 +76,19 @@ public class EnemySpawner : MonoBehaviour
 
         if (NightCounter.currentNight >= 20)
         {
-            Instantiate(bossPrefab, bossSpawnPoint.position, Quaternion.identity);
+            GameObject bossGO = Instantiate(
+                bossPrefab,
+                bossSpawnPoint.position,
+                Quaternion.identity
+            );
+
+            bossTransform = bossGO.transform;
             bossSpawned = true;
-            Debug.Log("Boss spawned for night " + NightCounter.currentNight);
-        }
-        else
-        {
-            Debug.Log("Not night twenty");
-            Debug.Log(NightCounter.currentNight);
+
+            bossIndicatorUI.SetActive(true);
+            bossIndicator.SetBoss(bossTransform);
+
+            Debug.Log("Boss spawned & indicator linked");
         }
     }
 
@@ -86,8 +96,6 @@ public class EnemySpawner : MonoBehaviour
     {
         while (isNight)
         {
-            Debug.Log($"[EnemySpawner] Wave loop iteration - isNight: {isNight}, activeEnemies: {activeEnemies.Count}");
-
             activeEnemies.RemoveAll(enemy => enemy == null);
 
             if (activeEnemies.Count >= maxActiveEnemies)
@@ -106,14 +114,13 @@ public class EnemySpawner : MonoBehaviour
 
             int highestAreaId = GetHighestUnlockedAreaId(unlockedAreas);
             int mult = Mathf.Max(1, highestAreaId);
+
             int totalWaveSize = Mathf.RoundToInt(
                 baseEnemiesPerWave * (1f + nightCount * 0.2f) * mult
             );
 
             int remainingCapacity = maxActiveEnemies - activeEnemies.Count;
             totalWaveSize = Mathf.Min(totalWaveSize, remainingCapacity);
-
-            Debug.Log($"[EnemySpawner] Spawning wave: totalWaveSize={totalWaveSize}, unlocked areas={unlockedAreas.Count}");
 
             int enemiesPerArea = Mathf.Max(1, totalWaveSize / unlockedAreas.Count);
 
@@ -122,9 +129,7 @@ public class EnemySpawner : MonoBehaviour
                 for (int i = 0; i < enemiesPerArea; i++)
                 {
                     if (activeEnemies.Count >= maxActiveEnemies)
-                    {
                         break;
-                    }
 
                     SpawnEnemyInArea(area);
                     yield return new WaitForSeconds(spawnDelay);
@@ -145,7 +150,8 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var area in areaManager.areas)
         {
-            if (area.unlocked && area.enemyGroup != null &&
+            if (area.unlocked &&
+                area.enemyGroup != null &&
                 area.enemyGroup.enemies != null &&
                 area.enemyGroup.enemies.Count > 0)
             {
@@ -160,10 +166,9 @@ public class EnemySpawner : MonoBehaviour
     {
         int highest = 0;
         foreach (var area in unlockedAreas)
-        {
             if (area.id > highest)
                 highest = area.id;
-        }
+
         return highest;
     }
 
@@ -179,7 +184,6 @@ public class EnemySpawner : MonoBehaviour
         ];
 
         Vector2 spawnPos = RandomPositionInArea(area);
-
         GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
         activeEnemies.Add(enemy);
     }

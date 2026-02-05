@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 2D_Laser_Unlit
-  m_Shader: {fileID: -6465566751694194690, guid: 0e810c48474ad72488e0baa03f405bae, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8a91222fc5ee59d46ac7c957dc65631e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -42,6 +42,7 @@ Material:
     - _LaserThickness: 30
     m_Colors:
     - _Color: {r: 3.121187, g: 1.1273353, b: 0.5594577, a: 1}
+    - _LaserSped: {r: -0.2, g: 0, b: 0, a: 0}
     - _LaserSpeed: {r: -1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

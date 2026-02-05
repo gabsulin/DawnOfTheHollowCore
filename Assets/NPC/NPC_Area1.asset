@@ -21,8 +21,12 @@ MonoBehaviour:
 
     Necessarily.'
   - "You\u2019re using what it left behind.\nThat\u2019s not an accident."
+  - 'Check out the recipe page in your inventory..
+
+    You might find something
+    new there!'
   recipesToUnlock:
-  - {fileID: 11400000, guid: 4893b07bab2bd0d4f9a5d5fc5abf4b80, type: 2}
+  - {fileID: 11400000, guid: e8a098de0aff9454aa61f728e501f75b, type: 2}
   ambientDialogue:
   - Fascinating... the molecular structure is vibrating
   - "Don\u2019t touch that! It hasn't stabilized yet."

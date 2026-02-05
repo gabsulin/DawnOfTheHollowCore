@@ -195,12 +195,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerHp: {fileID: 0}
   aimTarget: {fileID: 0}
   grid: {fileID: 0}
   animator: {fileID: 2111082741659877794}
   rb: {fileID: 6190504640743150500}
   attackHitbox: {fileID: 7565838487159999126}
-  attackCooldown: 1.5
   damage: 1
   playerAggroRange: 4
   core: {fileID: 0}
@@ -229,7 +229,7 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 500
-  attackCooldownDuration: 1.5
+  attackCooldownDuration: 0.6
 --- !u!114 &9004516186468703147
 MonoBehaviour:
   m_ObjectHideFlags: 0

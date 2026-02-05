@@ -27,8 +27,6 @@ public class OrcEnemy : Enemy
                 PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
                 playerHp.TakeHit(damage);
 
-                // cooldown for next attack
-                attackCooldown = 1.5f;
 
                 // knockback
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
@@ -40,7 +38,6 @@ public class OrcEnemy : Enemy
             var hp = collision.gameObject.GetComponent<CoreHpSystem>();
             if (hp != null) hp.TakeHit(damage);
 
-            attackCooldown = 1.5f;
             DeactivateAttackHitbox();
         }
 

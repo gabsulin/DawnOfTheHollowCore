@@ -11,13 +11,10 @@ public class SlimeEnemy : Enemy
     protected override void Start()
     {
         base.Start();
-        attackCooldown = animator.GetFloat("AttackCooldown");
     }
 
     private void Update()
     {
-        attackCooldown += Time.deltaTime;
-        animator.SetFloat("AttackCooldown", attackCooldown);
     }
 
     public override void Attack()
@@ -46,7 +43,6 @@ public class SlimeEnemy : Enemy
         }
 
         isJumping = false;
-        attackCooldown = 0f;
     }
 
     public override void OnCollisionEnter2D(Collision2D collision)
@@ -61,13 +57,11 @@ public class SlimeEnemy : Enemy
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                 currentState = EnemyState.Idle;
                 ExecuteIdleState();
-                attackCooldown = 0f;
             }
             if (collision.gameObject.GetComponent<Core>() != null)
             {
                 var hp = collision.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-                attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
         }
@@ -85,13 +79,11 @@ public class SlimeEnemy : Enemy
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                 currentState = EnemyState.Idle;
                 ExecuteIdleState();
-                attackCooldown = 0f;
             }
             if (collision.gameObject.GetComponent<Core>() != null)
             {
                 var hp = collision.gameObject.GetComponent<CoreHpSystem>();
                 if (hp != null) hp.TakeHit(damage);
-                attackCooldown = 1.5f;
                 DeactivateAttackHitbox();
             }
         }

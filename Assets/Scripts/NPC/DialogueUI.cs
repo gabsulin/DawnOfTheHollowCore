@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Collections;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -17,6 +18,13 @@ public class DialogueUI : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private KeyCode advanceKey = KeyCode.Mouse0;
     [SerializeField] private float ambientDialogueDuration = 2f;
+
+    [Header("Typewriter Settings")]
+    [SerializeField] private float typingSpeed = 0.03f;
+
+    private Coroutine typingCoroutine;
+    private bool isTyping = false;
+    private string fullLineText;
 
     private NPCData currentNPC;
     private List<string> currentDialogueLines;
@@ -46,7 +54,6 @@ public class DialogueUI : MonoBehaviour
     {
         if (!isShowingDialogue) return;
 
-        // Handle ambient dialogue timer
         if (isAmbientDialogue)
         {
             ambientTimer -= Time.deltaTime;
@@ -57,21 +64,13 @@ public class DialogueUI : MonoBehaviour
             return;
         }
 
-        // Advance dialogue with key press or mouse click
         if (Input.GetKeyDown(advanceKey) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
         {
             AdvanceDialogue();
         }
     }
-
-    /// <summary>
-    /// PUBLIC METHOD: Check if dialogue is currently showing (for Laser script)
-    /// Returns true for main dialogue, false for ambient dialogue
-    /// </summary>
     public bool IsShowingDialogue()
     {
-        // Only return true for main dialogue (not ambient)
-        // Ambient dialogue is just flavor text and shouldn't block actions
         return isShowingDialogue && !isAmbientDialogue;
     }
 
@@ -90,7 +89,6 @@ public class DialogueUI : MonoBehaviour
         isShowingDialogue = true;
         isAmbientDialogue = false;
 
-        // Disable player movement during dialogue
         if (PlayerController.Instance != null)
             PlayerController.Instance.SetMovementEnabled(false);
 
@@ -110,8 +108,10 @@ public class DialogueUI : MonoBehaviour
         if (npcNameText != null)
             npcNameText.text = npcName;
 
-        if (dialogueText != null)
-            dialogueText.text = text;
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeLine(text));
 
         if (nextArrow != null)
             nextArrow.SetActive(false);
@@ -136,8 +136,11 @@ public class DialogueUI : MonoBehaviour
         if (npcNameText != null)
             npcNameText.text = currentNPC.npcName;
 
-        if (dialogueText != null)
-            dialogueText.text = line;
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        typingCoroutine = StartCoroutine(TypeLine(line));
+
 
         bool hasMoreLines = currentLineIndex < currentDialogueLines.Count - 1;
         if (nextArrow != null)
@@ -148,6 +151,14 @@ public class DialogueUI : MonoBehaviour
     {
         if (isAmbientDialogue) return;
         if (!isShowingDialogue) return;
+
+        if (isTyping)
+        {
+            StopCoroutine(typingCoroutine);
+            dialogueText.text = fullLineText;
+            isTyping = false;
+            return;
+        }
 
         currentLineIndex++;
 
@@ -165,14 +176,11 @@ public class DialogueUI : MonoBehaviour
     {
         HideDialogue();
 
-        // Re-enable player movement
         if (PlayerController.Instance != null)
             PlayerController.Instance.SetMovementEnabled(true);
 
-        // Trigger completion callback (unlocks recipes)
         onDialogueComplete?.Invoke();
 
-        // Clear state
         currentNPC = null;
         currentDialogueLines = null;
         onDialogueComplete = null;
@@ -194,5 +202,20 @@ public class DialogueUI : MonoBehaviour
 
         if (PlayerController.Instance != null)
             PlayerController.Instance.SetMovementEnabled(true);
+    }
+
+    private IEnumerator TypeLine(string line)
+    {
+        isTyping = true;
+        fullLineText = line;
+        dialogueText.text = "";
+
+        foreach (char c in line)
+        {
+            dialogueText.text += c;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        isTyping = false;
     }
 }

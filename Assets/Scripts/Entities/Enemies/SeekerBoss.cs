@@ -12,6 +12,7 @@ public class SeekerBoss : Enemy
     [SerializeField] private float pathUpdateInterval = 0.2f;
     [SerializeField] private float targetMovementThreshold = 0.8f;
     [SerializeField] private int maxPathfindingIterations = 500;
+    EnemyPathfinder pathfinder;
 
     [Header("Boss Stats")]
     [SerializeField] private float spawnDuration = 1.5f;
@@ -20,6 +21,7 @@ public class SeekerBoss : Enemy
     [Header("Attack Settings")]
     [SerializeField] private Transform centerOfAttack;
     [SerializeField] private float attackRadius = 3f;
+    [SerializeField] private float attackCooldown = 1f;
 
     [Header("Boss HP")]
     [SerializeField] private BossHpSystem bossHpSystem;
@@ -60,6 +62,7 @@ public class SeekerBoss : Enemy
         base.Start();
 
         flip = GetComponent<EnemyFlip>();
+        pathfinder = GetComponent<EnemyPathfinder>();
 
         pathTimer = Random.Range(0f, pathUpdateInterval * 0.5f);
         lastGridPos = grid != null ? grid.WorldToGrid(transform.position) : Vector2Int.zero;
@@ -71,6 +74,7 @@ public class SeekerBoss : Enemy
             bossHpSystem = FindFirstObjectByType<BossHpSystem>();
 
         StartCoroutine(SpawnSequence());
+
     }
     public override Transform GetCurrentTarget()
     {
@@ -81,7 +85,6 @@ public class SeekerBoss : Enemy
         if (currentBossState == SeekerState.Spawn || currentBossState == SeekerState.Death)
             return;
 
-        // Check if boss is dead
         if (bossHpSystem != null && bossHpSystem.isDead)
             return;
 
@@ -230,14 +233,11 @@ public class SeekerBoss : Enemy
             animator.SetBool(AnimIsIdle, false);
         }
 
-        attackTimer = attackCooldown;
-
         yield return new WaitForSeconds(attackCooldown);
 
         ChangeState(SeekerState.Idle);
     }
 
-    // Called by BossHpSystem when health reaches 0
     public void OnDeath()
     {
         ChangeState(SeekerState.Death);
@@ -294,7 +294,6 @@ public class SeekerBoss : Enemy
 
     public override void Attack()
     {
-        // Called by animation event
         Collider2D[] colliders = Physics2D.OverlapCircleAll(centerOfAttack.position, attackRadius);
 
         foreach (Collider2D collider in colliders)
@@ -317,30 +316,9 @@ public class SeekerBoss : Enemy
     
     public override void OnCollisionEnter2D(Collision2D collision) { }
 
-    void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
-        // Draw attack range (when boss starts attack)
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        // Draw attack radius (actual damage area)
         Gizmos.color = Color.red;
-        if (centerOfAttack != null)
-            Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
-        else
-            Gizmos.DrawWireSphere(transform.position, attackRadius);
-
-        // Draw current path
-        if (currentPath != null && currentPath.Count > 0 && grid != null)
-        {
-            Gizmos.color = Color.green;
-            for (int i = pathIndex; i < currentPath.Count - 1; i++)
-            {
-                Vector2 start = grid.GridToWorld(currentPath[i]);
-                Vector2 end = grid.GridToWorld(currentPath[i + 1]);
-                Gizmos.DrawLine(start, end);
-                Gizmos.DrawSphere(start, 0.1f);
-            }
-        }
+        Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
     }
 }

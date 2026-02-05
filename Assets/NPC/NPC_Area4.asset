@@ -17,7 +17,12 @@ MonoBehaviour:
   - "That thing the boss is guarding\u2026\nit\u2019s not a weapon."
   - "It\u2019s a key.\nNot to open something..."
   - ...but to complete something.
+  - 'Check out the recipe page in your inventory..
+
+    You might find something
+    new there!'
   recipesToUnlock:
+  - {fileID: 11400000, guid: cd126da520312ed4fa829f43d0d787c3, type: 2}
   - {fileID: 11400000, guid: 488290f6a6bb82c4aaffef394d81eefa, type: 2}
   ambientDialogue:
   - "The final door does not have a keyhole. It requires\u2026 permission."

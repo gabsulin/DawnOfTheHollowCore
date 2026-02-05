@@ -17,8 +17,12 @@ MonoBehaviour:
   - "When the Core weakens, the world doesn\u2019t end immediately."
   - "It waits.\nLike it\u2019s expecting something."
   - We never figured out what it was waiting for.
+  - 'Check out the recipe page in your inventory..
+
+    You might find something
+    new there!'
   recipesToUnlock:
-  - {fileID: 11400000, guid: cd126da520312ed4fa829f43d0d787c3, type: 2}
+  - {fileID: 11400000, guid: f0c535d535ee3ad40b718f2509ca7e6e, type: 2}
   ambientDialogue:
   - Dig. Wait. Dig. Wait. The rhythm never changes.
   - "I buried my name a long time ago. Don\u2019t ask for it."
