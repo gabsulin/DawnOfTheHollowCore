@@ -218,6 +218,9 @@ public class EnemyPathfinder : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
         if (currentPath == null || currentPath.Count == 0 || grid == null) return;
 
         Gizmos.color = Color.red;

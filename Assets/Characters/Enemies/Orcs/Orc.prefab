@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 5130953413000893797}
   - component: {fileID: 2892780832641460684}
   - component: {fileID: 1909289997691357929}
-  - component: {fileID: 5166218711360357829}
   - component: {fileID: 8127706738560482065}
   m_Layer: 0
   m_Name: Orc
@@ -223,7 +222,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   grid: {fileID: 0}
   moveSpeed: 8
-  attackRange: 2
+  attackRange: 1
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 500
@@ -242,19 +241,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   currentHealth: 0
---- !u!114 &5166218711360357829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412764620925795451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f69a5a89e2fa6fc42a4e3ad50dd2fe27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knockbackTime: 0.3
 --- !u!114 &8127706738560482065
 MonoBehaviour:
   m_ObjectHideFlags: 0
