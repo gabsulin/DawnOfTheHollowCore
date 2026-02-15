@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca5cf7cc07a464740a7d823d8a75167f, type: 3}
+  m_Name: KeyToArea3
+  m_EditorClassIdentifier: 
+  itemName: Verdant Key
+  icon: {fileID: 9174070306126086675, guid: ea2eb9711ddefec4e80f4b60971861d2, type: 3}
+  maxStack: 1
+  type: 3
+  rarity: 2
+  description: Walk into area 3 and the key will use itself and disappear from the
+    inventory.
+  value: 0
+  tags: []
+  moveSpeedBonus: 0
+  miningSpeedMultiplier: 0
+  maxHealthBonus: 0
+  maxShieldBonus: 0
+  damageBonus: 0

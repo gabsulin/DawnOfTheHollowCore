@@ -64,7 +64,7 @@ public class DialogueUI : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(advanceKey) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(advanceKey) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.E))
         {
             AdvanceDialogue();
         }

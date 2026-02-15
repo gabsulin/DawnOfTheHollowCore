@@ -185,6 +185,7 @@ MonoBehaviour:
   npcData: {fileID: 11400000, guid: 131051a23e2412649b15cc4e06e1fda2, type: 2}
   interactionRange: 2
   interactKey: 101
+  unlocksAreaId: 3
   interactionPrompt: {fileID: 8996283671094715143}
 --- !u!1 &8605636668184955313
 GameObject:
@@ -254,8 +255,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '[E] Talk'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5c59a69e0bd8a5440a269336220c61e1, type: 2}
+  m_sharedMaterial: {fileID: -6852668702708484021, guid: 5c59a69e0bd8a5440a269336220c61e1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

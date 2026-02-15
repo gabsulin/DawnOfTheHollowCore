@@ -27,6 +27,7 @@ MonoBehaviour:
     new there!'
   recipesToUnlock:
   - {fileID: 11400000, guid: e8a098de0aff9454aa61f728e501f75b, type: 2}
+  - {fileID: 11400000, guid: d79139f68a7ac314fbd38aebea122f74, type: 2}
   ambientDialogue:
   - Fascinating... the molecular structure is vibrating
   - "Don\u2019t touch that! It hasn't stabilized yet."

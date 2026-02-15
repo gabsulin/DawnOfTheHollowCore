@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerHpSystem : MonoBehaviour
 {
     PlayerController playerController;
-
+    Animator anim;
     [SerializeField] Image hpBar;
     [SerializeField] Image shieldsBar;
     [SerializeField] TMP_Text hpTMP;
@@ -14,18 +14,14 @@ public class PlayerHpSystem : MonoBehaviour
     //[SerializeField] TMP_Text damageNumber;
     GameObject deathScreen;
     Camera cam;
-
-    /*[HideInInspector]*/ public float currentHp;
-    /*[HideInInspector]*/ public float currentShields;
+    public float currentHp;
+    public float currentShields;
     public float maxHp;
     public float maxShields;
-
     private float wasntHit = 0f;
     private bool isRegeneratingShields = false;
-
     private float startShieldRegenTime = 5f;
     private float shieldRegenTime = 2f;
-
     public bool isDead;
     public bool isImmune;
 
@@ -33,14 +29,16 @@ public class PlayerHpSystem : MonoBehaviour
     {
         currentHp = maxHp;
         currentShields = maxShields;
-
         isDead = false;
     }
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
+        anim = GetComponent<Animator>();
         UpdateUI();
     }
+
     public void UpdateUI()
     {
         if (hpBar != null && shieldsBar != null && hpTMP != null && shieldsTMP != null)
@@ -60,7 +58,6 @@ public class PlayerHpSystem : MonoBehaviour
     private void Update()
     {
         wasntHit += Time.deltaTime;
-
         if (currentShields < maxShields && wasntHit >= startShieldRegenTime && !isRegeneratingShields && !isDead)
         {
             StartCoroutine(RegenerateShields());
@@ -70,40 +67,46 @@ public class PlayerHpSystem : MonoBehaviour
     public void TakeHit(int damage)
     {
         if (isImmune || isDead) return;
-
         (AudioManager.Instance)?.PlaySFX("Hit");
         wasntHit = 0;
-
         if (currentShields > 0)
         {
             float shieldDamage = Mathf.Min(currentShields, damage);
             currentShields -= shieldDamage;
             damage -= (int)shieldDamage;
         }
-
         if (damage > 0)
         {
             currentHp -= damage;
         }
-
         if (currentHp <= 0)
         {
             currentHp = 0;
             Die();
         }
-
         UpdateUI();
     }
 
-
-    private void Die()
+    public void Die()
     {
+        if (isDead) return;
+
         (AudioManager.Instance)?.PlaySFX("PlayerDeath");
-        
+
         isDead = true;
         playerController.canMove = false;
         playerController.canAttack = false;
+        anim.SetBool("IsDead", true);
 
+
+        if (RespawnManager.Instance != null)
+        {
+            RespawnManager.Instance.TriggerRespawn();
+        }
+        else
+        {
+            Debug.LogError("[PlayerHpSystem] RespawnManager not found! Player cannot respawn.");
+        }
 
         //cam.gameObject.SetActive(true);
         //deathScreen.SetActive(true);
@@ -117,18 +120,16 @@ public class PlayerHpSystem : MonoBehaviour
     private IEnumerator RegenerateShields()
     {
         isRegeneratingShields = true;
-
         while (currentShields < maxShields && !isDead && wasntHit >= startShieldRegenTime)
         {
             currentShields += 1;
             UpdateUI();
-
             yield return new WaitForSeconds(shieldRegenTime);
         }
-
         currentShields = Mathf.Min(currentShields, maxShields);
         isRegeneratingShields = false;
     }
+
     /*public void ApplyShieldRechargeUpgrade(float multiplier)
     {
         shieldRegenTime *= 1f / multiplier;
@@ -141,11 +142,11 @@ public class PlayerHpSystem : MonoBehaviour
         currentHp += amount;
         UpdateUI();
     }
+
     public void ApplyMaxShieldUpgrade(float amount)
     {
         maxShields += amount;
         currentShields += amount;
         UpdateUI();
     }
-
 }

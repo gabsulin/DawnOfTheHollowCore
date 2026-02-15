@@ -23,6 +23,7 @@ MonoBehaviour:
     new there!'
   recipesToUnlock:
   - {fileID: 11400000, guid: 4893b07bab2bd0d4f9a5d5fc5abf4b80, type: 2}
+  - {fileID: 11400000, guid: ea18f7c578dd81840ace71cd2b91beef, type: 2}
   ambientDialogue:
   - Your shadow is getting longer. Just an observation.
   - The ones before you... they had such hope. It was delicious.

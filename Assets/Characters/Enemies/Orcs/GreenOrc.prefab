@@ -107,8 +107,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
+  m_Mass: 50
+  m_LinearDamping: 10
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -200,7 +200,6 @@ MonoBehaviour:
   animator: {fileID: 4010692523077825243}
   rb: {fileID: 9091795588254226400}
   attackHitbox: {fileID: 6561430960155724715}
-  attackCooldown: 1
   damage: 1
   playerAggroRange: 4
   core: {fileID: 0}

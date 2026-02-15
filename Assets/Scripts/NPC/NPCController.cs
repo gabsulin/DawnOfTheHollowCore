@@ -9,6 +9,10 @@ public class NPCController : MonoBehaviour
     [SerializeField] private float interactionRange = 2f;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
+    [Header("Area Unlock (Optional)")]
+    [Tooltip("If this NPC unlocks an area, set the area ID here (-1 for none)")]
+    [SerializeField] private int unlocksAreaId = -1;
+
     [Header("Visual Feedback")]
     [SerializeField] private GameObject interactionPrompt;
 
@@ -21,8 +25,8 @@ public class NPCController : MonoBehaviour
     private void Start()
     {
         player = PlayerController.Instance?.transform;
-        
-        if(player == null)
+
+        if (player == null)
         {
             Debug.LogError("PlayerController instance not found in the scene.");
         }
@@ -45,7 +49,7 @@ public class NPCController : MonoBehaviour
         bool wasInRange = playerInRange;
         playerInRange = distance <= interactionRange;
 
-        if(playerInRange != wasInRange && interactionPrompt != null)
+        if (playerInRange != wasInRange && interactionPrompt != null)
         {
             interactionPrompt.SetActive(playerInRange);
         }
@@ -72,7 +76,7 @@ public class NPCController : MonoBehaviour
 
         if (dialogueCompleted)
         {
-            if(npcData.ambientDialogue != null && npcData.ambientDialogue.Count > 0)
+            if (npcData.ambientDialogue != null && npcData.ambientDialogue.Count > 0)
             {
                 string randomLine = npcData.ambientDialogue[Random.Range(0, npcData.ambientDialogue.Count)];
                 DialogueUI.Instance.ShowAmbientDialogue(npcData.npcName, randomLine);
@@ -85,10 +89,20 @@ public class NPCController : MonoBehaviour
     private void OnDialogueComplete()
     {
         dialogueCompleted = true;
+
+        // Unlock recipes
         if (npcData.recipesToUnlock != null && npcData.recipesToUnlock.Count > 0)
         {
             RecipeManager.Instance?.UnlockRecipes(npcData.recipesToUnlock);
         }
+
+        // Notify AreaUnlockManager if this NPC unlocks an area
+        if (unlocksAreaId >= 0 && AreaUnlockManager.Instance != null)
+        {
+            AreaUnlockManager.Instance.OnNPCDialogueCompleted(npcId, unlocksAreaId);
+            Debug.Log($"[NPCController] NPC {npcData.npcName} completed dialogue for Area {unlocksAreaId}");
+        }
+
         SaveCompletionState();
 
         Debug.Log("Dialogue with " + npcData.npcName + " completed.");
