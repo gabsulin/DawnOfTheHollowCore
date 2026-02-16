@@ -14,16 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Area 2 Key
   ingredients:
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
   - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
   - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
   - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
   output: {fileID: 11400000, guid: 9a1a8a6b33c80564e96e8a9bb36945fc, type: 2}
   outputAmount: 1
   loreText: 
-  isUnlocked: 0
+  isUnlocked: 1
   craftingTier: 1

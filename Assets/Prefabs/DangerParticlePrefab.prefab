@@ -4847,10 +4847,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dangerColor: {r: 1, g: 0.3, b: 0, a: 1}
-  particleSize: 0.5
-  particleCount: 100
-  ringRadius: 10
+  particleSize: 0.25
+  baseParticleCount: 100
+  ringRadius: 1
+  sortingOrder: 10
+  sortingLayerName: Default
   rotationSpeed: 30
   pulseEffect: 1
-  pulseSpeed: 2
-  pulseIntensity: 0.3
+  pulseSpeed: 1
+  pulseIntensity: 0.1

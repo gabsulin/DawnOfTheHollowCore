@@ -10,7 +10,7 @@ public class AreaDangerParticles : MonoBehaviour
     [Header("Particle Settings")]
     [SerializeField] private Color dangerColor = new Color(1f, 0.3f, 0f, 1f); // Orange-red
     [SerializeField] private float particleSize = 0.5f;
-    [SerializeField] private int particleCount = 100;
+    [SerializeField] private int baseParticleCount = 100; // Can be overridden
     [SerializeField] private float ringRadius = 10f;
 
     [Header("Rendering")]
@@ -29,10 +29,12 @@ public class AreaDangerParticles : MonoBehaviour
     private ParticleSystem.EmissionModule emissionModule;
     private ParticleSystemRenderer psRenderer;
     private float originalSize;
+    private int currentParticleCount;
 
     private void Awake()
     {
         ps = GetComponent<ParticleSystem>();
+        currentParticleCount = baseParticleCount; // Initialize with base count
         ConfigureParticleSystem();
     }
 
@@ -49,7 +51,7 @@ public class AreaDangerParticles : MonoBehaviour
         mainModule.startSize = particleSize;
         mainModule.startLifetime = 2f;
         mainModule.startSpeed = 0f;
-        mainModule.maxParticles = particleCount;
+        mainModule.maxParticles = currentParticleCount;
         mainModule.loop = true;
         mainModule.playOnAwake = true;
         mainModule.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -62,7 +64,7 @@ public class AreaDangerParticles : MonoBehaviour
         shapeModule.arcMode = ParticleSystemShapeMultiModeValue.Random;
 
         // Emission
-        emissionModule.rateOverTime = particleCount / 2f;
+        emissionModule.rateOverTime = currentParticleCount / 2f;
 
         // Color over lifetime for pulsing effect
         colorOverLifetime.enabled = true;
@@ -136,6 +138,29 @@ public class AreaDangerParticles : MonoBehaviour
         else
         {
             Debug.LogWarning("[AreaDangerParticles] Cannot set radius - particle system not found!");
+        }
+    }
+
+    /// <summary>
+    /// Set the number of particles (scales by area difficulty)
+    /// </summary>
+    public void SetParticleCount(int count)
+    {
+        currentParticleCount = count;
+
+        if (ps != null)
+        {
+            mainModule = ps.main;
+            emissionModule = ps.emission;
+
+            mainModule.maxParticles = currentParticleCount;
+            emissionModule.rateOverTime = currentParticleCount / 2f;
+
+            // Clear and restart to apply changes
+            ps.Clear();
+            ps.Play();
+
+            Debug.Log($"[AreaDangerParticles] Particle count set to {currentParticleCount}");
         }
     }
 

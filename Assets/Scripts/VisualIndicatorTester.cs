@@ -8,7 +8,7 @@ public class VisualIndicatorTester : MonoBehaviour
     [SerializeField] private float testRadius = 15f;
 
     [Tooltip("Which style to preview?")]
-    [SerializeField] private StylePreview previewStyle = StylePreview.Both;
+    [SerializeField] private StylePreview previewStyle = StylePreview.Particles;
 
     [Header("Test Objects")]
     [SerializeField] private GameObject particleTestPrefab;
@@ -20,8 +20,6 @@ public class VisualIndicatorTester : MonoBehaviour
     public enum StylePreview
     {
         Particles,
-        Barrier,
-        Both,
         None
     }
 
@@ -49,15 +47,6 @@ public class VisualIndicatorTester : MonoBehaviour
                 SpawnParticleTest();
                 break;
 
-            case StylePreview.Barrier:
-                SpawnBarrierTest();
-                break;
-
-            case StylePreview.Both:
-                SpawnParticleTest();
-                SpawnBarrierTest();
-                break;
-
             case StylePreview.None:
                 break;
         }
@@ -81,27 +70,6 @@ public class VisualIndicatorTester : MonoBehaviour
         else
         {
             Debug.LogWarning("[VisualTester] Particle prefab not assigned!");
-        }
-    }
-
-    private void SpawnBarrierTest()
-    {
-        if (barrierTestPrefab != null)
-        {
-            activeBarrierTest = Instantiate(barrierTestPrefab, transform);
-            activeBarrierTest.name = "BarrierTest";
-            
-            var barrierScript = activeBarrierTest.GetComponent<AreaEnergyBarrier>();
-            if (barrierScript != null)
-            {
-                barrierScript.SetRadius(testRadius);
-            }
-            
-            Debug.Log($"[VisualTester] Spawned barrier indicator at radius {testRadius}");
-        }
-        else
-        {
-            Debug.LogWarning("[VisualTester] Barrier prefab not assigned!");
         }
     }
 
