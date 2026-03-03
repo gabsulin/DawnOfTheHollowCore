@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Test
   ingredients:
-  - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
-  - {fileID: 11400000, guid: d6d1bbdc347c2564da64d48d69b4872f, type: 2}
-  output: {fileID: 11400000, guid: 6ae82e1a5555f804796feed4e63c194d, type: 2}
+  - item: {fileID: 0}
+    amount: 1
+  output: {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
   outputAmount: 1
   loreText: This is a test.
-  isUnlocked: 0
+  isUnlocked: 1
   craftingTier: 1

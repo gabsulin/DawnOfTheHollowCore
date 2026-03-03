@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Area 3 Key
   ingredients:
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+  - item: {fileID: 11400000, guid: d0ee612389671a549b02460604960b93, type: 2}
+    amount: 5
+  - item: {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+    amount: 2
   output: {fileID: 11400000, guid: 7b723e41ac9e63a46a298c36b60f2d25, type: 2}
   outputAmount: 1
   loreText: 

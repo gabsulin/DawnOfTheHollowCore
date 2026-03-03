@@ -42,7 +42,6 @@ public class AreaUnlockManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         InitializeCache();
     }
@@ -80,6 +79,7 @@ public class AreaUnlockManager : MonoBehaviour
             }
         }
     }
+
     public bool CanEnterArea(int areaId)
     {
         if (areaId == 0) return true;
@@ -125,6 +125,7 @@ public class AreaUnlockManager : MonoBehaviour
 
         return true;
     }
+
     public bool TryUnlockArea(int areaId)
     {
         if (areaId == 0) return true;
@@ -164,10 +165,8 @@ public class AreaUnlockManager : MonoBehaviour
             if (inventoryManager.HasItem(req.requiredKey, 1))
             {
                 inventoryManager.RemoveItem(req.requiredKey, 1);
-
                 req.areaUnlocked = true;
                 SaveProgressionState();
-
                 DebugLog($"Area {areaId} unlocked permanently! Key consumed: {req.requiredKey.itemName}");
                 return true;
             }
@@ -180,6 +179,7 @@ public class AreaUnlockManager : MonoBehaviour
 
         return false;
     }
+
     public void OnNPCDialogueCompleted(string npcId, int associatedAreaId)
     {
         DebugLog($"NPC Dialogue Completed: {npcId} for Area {associatedAreaId}");
@@ -188,9 +188,7 @@ public class AreaUnlockManager : MonoBehaviour
         {
             requirementsByAreaId[associatedAreaId].npcDialogueCompleted = true;
             SaveProgressionState();
-
             DebugLog($"Area {associatedAreaId} NPC requirement met");
-
         }
     }
 
@@ -205,6 +203,7 @@ public class AreaUnlockManager : MonoBehaviour
 
         return false;
     }
+
     public ItemSO GetRequiredKey(int areaId)
     {
         if (requirementsByAreaId.ContainsKey(areaId))
@@ -213,6 +212,7 @@ public class AreaUnlockManager : MonoBehaviour
         }
         return null;
     }
+
     public string GetAreaRequirementText(int areaId)
     {
         if (areaId == 0) return "Always accessible";
@@ -243,6 +243,7 @@ public class AreaUnlockManager : MonoBehaviour
 
         return missing.Count > 0 ? string.Join(", ", missing) : "Requirements met";
     }
+
     public AreaRequirement GetRequirement(int areaId)
     {
         if (requirementsByAreaId.ContainsKey(areaId))
@@ -251,6 +252,7 @@ public class AreaUnlockManager : MonoBehaviour
         }
         return null;
     }
+
     public bool IsNPCDialogueCompleted(int areaId)
     {
         if (requirementsByAreaId.ContainsKey(areaId))
@@ -280,6 +282,7 @@ public class AreaUnlockManager : MonoBehaviour
 
         DebugLog("Progression state loaded");
     }
+
     public void ResetAllProgression()
     {
         foreach (var req in areaRequirements)

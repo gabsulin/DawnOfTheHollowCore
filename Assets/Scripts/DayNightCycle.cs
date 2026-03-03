@@ -52,10 +52,12 @@ public class DayNightCycle : MonoBehaviour
                     nightIncremented = true;
 
                     OnNightStart?.Invoke();
+                    AudioManager.Instance?.PlayMusic("Battle", false);
 
                     if (NightCounter.currentNight >= bossFightNight)
                     {
                         eternalNight = true;
+                        AudioManager.Instance?.PlayMusic("Boss", true);
                         Debug.Log("Eternal night has begun!");
                     }
                 }
@@ -63,6 +65,7 @@ public class DayNightCycle : MonoBehaviour
             else
             {
                 OnDayStart?.Invoke();
+                AudioManager.Instance?.PlayMusic("Normal", false);
                 nightIncremented = false;
             }
         }

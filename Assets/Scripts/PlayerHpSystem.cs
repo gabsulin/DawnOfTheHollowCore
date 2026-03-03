@@ -11,7 +11,6 @@ public class PlayerHpSystem : MonoBehaviour
     [SerializeField] Image shieldsBar;
     [SerializeField] TMP_Text hpTMP;
     [SerializeField] TMP_Text shieldsTMP;
-    //[SerializeField] TMP_Text damageNumber;
     GameObject deathScreen;
     Camera cam;
     public float currentHp;
@@ -91,13 +90,12 @@ public class PlayerHpSystem : MonoBehaviour
     {
         if (isDead) return;
 
-        (AudioManager.Instance)?.PlaySFX("PlayerDeath");
+        AudioManager.Instance?.PlaySFX("PlayerDeath");
 
         isDead = true;
         playerController.canMove = false;
         playerController.canAttack = false;
         anim.SetBool("IsDead", true);
-
 
         if (RespawnManager.Instance != null)
         {
@@ -107,9 +105,18 @@ public class PlayerHpSystem : MonoBehaviour
         {
             Debug.LogError("[PlayerHpSystem] RespawnManager not found! Player cannot respawn.");
         }
+    }
 
-        //cam.gameObject.SetActive(true);
-        //deathScreen.SetActive(true);
+    public void ForceDeath()
+    {
+        if (isDead) return;
+
+        AudioManager.Instance?.PlaySFX("PlayerDeath");
+
+        isDead = true;
+        playerController.canMove = false;
+        playerController.canAttack = false;
+        anim.SetBool("IsDead", true);
     }
 
     private IEnumerator PlayDeathAnimation()
@@ -129,12 +136,6 @@ public class PlayerHpSystem : MonoBehaviour
         currentShields = Mathf.Min(currentShields, maxShields);
         isRegeneratingShields = false;
     }
-
-    /*public void ApplyShieldRechargeUpgrade(float multiplier)
-    {
-        shieldRegenTime *= 1f / multiplier;
-        startShieldRegenTime *= 1f / multiplier * 2.5f;
-    }*/
 
     public void ApplyMaxHealthUpgrade(float amount)
     {

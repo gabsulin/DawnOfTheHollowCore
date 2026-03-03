@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Health Upgrade
   ingredients:
-  - {fileID: 11400000, guid: cafecea437b14764aa29d596a1ca5be1, type: 2}
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
-  - {fileID: 11400000, guid: f6980fb10b94ab84ab41ba21afc0bbf5, type: 2}
-  - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
-  - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
+  - item: {fileID: 11400000, guid: cafecea437b14764aa29d596a1ca5be1, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: f6980fb10b94ab84ab41ba21afc0bbf5, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 4dad45cae4b3ff54d93ebcd11c7afc73, type: 2}
+    amount: 1
+  - item: {fileID: 0}
+    amount: 1
   output: {fileID: 11400000, guid: 988ac49c415cc8848902be44786fc99a, type: 2}
   outputAmount: 1
   loreText: 

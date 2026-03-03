@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Creates a rotating particle ring indicator for locked areas
-/// Attach to a prefab with ParticleSystem component
-/// </summary>
 [RequireComponent(typeof(ParticleSystem))]
 public class AreaDangerParticles : MonoBehaviour
 {
@@ -45,6 +41,7 @@ public class AreaDangerParticles : MonoBehaviour
         emissionModule = ps.emission;
         var colorOverLifetime = ps.colorOverLifetime;
         var renderer = ps.GetComponent<ParticleSystemRenderer>();
+        var textureSheetAnimation = ps.textureSheetAnimation; // For animated sprites
 
         // Main module settings
         mainModule.startColor = dangerColor;
@@ -82,13 +79,25 @@ public class AreaDangerParticles : MonoBehaviour
         );
         colorOverLifetime.color = gradient;
 
+        // Texture Sheet Animation - IMPORTANT for animated sprites!
+        // This will be configured in the prefab, but we log if it's enabled
+        if (textureSheetAnimation.enabled)
+        {
+            Debug.Log($"[AreaDangerParticles] Texture sheet animation enabled with {textureSheetAnimation.numTilesX}x{textureSheetAnimation.numTilesY} tiles");
+        }
+
         // Renderer settings - make sure it's visible!
         if (renderer != null)
         {
             renderer.renderMode = ParticleSystemRenderMode.Billboard;
             renderer.sortingOrder = sortingOrder; // Use configured sorting order
             renderer.sortingLayerName = sortingLayerName;
-            renderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
+
+            // Use Sprites/Default shader for sprite sheets (better for animated sprites)
+            if (renderer.material == null || renderer.material.shader.name != "Sprites/Default")
+            {
+                renderer.material = new Material(Shader.Find("Sprites/Default"));
+            }
             renderer.material.SetColor("_Color", dangerColor);
         }
 

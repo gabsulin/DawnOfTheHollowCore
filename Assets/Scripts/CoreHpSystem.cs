@@ -32,7 +32,9 @@ public class CoreHpSystem : MonoBehaviour
 
     private void EndGame(int reason)
     {
-        //1 - Core destroyed 2 - Player merged with core
-        //GameManager.Instance.EndGame(reason);
+        if (GameManager.Instance != null)
+            GameManager.Instance.EndGame(reason);
+        else
+            Debug.LogError("[CoreHpSystem] GameManager instance not found!");
     }
 }

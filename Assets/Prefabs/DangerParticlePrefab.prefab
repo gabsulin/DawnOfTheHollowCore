@@ -1369,8 +1369,8 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
@@ -1488,7 +1488,14 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: 21300000, guid: d45ed1b1295f1804e906c5ae07460e4c, type: 3}
+    - sprite: {fileID: 21300000, guid: 3aaa00715017d2341bb9b5cf71412364, type: 3}
+    - sprite: {fileID: 21300000, guid: 832b71e06a0392f449f6ce916b49ce1b, type: 3}
+    - sprite: {fileID: 21300000, guid: c07ecfb441c7ec4499e46ebe8a016b83, type: 3}
+    - sprite: {fileID: 21300000, guid: fe074af4030a1884badbb84af2c69306, type: 3}
+    - sprite: {fileID: 21300000, guid: 9b9b874ced9ad3a4197aa52c430e97c4, type: 3}
+    - sprite: {fileID: 21300000, guid: 87c5414d5a7daf542a9fd9fc0015df66, type: 3}
+    - sprite: {fileID: 21300000, guid: 118239ccb46b2e245ac6f02ce50ad1c3, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4846,13 +4853,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5cd0fe95488f4419a5b05777d66a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dangerColor: {r: 1, g: 0.3, b: 0, a: 1}
-  particleSize: 0.25
-  baseParticleCount: 100
+  dangerColor: {r: 1, g: 1, b: 1, a: 1}
+  particleSize: 0.75
+  baseParticleCount: 200
   ringRadius: 1
   sortingOrder: 10
   sortingLayerName: Default
   rotationSpeed: 30
-  pulseEffect: 1
-  pulseSpeed: 1
-  pulseIntensity: 0.1
+  pulseEffect: 0
+  pulseSpeed: 0
+  pulseIntensity: 0

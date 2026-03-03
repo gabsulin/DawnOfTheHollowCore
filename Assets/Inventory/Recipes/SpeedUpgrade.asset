@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Speed Upgrade
   ingredients:
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
-  - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
+  - item: {fileID: 11400000, guid: 60db45f763780d246935f13021a74c80, type: 2}
+    amount: 3
+  - item: {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
+    amount: 1
   output: {fileID: 11400000, guid: 37360169225975146830b3d73ce79a15, type: 2}
   outputAmount: 1
   loreText: 

@@ -21,7 +21,6 @@ public class AreaManager : MonoBehaviour
 
         public EnemySpawnGroup enemyGroup;
 
-        // Cache pro optimalizaci
         [HideInInspector] public float innerRadiusSqr;
         [HideInInspector] public float outerRadiusSqr;
     }
@@ -95,7 +94,6 @@ public class AreaManager : MonoBehaviour
     Sprite cachedMinimapSprite;
     int minimapLayerInt;
 
-    // Track all spawned positions for collision checking
     List<Vector2> spawnedPositions = new();
     List<float> spawnedRadii = new();
 
@@ -128,10 +126,8 @@ public class AreaManager : MonoBehaviour
             cachedMinimapSprite = GetMinimapSprite();
         }
 
-        // SPAWN OBJECTS FIRST (they're bigger and need more space)
         SpawnAllObjects();
 
-        // THEN SPAWN ORES (they'll avoid the objects)
         foreach (var area in areas)
         {
             SpawnOresInArea(area);
@@ -169,24 +165,20 @@ public class AreaManager : MonoBehaviour
 
     void HandleAreaEnter(Area area)
     {
-        if (!area.unlocked)
+        if (!area.unlocked && AreaUnlockManager.Instance.CanEnterArea(area.id))
             area.unlocked = true;
 
-        if (area.npcForThisArea != null && area.spawnedNpc == null)
+        if (area.npcForThisArea != null && area.spawnedNpc == null && area.unlocked)
         {
             Vector2 spawnPos = (Vector2)player.position + Random.insideUnitCircle * npcSpawnRadius;
             area.spawnedNpc = Instantiate(area.npcForThisArea, spawnPos, Quaternion.identity);
 
-            // Vytvoø ikonu pro minimapu
             if (createMinimapIcons)
             {
                 CreateMinimapIconForNPC(area.spawnedNpc);
             }
         }
     }
-
-    // ===================== OBJECT SPAWNING =====================
-
     void SpawnAllObjects()
     {
         if (objectsToSpawn == null || objectsToSpawn.Count == 0)
@@ -198,7 +190,6 @@ public class AreaManager : MonoBehaviour
         int successfulSpawns = 0;
         int failedSpawns = 0;
 
-        // Shuffle objects for random distribution
         List<SpawnableObject> shuffledObjects = new List<SpawnableObject>(objectsToSpawn);
         for (int i = shuffledObjects.Count - 1; i > 0; i--)
         {
@@ -226,7 +217,6 @@ public class AreaManager : MonoBehaviour
                     objectsParent
                 );
 
-                // Track this position for future collision checks
                 spawnedPositions.Add(validPosition);
                 spawnedRadii.Add(spawnableObj.clearanceRadius);
 
@@ -246,7 +236,6 @@ public class AreaManager : MonoBehaviour
     {
         for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
         {
-            // Pick a random area (excluding area 0)
             Area randomArea = GetRandomAreaExcludingFirst();
             if (randomArea == null)
             {
@@ -256,7 +245,6 @@ public class AreaManager : MonoBehaviour
 
             Vector2 candidatePos = RandomPositionInArea(randomArea);
 
-            // Check if this position is too close to any already spawned object
             bool isTooClose = false;
             for (int i = 0; i < spawnedPositions.Count; i++)
             {
@@ -286,13 +274,9 @@ public class AreaManager : MonoBehaviour
         if (areas == null || areas.Count <= 1)
             return null;
 
-        // Get random area from index 1 onwards (skip area 0)
         int randomIndex = Random.Range(1, areas.Count);
         return areas[randomIndex];
     }
-
-    // ===================== MINIMAP ICON =====================
-
     void CreateMinimapIconForNPC(GameObject npc)
     {
         if (npc == null) return;
@@ -408,7 +392,6 @@ public class AreaManager : MonoBehaviour
                 float distance = Vector2.Distance(new Vector2(x, y), center);
                 float alpha = distance <= radius ? 1f : 0f;
 
-                // Vyhlazený okraj
                 if (distance > radius - 2f && distance <= radius)
                 {
                     alpha = (radius - distance) / 2f;
@@ -423,17 +406,10 @@ public class AreaManager : MonoBehaviour
 
         return Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
     }
-
-    // ===================== ORE SPAWNING =====================
-
     public void SpawnOresInArea(Area area)
     {
         if (area.raritySettings == null || area.raritySettings.Count == 0)
             return;
-
-        // =============================
-        // 1) GUARANTEE HIGHEST RARITY
-        // =============================
 
         RaritySpawnSettings highestRaritySettings = null;
 
@@ -465,10 +441,6 @@ public class AreaManager : MonoBehaviour
             );
         }
 
-        // =============================
-        // 2) NORMAL RNG SPAWNING
-        // =============================
-
         foreach (var settings in area.raritySettings)
         {
             if (settings.orePrefabs == null || settings.orePrefabs.Count == 0)
@@ -498,7 +470,6 @@ public class AreaManager : MonoBehaviour
 
     Vector2 GetValidOrePosition(Area area)
     {
-        // Try to find a position that doesn't overlap with spawned objects
         for (int attempt = 0; attempt < 10; attempt++)
         {
             Vector2 candidatePos = RandomPositionInArea(area);
@@ -520,7 +491,6 @@ public class AreaManager : MonoBehaviour
                 return candidatePos;
         }
 
-        // If we can't find a perfect spot after 10 tries, just return a random position
         return RandomPositionInArea(area);
     }
 
@@ -530,8 +500,6 @@ public class AreaManager : MonoBehaviour
         float angle = Random.Range(0f, Mathf.PI * 2);
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
     }
-
-    // ===================== GIZMOS =====================
 
     void OnDrawGizmos()
     {

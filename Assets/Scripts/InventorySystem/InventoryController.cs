@@ -9,15 +9,19 @@ public class InventoryController : MonoBehaviour
 
     private InventoryManager manager;
     public bool open = false;
+    TutorialScene tutorialManager;
 
     private void Awake()
     {
         manager = GetComponent<InventoryManager>();
         if (inventoryUI) inventoryUI.SetActive(false);
+        tutorialManager = FindFirstObjectByType<TutorialScene>();
     }
 
     private void Update()
     {
+        if (tutorialManager != null && tutorialManager.IsShowingTutorial())
+            return;
         if (Input.GetKeyDown(toggleKey)) Toggle();
         if (open && Input.GetKeyDown(KeyCode.Escape)) Close();
     }

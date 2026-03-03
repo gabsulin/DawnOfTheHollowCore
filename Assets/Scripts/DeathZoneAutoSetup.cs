@@ -1,14 +1,14 @@
 using UnityEngine;
 
-/// <summary>
-/// Helper script to automatically setup death zones with correct radii based on AreaManager configuration
-/// Attach this to your scene and click "Setup Death Zones" in the inspector
-/// </summary>
 public class DeathZoneAutoSetup : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Your AreaManager with area configurations")]
     [SerializeField] private AreaManager areaManager;
+
+    [Header("Death Zone Settings")]
+    [Tooltip("Buffer distance INSIDE area boundary (e.g., 2-3 units smaller)")]
+    [SerializeField] private float radiusOffset = 2f;
 
     [Header("Death Zone GameObjects")]
     [Tooltip("Death zone protecting Area 1 (at Area 0's outer radius)")]
@@ -43,34 +43,30 @@ public class DeathZoneAutoSetup : MonoBehaviour
 
         int successCount = 0;
 
-        // Setup Area 1 death zone (uses Area 0's outer radius)
         if (deathZone_Area1 != null)
         {
-            float radius = areaManager.areas[0].outerRadius;
+            float radius = areaManager.areas[1].innerRadius;
             SetupDeathZone(deathZone_Area1, 1, radius);
             successCount++;
         }
 
-        // Setup Area 2 death zone (uses Area 1's outer radius)
         if (deathZone_Area2 != null)
         {
-            float radius = areaManager.areas[1].outerRadius;
+            float radius = areaManager.areas[2].innerRadius;
             SetupDeathZone(deathZone_Area2, 2, radius);
             successCount++;
         }
 
-        // Setup Area 3 death zone (uses Area 2's outer radius)
         if (deathZone_Area3 != null)
         {
-            float radius = areaManager.areas[2].outerRadius;
+            float radius = areaManager.areas[3].innerRadius;
             SetupDeathZone(deathZone_Area3, 3, radius);
             successCount++;
         }
 
-        // Setup Area 4 death zone (uses Area 3's outer radius)
         if (deathZone_Area4 != null)
         {
-            float radius = areaManager.areas[3].outerRadius;
+            float radius = areaManager.areas[4].innerRadius;
             SetupDeathZone(deathZone_Area4, 4, radius);
             successCount++;
         }
@@ -79,30 +75,33 @@ public class DeathZoneAutoSetup : MonoBehaviour
         Debug.Log($"[DeathZoneAutoSetup] Setup complete! Configured {successCount} death zones.");
     }
 
-    private void SetupDeathZone(AreaDeathZone deathZone, int protectedAreaId, float radius)
+    private void SetupDeathZone(AreaDeathZone deathZone, int protectedAreaId, float areaInnerRadius)
     {
-        // Get the collider
         CircleCollider2D collider = deathZone.GetComponent<CircleCollider2D>();
         if (collider == null)
         {
             Debug.LogError($"[DeathZoneAutoSetup] Death zone for Area {protectedAreaId} is missing CircleCollider2D!");
             return;
         }
+        float deathZoneRadius = areaInnerRadius - radiusOffset;
 
-        // Set the radius
-        collider.radius = radius;
+        if (deathZoneRadius <= 0)
+        {
+            Debug.LogError($"[DeathZoneAutoSetup] Area {protectedAreaId} radius offset too large! Radius would be negative.");
+            deathZoneRadius = areaInnerRadius * 0.9f;
+        }
+
+        collider.radius = deathZoneRadius;
         collider.isTrigger = true;
 
-        // Ensure it's at world center
         deathZone.transform.position = Vector3.zero;
 
-        Debug.Log($"[DeathZoneAutoSetup] Area {protectedAreaId} death zone: Radius set to {radius}");
+        Debug.Log($"[DeathZoneAutoSetup] Area {protectedAreaId} death zone: Radius set to {deathZoneRadius} (area: {areaInnerRadius}, offset: {radiusOffset})");
     }
 
     [ContextMenu("Create Death Zone GameObjects")]
     public void CreateDeathZoneGameObjects()
     {
-        // Create death zone game objects if they don't exist
         if (deathZone_Area1 == null)
         {
             deathZone_Area1 = CreateDeathZoneObject("DeathZone_ProtectsArea1", 1);
@@ -135,7 +134,7 @@ public class DeathZoneAutoSetup : MonoBehaviour
         // Add components
         CircleCollider2D collider = go.AddComponent<CircleCollider2D>();
         collider.isTrigger = true;
-        collider.radius = 10f; // Temporary, will be set by Setup
+        collider.radius = 10f;
 
         AreaDeathZone zone = go.AddComponent<AreaDeathZone>();
 
@@ -155,7 +154,6 @@ public class DeathZoneAutoSetup : MonoBehaviour
     {
         if (areaManager == null || areaManager.areas == null) return;
 
-        // Draw each death zone radius as a colored circle
         DrawDeathZoneGizmo(deathZone_Area1, 0, Color.yellow);
         DrawDeathZoneGizmo(deathZone_Area2, 1, Color.green);
         DrawDeathZoneGizmo(deathZone_Area3, 2, new Color(1f, 0.5f, 0f));
@@ -166,14 +164,18 @@ public class DeathZoneAutoSetup : MonoBehaviour
     {
         if (zone == null || areaIndex >= areaManager.areas.Count) return;
 
-        float radius = areaManager.areas[areaIndex].outerRadius;
+        float areaRadius = areaManager.areas[areaIndex].innerRadius;
+        float deathZoneRadius = areaRadius - radiusOffset;
+
+        Gizmos.color = new Color(color.r, color.g, color.b, 0.3f);
+        DrawCircle(Vector3.zero, areaRadius);
 
         Gizmos.color = color;
-        DrawCircle(Vector3.zero, radius);
+        DrawCircle(Vector3.zero, deathZoneRadius);
 
         UnityEditor.Handles.Label(
-            new Vector3(0, radius + 2, 0),
-            $"Area {areaIndex + 1} Death Zone\nRadius: {radius}",
+            new Vector3(0, deathZoneRadius + 2, 0),
+            $"Area {areaIndex + 1} Death Zone\nArea Radius: {areaRadius}\nDeath Radius: {deathZoneRadius}\nOffset: {radiusOffset}",
             new GUIStyle() { normal = new GUIStyleState() { textColor = color } }
         );
     }
@@ -195,29 +197,3 @@ public class DeathZoneAutoSetup : MonoBehaviour
     }
 #endif
 }
-
-/*
- * ========================================
- * HOW TO USE THIS AUTO-SETUP
- * ========================================
- * 
- * 1. Create an empty GameObject: "DeathZoneAutoSetup"
- * 2. Add this script
- * 3. Assign your AreaManager
- * 4. Right-click the script in Inspector  "Create Death Zone GameObjects"
- * 5. For each created death zone, configure in Inspector:
- *    - Protected Area Id (1, 2, 3, or 4)
- *    - Visual Style (Particles, Barrier, or Both)
- *    - Particle Indicator Prefab (if using particles)
- *    - Barrier Indicator Prefab (if using barrier)
- * 6. Right-click the script  "Setup Death Zones"
- * 7. Done! All radii are automatically set from your AreaManager!
- * 
- * GIZMOS:
- * - Yellow circle = Area 1 death zone
- * - Orange circle = Area 2 death zone
- * - Dark orange = Area 3 death zone
- * - Red circle = Area 4 death zone
- * 
- * You can see exactly where each death zone will be!
- */

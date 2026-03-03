@@ -1,98 +1,76 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class TutorialScene : MonoBehaviour
 {
-    [System.Serializable]
-    public class TutorialStep
-    {
-        public string stepName;
-        [TextArea(3, 6)]
-        public string tutorialText;
-        public Sprite tutorialImage;
-        public bool pauseGame = true;
-        public bool requiresInput = true;
-    }
-
-    [Header("Tutorial Steps")]
-    public TutorialStep[] tutorialSteps;
-
-    [Header("UI References")]
-    public GameObject tutorialPanel;
-    public TextMeshProUGUI tutorialText;
-    public TextMeshProUGUI continuePrompt;
+    [Header("Tutorial Panels - Design these in Canvas!")]
+    public GameObject[] tutorialPanels;
 
     [Header("Settings")]
     public KeyCode continueKey = KeyCode.Return;
-    public string continuePromptText = "Press ENTER to continue...";
+    public bool pauseGameDuringTutorial = true;
 
-    private int currentStepIndex = -1;
+    private int currentPanelIndex = -1;
     private bool isShowingTutorial = false;
-    private bool canContinue = false;
 
     void Start()
     {
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(false);
-
-        if (continuePrompt != null)
-            continuePrompt.text = continuePromptText;
+        HideAllPanels();
     }
 
     void Update()
     {
-        if (isShowingTutorial && canContinue)
+        if (isShowingTutorial && Input.GetKeyDown(continueKey))
         {
-            if (Input.GetKeyDown(continueKey))
-            {
-                HideTutorial();
-            }
+            HideCurrentPanel();
         }
     }
 
-    public void ShowTutorialStep(int stepIndex)
+    public void ShowPanel(int panelIndex)
     {
-        if (stepIndex < 0 || stepIndex >= tutorialSteps.Length)
+        if (panelIndex < 0 || panelIndex >= tutorialPanels.Length)
         {
-            Debug.LogWarning($"Tutorial step {stepIndex} out of range!");
+            Debug.LogWarning($"Tutorial panel {panelIndex} out of range!");
             return;
         }
 
-        currentStepIndex = stepIndex;
-        TutorialStep step = tutorialSteps[stepIndex];
+        HideAllPanels();
 
-        if (step.pauseGame)
+        currentPanelIndex = panelIndex;
+        tutorialPanels[panelIndex].SetActive(true);
+        isShowingTutorial = true;
+
+        if (pauseGameDuringTutorial)
         {
             Time.timeScale = 0f;
         }
 
-        if (tutorialText != null)
-            tutorialText.text = step.tutorialText;
-
-        if (continuePrompt != null)
-            continuePrompt.gameObject.SetActive(step.requiresInput);
-
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(true);
-
-        isShowingTutorial = true;
-        canContinue = step.requiresInput;
-
-        Debug.Log($"Showing tutorial: {step.stepName}");
+        Debug.Log($"Showing tutorial panel {panelIndex}");
     }
 
-    public void HideTutorial()
+    public void HideCurrentPanel()
     {
-        if (tutorialPanel != null)
-            tutorialPanel.SetActive(false);
+        if (currentPanelIndex >= 0 && currentPanelIndex < tutorialPanels.Length)
+        {
+            tutorialPanels[currentPanelIndex].SetActive(false);
+        }
+
+        currentPanelIndex = -1;
+        isShowingTutorial = false;
 
         Time.timeScale = 1f;
 
-        isShowingTutorial = false;
-        canContinue = false;
+        Debug.Log("Tutorial panel hidden, game resumed");
+    }
 
-        Debug.Log("Tutorial hidden, game resumed");
+    private void HideAllPanels()
+    {
+        foreach (GameObject panel in tutorialPanels)
+        {
+            if (panel != null)
+            {
+                panel.SetActive(false);
+            }
+        }
     }
 
     public bool IsShowingTutorial()
@@ -100,8 +78,8 @@ public class TutorialScene : MonoBehaviour
         return isShowingTutorial;
     }
 
-    public int GetCurrentStepIndex()
+    public bool IsTutorialPaused()
     {
-        return currentStepIndex;
+        return isShowingTutorial && pauseGameDuringTutorial;
     }
 }

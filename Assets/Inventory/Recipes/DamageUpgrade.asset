@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Damage Upgrade
   ingredients:
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
-  - {fileID: 11400000, guid: f6980fb10b94ab84ab41ba21afc0bbf5, type: 2}
-  - {fileID: 11400000, guid: 4dad45cae4b3ff54d93ebcd11c7afc73, type: 2}
+  - item: {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: f6980fb10b94ab84ab41ba21afc0bbf5, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 4dad45cae4b3ff54d93ebcd11c7afc73, type: 2}
+    amount: 1
   output: {fileID: 11400000, guid: 18bef0ccd5004b443bed224d61e99394, type: 2}
   outputAmount: 1
   loreText: 

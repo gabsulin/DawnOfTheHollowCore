@@ -7,6 +7,9 @@ public class AreaDeathZone : MonoBehaviour
     [Tooltip("Which area this death zone protects (1, 2, 3, or 4)")]
     [SerializeField] private int protectedAreaId = 1;
 
+    [Tooltip("Buffer distance INSIDE the area boundary (prevents NPC spawn before death)")]
+    [SerializeField] private float radiusOffset = 2f;
+
     [Tooltip("Instant death or damage over time?")]
     [SerializeField] private bool instantDeath = true;
 
@@ -81,12 +84,14 @@ public class AreaDeathZone : MonoBehaviour
                 if (AreaUnlockManager.Instance.IsNPCDialogueCompleted(1))
                 {
                     particleVisual.SetActive(false);
-                    Debug.Log($"[AreaDeathZone] Area 1 unlocked during gameplay - deactivating zone");
+                    Debug.Log($"[AreaDeathZone] Area 1 particles hidden (dialogue complete)");
+
                     RefreshAllDeathZoneVisuals();
                     return;
                 }
             }
         }
+
         UpdateParticleVisibility();
 
         if (!instantDeath && !isPlayerInside && playerInZone != null)
@@ -193,13 +198,21 @@ public class AreaDeathZone : MonoBehaviour
 
         particleVisual.SetActive(false);
     }
-
     private void UpdateParticleVisibility()
     {
         if (particleVisual == null || zoneDeactivated) return;
         if (AreaUnlockManager.Instance == null) return;
 
         bool shouldShow = IsNextLockedArea();
+
+        if (protectedAreaId == 1 && shouldShow)
+        {
+            if (AreaUnlockManager.Instance.IsNPCDialogueCompleted(1))
+            {
+                shouldShow = false;
+                Debug.Log($"[AreaDeathZone] Area 1 dialogue complete - hiding particles (no key required)");
+            }
+        }
 
         if (particleVisual.activeSelf != shouldShow)
         {
@@ -232,8 +245,10 @@ public class AreaDeathZone : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
+
     private static void RefreshAllDeathZoneVisuals()
     {
         if (allDeathZones == null) return;
@@ -266,6 +281,7 @@ public class AreaDeathZone : MonoBehaviour
 
         Debug.Log($"[AreaDeathZone] Area {protectedAreaId} death zone deactivated");
     }
+
     private void ShowWarning()
     {
         if (AreaUnlockManager.Instance != null)

@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Shields Upgrade
   ingredients:
-  - {fileID: 11400000, guid: 076be63c7c3226342ad7696dad83e23e, type: 2}
-  - {fileID: 11400000, guid: cafecea437b14764aa29d596a1ca5be1, type: 2}
-  - {fileID: 11400000, guid: 4dad45cae4b3ff54d93ebcd11c7afc73, type: 2}
+  - item: {fileID: 11400000, guid: 076be63c7c3226342ad7696dad83e23e, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 4dad45cae4b3ff54d93ebcd11c7afc73, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: cafecea437b14764aa29d596a1ca5be1, type: 2}
+    amount: 1
   output: {fileID: 11400000, guid: 4b3e08f1d7ab5694ea1cdf00e80d02da, type: 2}
   outputAmount: 1
   loreText: 

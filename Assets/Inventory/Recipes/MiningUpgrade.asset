@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Mining Upgrade
   ingredients:
-  - {fileID: 11400000, guid: d0ee612389671a549b02460604960b93, type: 2}
-  - {fileID: 11400000, guid: d0ee612389671a549b02460604960b93, type: 2}
-  - {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
-  - {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+  - item: {fileID: 11400000, guid: d0ee612389671a549b02460604960b93, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: c790ac91a652faf4395c29a2a84df19b, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+    amount: 1
   output: {fileID: 11400000, guid: 7c5ebb6fe24534748be50f0b53966e91, type: 2}
   outputAmount: 1
   loreText: 

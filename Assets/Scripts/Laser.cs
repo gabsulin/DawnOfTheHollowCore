@@ -12,6 +12,7 @@ public class Laser : MonoBehaviour
     public Transform firePoint;
     public GameObject startVFX;
     public GameObject endVFX;
+    private TutorialScene tutorialManager;
 
     private InventoryController inventoryController;
 
@@ -39,6 +40,7 @@ public class Laser : MonoBehaviour
         FillLists();
         DisableLaser();
         inventoryController = FindFirstObjectByType<InventoryController>();
+        tutorialManager = FindFirstObjectByType<TutorialScene>();
         mpb = new MaterialPropertyBlock();
 
         Physics2D.queriesHitTriggers = false;
@@ -103,12 +105,12 @@ public class Laser : MonoBehaviour
         if (DialogueUI.Instance != null && DialogueUI.Instance.IsShowingDialogue())
             return true;
 
+        if (tutorialManager != null && tutorialManager.IsShowingTutorial())
+            return true;
+
         return false;
     }
 
-    // ============================================================
-    // ATTACK LASER
-    // ============================================================
     private void UpdateLaser_Attack()
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
