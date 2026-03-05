@@ -16,7 +16,8 @@ public class EnemyPathfinder : MonoBehaviour
     [Header("Pathfinding Settings")]
     public float pathUpdateInterval = 0.5f;
     public float targetMovementThreshold = 1.5f;
-    public int maxPathfindingIterations = 500;
+    // Increased from 500 - area 4's larger spawn distances require more A* nodes to search
+    public int maxPathfindingIterations = 2000;
 
     [Header("Combat Settings")]
     public float attackCooldownDuration = 1.5f;
@@ -105,7 +106,7 @@ public class EnemyPathfinder : MonoBehaviour
         else
         {
             animator.SetBool(AnimIsMoving, false);
-            if(animator.HasState(0, AnimIsIdle))
+            if (animator.HasState(0, AnimIsIdle))
                 animator.SetBool(AnimIsIdle, true);
 
             if (distanceToTarget <= attackRange && attackCooldown <= 0f && !playerHp.isDead && !coreHp.isDead)
@@ -122,6 +123,10 @@ public class EnemyPathfinder : MonoBehaviour
 
         if (pathTimer > 0f || currentTarget == null || grid == null)
             return false;
+
+        bool pathExhausted = currentPath != null && currentPath.Count > 0 && pathIndex >= currentPath.Count - 1;
+        if (pathExhausted)
+            return true;
 
         float distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
         if (distanceToTarget <= attackRange && currentPath != null && currentPath.Count > 0)

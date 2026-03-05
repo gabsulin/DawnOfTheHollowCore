@@ -111,19 +111,11 @@ public class PlayerHpSystem : MonoBehaviour
     {
         if (isDead) return;
 
-        AudioManager.Instance?.PlaySFX("PlayerDeath");
-
         isDead = true;
         playerController.canMove = false;
         playerController.canAttack = false;
         anim.SetBool("IsDead", true);
     }
-
-    private IEnumerator PlayDeathAnimation()
-    {
-        yield return new WaitForSeconds(2f);
-    }
-
     private IEnumerator RegenerateShields()
     {
         isRegeneratingShields = true;

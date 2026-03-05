@@ -344,7 +344,7 @@ MonoBehaviour:
   attackRange: 6
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
-  maxPathfindingIterations: 500
+  maxPathfindingIterations: 1000
   attackCooldownDuration: 1.5
 --- !u!114 &977418769993609790
 MonoBehaviour:

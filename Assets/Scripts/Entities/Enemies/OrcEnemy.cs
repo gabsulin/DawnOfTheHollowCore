@@ -2,50 +2,45 @@ using UnityEngine;
 
 public class OrcEnemy : Enemy
 {
+    [Header("Orc Attack Settings")]
+    [SerializeField] private Transform centerOfAttack;
+    [SerializeField] private float attackRadius = 1f;
+
     protected override void Start()
     {
         base.Start();
-        player = FindFirstObjectByType<PlayerController>().transform;
-    }
-
-    private void Update()
-    {
-        // nothing animation-related here anymore
     }
 
     public override void Attack()
     {
-        // handled by EnemyPathfinder
-    }
+        currentState = EnemyState.Attack;
 
-    public override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && attackHitbox != null)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(centerOfAttack.position, attackRadius);
+
+        foreach (Collider2D hit in hits)
         {
-            if (collision.collider.IsTouching(attackHitbox))
+            if (hit.CompareTag("Player"))
             {
-                PlayerHpSystem playerHp = collision.collider.GetComponent<PlayerHpSystem>();
-                playerHp.TakeHit(damage);
+                PlayerHpSystem playerHp = hit.GetComponent<PlayerHpSystem>();
+                if (playerHp != null) playerHp.TakeHit(damage);
+            }
 
-
-                // knockback
-                player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
-                DeactivateAttackHitbox();
+            if (hit.GetComponent<Core>() != null)
+            {
+                CoreHpSystem coreHp = hit.GetComponent<CoreHpSystem>();
+                if (coreHp != null) coreHp.TakeHit(damage);
             }
         }
-        if (collision.gameObject.GetComponent<Core>() != null)
-        {
-            var hp = collision.gameObject.GetComponent<CoreHpSystem>();
-            if (hp != null) hp.TakeHit(damage);
-
-            DeactivateAttackHitbox();
-        }
-
     }
+
+    public override void OnCollisionEnter2D(Collision2D collision) { }
 
     protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 1);
+        if (centerOfAttack != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
+        }
     }
 }

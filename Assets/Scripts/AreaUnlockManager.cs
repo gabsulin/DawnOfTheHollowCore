@@ -167,6 +167,7 @@ public class AreaUnlockManager : MonoBehaviour
                 inventoryManager.RemoveItem(req.requiredKey, 1);
                 req.areaUnlocked = true;
                 SaveProgressionState();
+                AudioManager.Instance?.PlaySFX("Unlock");
                 DebugLog($"Area {areaId} unlocked permanently! Key consumed: {req.requiredKey.itemName}");
                 return true;
             }

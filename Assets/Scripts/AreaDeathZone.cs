@@ -13,9 +13,6 @@ public class AreaDeathZone : MonoBehaviour
     [Tooltip("Instant death or damage over time?")]
     [SerializeField] private bool instantDeath = true;
 
-    [Tooltip("Damage per second if not instant death")]
-    [SerializeField] private int damagePerSecond = 50;
-
     public int ProtectedAreaId => protectedAreaId;
 
     [Header("Particle Settings")]
@@ -186,7 +183,8 @@ public class AreaDeathZone : MonoBehaviour
         {
             particleScript.SetRadius(radius);
 
-            int particleCount = baseParticleCount * protectedAreaId;
+            float circumference = 2f * Mathf.PI * radius;
+            int particleCount = Mathf.RoundToInt(baseParticleCount * circumference);
             particleScript.SetParticleCount(particleCount);
 
             Debug.Log($"[AreaDeathZone] Area {protectedAreaId} particles created: {particleCount} particles at radius {radius}");

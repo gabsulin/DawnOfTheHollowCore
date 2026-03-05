@@ -32,6 +32,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
         Debug.Log($"Applying upgrade: {item.itemName}");
+        AudioManager.Instance?.PlaySFX("Upgrade");
 
         if (item.moveSpeedBonus != 0)
         {
