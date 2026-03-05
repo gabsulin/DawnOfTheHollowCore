@@ -50,11 +50,6 @@ public class PlayerController : MonoBehaviour
         {
             HandleInput();
         }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            TriggerDeath();
-        }
     }
 
     private void FixedUpdate()
