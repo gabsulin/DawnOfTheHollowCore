@@ -88,6 +88,17 @@ public class InventorySlotUI : MonoBehaviour,
                 return;
             }
 
+            if (slot.item.type == ItemType.Consumable)
+            {
+                UpgradeManager.Instance.UseConsumable(slot.item);
+
+                slot.amount -= 1;
+                if (slot.amount <= 0) slot.Clear();
+
+                parentUI.RefreshAll();
+                return;
+            }
+
             var dropper = inventoryManager.GetComponent<ItemDropper>();
             if (dropper != null)
                 dropper.DropAtCursor(slot.item, 1);

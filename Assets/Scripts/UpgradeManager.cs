@@ -7,6 +7,7 @@ public class UpgradeManager : MonoBehaviour
     private PlayerController player;
     private PlayerHpSystem hp;
     private Laser laser;
+    private AbilityHolder abilityHolder;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class UpgradeManager : MonoBehaviour
         player = FindFirstObjectByType<PlayerController>();
         hp = FindFirstObjectByType<PlayerHpSystem>();
         laser = FindFirstObjectByType<Laser>();
+        abilityHolder = FindFirstObjectByType<AbilityHolder>();
     }
 
     public void ApplyUpgrade(ItemSO item)
@@ -64,6 +66,28 @@ public class UpgradeManager : MonoBehaviour
             Debug.Log($"Laser damage + {item.damageBonus}");
         }
 
+        if (item.dashCooldownReduction != 0 && abilityHolder != null && abilityHolder.ability != null)
+        {
+            float reduction = abilityHolder.ability.baseCooldownTime * item.dashCooldownReduction;
+            abilityHolder.ability.coolDownTime = Mathf.Max(abilityHolder.ability.coolDownTime - reduction, 0.1f);
+            Debug.Log($"Dash cooldown reduced by {item.dashCooldownReduction * 100f}% -> new cooldown: {abilityHolder.ability.coolDownTime:F2}s");
+        }
+
         Debug.Log("Upgrade applied successfully!");
+    }
+    public void UseConsumable(ItemSO item)
+    {
+        if (item.type != ItemType.Consumable)
+        {
+            Debug.LogWarning($"Tried to consume item '{item.name}' but it's not a Consumable.");
+            return;
+        }
+
+        if (item.healAmount != 0)
+        {
+            hp.Heal(item.healAmount);
+            AudioManager.Instance?.PlaySFX("Heal");
+            Debug.Log($"Healed for {item.healAmount}. Current HP: {hp.currentHp}/{hp.maxHp}");
+        }
     }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76620c232c9d4f24eb009fe1bb881342, type: 3}
+  m_Name: DashCooldown
+  m_EditorClassIdentifier: 
+  recipeName: Dash Cooldown Reduction
+  ingredients:
+  - item: {fileID: 11400000, guid: 37360169225975146830b3d73ce79a15, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6c0e63a1248329a4db2e3952fad1e597, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: f6980fb10b94ab84ab41ba21afc0bbf5, type: 2}
+    amount: 1
+  output: {fileID: 11400000, guid: 8a8552b2fe709834683b745d00513676, type: 2}
+  outputAmount: 1
+  loreText: 
+  isUnlocked: 0
+  craftingTier: 1

@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float moveSpeed = 5f;
 
     [Header("State")]
+    [Header("State")]
     public bool canMove = true;
     public bool canAttack = true;
     public bool isAttacking = false;

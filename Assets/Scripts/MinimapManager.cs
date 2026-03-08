@@ -59,25 +59,20 @@ public class MinimapManager : MonoBehaviour
             }
         }
 
-        // Nastav pozici kamery - 2D top-down (žádná rotace!)
         Vector3 corePosition = mapCore != null ? mapCore.position : Vector3.zero;
         minimapCamera.transform.position = new Vector3(corePosition.x, corePosition.y, cameraZ);
-        minimapCamera.transform.rotation = Quaternion.identity; // Žádná rotace!
+        minimapCamera.transform.rotation = Quaternion.identity;
 
-        // Nastav kameru pro 2D
         minimapCamera.orthographic = true;
         minimapCamera.orthographicSize = orthographicSize;
         minimapCamera.cullingMask = minimapLayers;
 
-        // Unity 6 - Background Type
         minimapCamera.clearFlags = CameraClearFlags.SolidColor;
         minimapCamera.backgroundColor = Color.black;
 
-        // Nastav near/far clipping
         minimapCamera.nearClipPlane = 0.1f;
         minimapCamera.farClipPlane = Mathf.Abs(cameraZ) + 10f;
 
-        // Pøiøaï RenderTexture
         if (renderTexture != null)
         {
             minimapCamera.targetTexture = renderTexture;
@@ -108,7 +103,6 @@ public class MinimapManager : MonoBehaviour
                 }
             }
 
-            // Pøidej 10% padding
             orthographicSize = maxRadius * 1.1f;
 
             if (minimapCamera != null)
@@ -140,7 +134,6 @@ public class MinimapManager : MonoBehaviour
             }
         }
 
-        // Smaž všechny existující ikony (pokud tam jsou z pøedchozího bìhu)
         foreach (Transform child in playerTransform)
         {
             if (child.name == "PlayerIcon_Minimap")
@@ -167,28 +160,22 @@ public class MinimapManager : MonoBehaviour
         playerIcon = new GameObject("PlayerIcon_Minimap");
         playerIcon.transform.SetParent(playerTransform);
 
-        // DÙLEŽITÉ: Z pozice = -10 (stejnì jako hlavní kamera pro 2D top-down)
         playerIcon.transform.localPosition = new Vector3(0, 0, -10);
 
         playerIcon.layer = LayerMask.NameToLayer("Player");
 
-        // SpriteRenderer pro ikonu
         SpriteRenderer sr = playerIcon.AddComponent<SpriteRenderer>();
 
-        // Použij vestavìný Unity sprite (Circle)
-        // Alternativa: Resources.Load<Sprite>("Circle") nebo vlastní sprite
         Sprite circleSprite = Resources.GetBuiltinResource<Sprite>("UI/Skin/Knob.psd");
         if (circleSprite == null)
         {
-            // Fallback: vytvoø sprite programovì
             circleSprite = CreateCircleSprite(64);
         }
 
         sr.sprite = circleSprite;
-        sr.color = Color.yellow; // Žlutá barva pro lepší viditelnost
+        sr.color = Color.yellow;
         sr.sortingOrder = 100;
 
-        // Škálování podle velikosti mapy
         float iconSize = orthographicSize * 0.05f;
         playerIcon.transform.localScale = Vector3.one * iconSize;
 
@@ -202,14 +189,13 @@ public class MinimapManager : MonoBehaviour
         Color[] pixels = new Color[resolution * resolution];
 
         Vector2 center = new Vector2(resolution / 2f, resolution / 2f);
-        float radius = resolution / 2f - 1; // -1 aby nebyl oøíznutý
+        float radius = resolution / 2f - 1;
 
         for (int y = 0; y < resolution; y++)
         {
             for (int x = 0; x < resolution; x++)
             {
                 float distance = Vector2.Distance(new Vector2(x, y), center);
-                // Vyhlazený okraj
                 float alpha = distance <= radius ? 1f : 0f;
                 if (distance > radius - 2f && distance <= radius)
                 {
@@ -234,7 +220,6 @@ public class MinimapManager : MonoBehaviour
         }
     }
 
-    // Volitelné: sledování hráèe (mapa se posune s hráèem)
     public void EnableFollowPlayer(bool follow)
     {
         if (follow)
@@ -260,7 +245,6 @@ public class MinimapManager : MonoBehaviour
         }
     }
 
-    // Veøejné metody
     public void SetZoom(float zoom)
     {
         zoomLevel = Mathf.Clamp(zoom, 0.5f, 3f);

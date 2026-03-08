@@ -34,11 +34,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        PlayMusic("Menu", false);
-    }
-
     private void LoadSettings()
     {
         targetMusicVolume = PlayerPrefs.GetFloat(KeyMusicVolume, 1f);
@@ -141,7 +136,7 @@ public class AudioManager : MonoBehaviour
 
         AudioClip clip = s.GetRandomClip();
         if (clip != null)
-            sfxSource.PlayOneShot(clip);
+            sfxSource?.PlayOneShot(clip);
     }
 
     public void ToggleMusic()

@@ -8,18 +8,24 @@ public class PauseMenu : MonoBehaviour
 
     private bool isPaused = false;
     private TutorialScene tutorialScene;
+    private InventoryController inventoryController;
 
     void Start()
     {
         pausePanel.SetActive(false);
         settingsPanel.SetActive(false);
         tutorialScene = FindFirstObjectByType<TutorialScene>();
+        inventoryController = FindFirstObjectByType<InventoryController>();
+        Debug.Log(inventoryController);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (inventoryController != null && inventoryController.open)
+                return;
+
             if (settingsPanel.activeSelf)
             {
                 CloseSettings();

@@ -5,7 +5,14 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     private void Start()
     {
-        AudioManager.Instance.PlayMusic("Normal", false);
+        if(AudioManager.Instance != null)
+        {
+            Debug.Log("Playing menu music.");
+            AudioManager.Instance.PlayMusic("Normal", false);
+        } else
+        {
+            Debug.LogWarning("AudioManager instance not found. Music will not play.");
+        }
     }
     public void SendPlayerToTutorial()
     {

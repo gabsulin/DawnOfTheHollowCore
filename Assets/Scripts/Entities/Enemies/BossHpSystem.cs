@@ -11,8 +11,14 @@ public class BossHpSystem : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private int maxHealth = 150;
-    private int currentHealth;
+    [SerializeField] private int currentHealth;
     public bool isDead = false;
+
+    [Header("Boss Loot")]
+    [SerializeField] private GameObject worldItemPrefab;
+    [SerializeField] private ItemSO bossDropItem;
+    [SerializeField] private int bossDropAmount = 1;
+    [SerializeField] private RecipeSO keyRecipeToUnlock;
 
     void Start()
     {
@@ -54,5 +60,30 @@ public class BossHpSystem : MonoBehaviour
 
         if (boss != null)
             boss.OnDeath();
+
+        DropLoot();
+        UnlockKeyRecipe();
+    }
+
+    private void DropLoot()
+    {
+        if (worldItemPrefab == null || bossDropItem == null || boss == null) return;
+
+        GameObject go = Instantiate(worldItemPrefab, boss.transform.position, Quaternion.identity);
+
+        var wi = go.GetComponent<WorldItem>();
+        if (wi != null)
+        {
+            wi.Initialize(bossDropItem, bossDropAmount);
+            wi.ApplyPickupDelay();
+        }
+    }
+
+    private void UnlockKeyRecipe()
+    {
+        if (keyRecipeToUnlock == null) return;
+
+        if (RecipeManager.Instance != null)
+            RecipeManager.Instance.UnlockRecipe(keyRecipeToUnlock);
     }
 }

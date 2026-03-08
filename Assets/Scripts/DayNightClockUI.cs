@@ -43,6 +43,12 @@ public class DayNightClockUI : MonoBehaviour
             nightCounterLabel.text = NightCounter.currentNight > 0
                 ? $"Night {NightCounter.currentNight}"
                 : "Day";
+        if(nightCounterLabel != null)
+        {
+            nightCounterLabel.text = NightCounter.currentNight == 20
+                ? "Eternal Night"
+                : nightCounterLabel.text;
+        }
     }
 
     private void HandleDayStart()

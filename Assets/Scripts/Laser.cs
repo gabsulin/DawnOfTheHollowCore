@@ -99,6 +99,9 @@ public class Laser : MonoBehaviour
     }
     private bool IsPlayerBlocked()
     {
+        if (Time.timeScale == 0f)
+            return true;
+
         if (inventoryController != null && inventoryController.open)
             return true;
 

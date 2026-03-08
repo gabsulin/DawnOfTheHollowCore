@@ -17,7 +17,9 @@ MonoBehaviour:
   maxStack: 1
   type: 7
   rarity: 0
-  description: Right click on item to apply upgrade.
+  description: 'Right click on item to apply upgrade.
+
+    +5 Speed'
   value: 0
   tags: []
   moveSpeedBonus: 5
@@ -25,3 +27,5 @@ MonoBehaviour:
   maxHealthBonus: 0
   maxShieldBonus: 0
   damageBonus: 0
+  dashCooldownReduction: 0
+  healAmount: 0

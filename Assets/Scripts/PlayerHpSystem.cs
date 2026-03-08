@@ -142,4 +142,10 @@ public class PlayerHpSystem : MonoBehaviour
         currentShields += amount;
         UpdateUI();
     }
+
+    public void Heal(float amount)
+    {
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
+        UpdateUI();
+    }
 }

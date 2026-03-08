@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: KeyToArea2
   m_EditorClassIdentifier: 
   itemName: Verdant Key
-  icon: {fileID: -8342056783612956605, guid: 64fbe370b56f9a74fb2761536d7d5510, type: 3}
+  icon: {fileID: 21300000, guid: 64fbe370b56f9a74fb2761536d7d5510, type: 3}
   maxStack: 1
   type: 3
   rarity: 1
   description: Walk into area 2 and the key will use itself and disappear from the
     inventory.
-  value: 0
-  tags: []
   moveSpeedBonus: 0
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
   maxShieldBonus: 0
   damageBonus: 0
+  dashCooldownReduction: 0
+  healAmount: 0

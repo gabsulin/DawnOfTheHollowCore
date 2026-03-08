@@ -112,12 +112,12 @@ TextureImporter:
       name: menuButtons_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 53
+        width: 55
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: menuButtons_1
       rect:
         serializedVersion: 2
-        x: 55
+        x: 54
         y: 0
-        width: 53
+        width: 55
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: menuButtons_2
       rect:
         serializedVersion: 2
-        x: 109
+        x: 108
         y: 0
-        width: 53
+        width: 55
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: menuButtons_3
       rect:
         serializedVersion: 2
-        x: 163
+        x: 162
         y: 0
-        width: 53
+        width: 55
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 11373299ec67e2d488fc0784b0ed5615
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -209,11 +209,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      menuButtons_0: -1780020970381023785
-      menuButtons_1: -8116832724500392004
-      menuButtons_2: -707739129474786754
-      menuButtons_3: 7280839829642279632
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

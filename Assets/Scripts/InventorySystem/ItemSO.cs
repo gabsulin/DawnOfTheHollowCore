@@ -1,10 +1,9 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public enum ItemType { Ore, Crystal, BioResidue, Tool, Consumable, CoreFragment, Material, Upgrade }
 public enum Rarity { Common, Rare, Epic, Legendary, Mythic }
 
-[CreateAssetMenu(fileName = "New Item", menuName = "DoHC/Item")]
+[CreateAssetMenu(fileName = "New Item", menuName = "InventorySystem/Item")]
 public class ItemSO : ScriptableObject
 {
     public string itemName;
@@ -13,8 +12,6 @@ public class ItemSO : ScriptableObject
     public ItemType type;
     public Rarity rarity;
     [TextArea(3, 6)] public string description;
-    public int value;
-    public List<string> tags = new List<string>();
 
     public string SaveId => name;
 
@@ -24,4 +21,7 @@ public class ItemSO : ScriptableObject
     public float maxHealthBonus;
     public float maxShieldBonus;
     public int damageBonus;
+    [Range(0f, 1f)] public float dashCooldownReduction;
+    [Header("Consumable Stats")]
+    public float healAmount;
 }

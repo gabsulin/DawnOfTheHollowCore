@@ -39,6 +39,7 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log("chcip");
         (AudioManager.Instance)?.PlaySFX("EnemyDeath");
+        GetComponent<Collider2D>().enabled = false;
         if (!isAddedToGameStats)
         {
             isAddedToGameStats = true;
@@ -50,16 +51,6 @@ public class EnemyHealth : MonoBehaviour
         anim.SetBool("IsMoving", false);
         anim.SetBool("IsIdle", false);
         anim.ResetTrigger("Attack");
-
-        var vampire = GetComponent<VampireEnemy>();
-        /*if (vampire != null && vampire.hasRevived)
-        {
-            RemoveFromList();
-        }
-        else
-        {
-            RemoveFromList();
-        }*/
     }
 
     public void DestroyAfterDeath()

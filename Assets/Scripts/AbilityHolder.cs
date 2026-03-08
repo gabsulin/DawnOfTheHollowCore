@@ -102,7 +102,8 @@ public class AbilityHolder : MonoBehaviour
     }
     private void ResetAbility()
     {
-        if (ability is DashAbility)
+        if (ability is 
+            Ability)
         {
             rb.linearVelocity = Vector2.zero;
         }

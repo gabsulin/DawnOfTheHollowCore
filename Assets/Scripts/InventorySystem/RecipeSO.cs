@@ -8,7 +8,7 @@ public class RecipeIngredient
     [Min(1)] public int amount = 1;
 }
 
-[CreateAssetMenu(fileName = "New Recipe", menuName = "DoHC/Recipe")]
+[CreateAssetMenu(fileName = "New Recipe", menuName = "InventorySystem/Recipe")]
 public class RecipeSO : ScriptableObject
 {
     public string recipeName;
