@@ -23,7 +23,6 @@ public class OrcEnemy : Enemy
             {
                 PlayerHpSystem playerHp = hit.GetComponent<PlayerHpSystem>();
                 if (playerHp != null) playerHp.TakeHit(damage);
-                cameraShake.StartShake(force: 0.1f);
             }
 
             if (hit.GetComponent<Core>() != null)

@@ -40,7 +40,6 @@ public class PlayerDamage : MonoBehaviour
         if (playerHp != null)
         {
             playerHp.TakeHit(damage);
-            cameraShake.StartShake(force: 0.1f);
 
             if (anim != null)
             {

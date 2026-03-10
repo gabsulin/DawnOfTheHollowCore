@@ -8,9 +8,14 @@ public class SlimeEnemy : Enemy
     public float jumpDuration = 0.5f;
     private bool isJumping = false;
 
+    private Collider2D coreCollider;
+
     protected override void Start()
     {
         base.Start();
+
+        if (coreObject != null)
+            coreCollider = coreObject.GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -30,7 +35,12 @@ public class SlimeEnemy : Enemy
         Vector2 startPos = transform.position;
 
         Transform currentTarget = GetCurrentTarget();
-        Vector2 targetPos = currentTarget.position;
+
+        Vector2 targetPos;
+        if (currentTarget == core && coreCollider != null)
+            targetPos = coreCollider.ClosestPoint(startPos);
+        else
+            targetPos = currentTarget.position;
 
         float timer = 0f;
         while (timer < jumpDuration)
@@ -75,7 +85,6 @@ public class SlimeEnemy : Enemy
             {
                 PlayerHpSystem playerHp = collision.GetComponent<PlayerHpSystem>();
                 playerHp.TakeHit(damage);
-                cameraShake.StartShake(force: 0.1f);
                 rb.linearVelocity = Vector3.zero;
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                 currentState = EnemyState.Idle;

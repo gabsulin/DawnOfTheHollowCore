@@ -16,8 +16,7 @@ public class EnemyPathfinder : MonoBehaviour
     [Header("Pathfinding Settings")]
     public float pathUpdateInterval = 0.5f;
     public float targetMovementThreshold = 1.5f;
-    // Increased from 500 - area 4's larger spawn distances require more A* nodes to search
-    public int maxPathfindingIterations = 2000;
+    public int maxPathfindingIterations = 500;
 
     [Header("Combat Settings")]
     public float attackCooldownDuration = 1.5f;
@@ -37,6 +36,9 @@ public class EnemyPathfinder : MonoBehaviour
     private Vector2Int lastEnemyGridPos;
     private bool hasCalculatedFirstPath = false;
 
+    // --- FIX: cache the Core's collider so we can find the closest surface point ---
+    private Collider2D coreCollider;
+
     private static readonly int AnimAttack = Animator.StringToHash("Attack");
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
     private static readonly int AnimIsIdle = Animator.StringToHash("IsIdle");
@@ -53,35 +55,45 @@ public class EnemyPathfinder : MonoBehaviour
         flip = GetComponent<EnemyFlip>();
         enemy = GetComponent<Enemy>();
 
+        // --- FIX: grab the collider from the Core GameObject ---
+        var coreObj = FindFirstObjectByType<Core>();
+        if (coreObj != null)
+            coreCollider = coreObj.GetComponent<Collider2D>();
+
         pathTimer = Random.Range(0f, pathUpdateInterval * 0.5f);
 
         if (enemy != null)
         {
             currentTarget = enemy.GetCurrentTarget();
             if (currentTarget != null)
-            {
                 lastTargetPosition = currentTarget.position;
-            }
         }
 
         lastEnemyGridPos = grid != null ? grid.WorldToGrid(transform.position) : Vector2Int.zero;
     }
 
+    private Vector2 GetEffectiveTargetPosition()
+    {
+        if (currentTarget == null)
+            return transform.position;
+
+        if (enemy != null && currentTarget == enemy.core && coreCollider != null)
+            return coreCollider.ClosestPoint(transform.position);
+            
+        return currentTarget.position;
+    }
+
     void Update()
     {
         if (enemy != null)
-        {
             currentTarget = enemy.GetCurrentTarget();
-        }
 
         if (playerHp == null || playerHp.isDead) return;
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName(AttackStateName))
             return;
 
-        float distanceToTarget = currentTarget != null
-            ? Vector2.Distance(transform.position, currentTarget.position)
-            : float.MaxValue;
+        float distanceToTarget = Vector2.Distance(transform.position, GetEffectiveTargetPosition());
 
         attackCooldown -= Time.deltaTime;
         pathTimer -= Time.deltaTime;
@@ -90,9 +102,7 @@ public class EnemyPathfinder : MonoBehaviour
             flip.LookAtPlayer();
 
         if (ShouldRecalculatePath())
-        {
             RecalculatePath();
-        }
 
         if (ShouldMove())
         {
@@ -110,9 +120,7 @@ public class EnemyPathfinder : MonoBehaviour
                 animator.SetBool(AnimIsIdle, true);
 
             if (distanceToTarget <= attackRange && attackCooldown <= 0f && !playerHp.isDead && !coreHp.isDead)
-            {
                 AttackTarget();
-            }
         }
     }
 
@@ -124,18 +132,13 @@ public class EnemyPathfinder : MonoBehaviour
         if (pathTimer > 0f || currentTarget == null || grid == null)
             return false;
 
-        bool pathExhausted = currentPath != null && currentPath.Count > 0 && pathIndex >= currentPath.Count - 1;
-        if (pathExhausted)
-            return true;
-
-        float distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+        float distanceToTarget = Vector2.Distance(transform.position, GetEffectiveTargetPosition());
         if (distanceToTarget <= attackRange && currentPath != null && currentPath.Count > 0)
             return false;
 
         if (lastTargetPosition != Vector3.zero)
         {
             float targetMovedDistance = Vector3.Distance(currentTarget.position, lastTargetPosition);
-
             if (targetMovedDistance < targetMovementThreshold && currentPath != null && currentPath.Count > 0)
                 return false;
         }
@@ -150,7 +153,8 @@ public class EnemyPathfinder : MonoBehaviour
     void RecalculatePath()
     {
         Vector2Int enemyPos = grid.WorldToGrid(transform.position);
-        Vector2Int targetPos = grid.WorldToGrid(currentTarget.position);
+
+        Vector2Int targetPos = grid.WorldToGrid(GetEffectiveTargetPosition());
 
         if (enemyPos == targetPos)
         {
@@ -162,13 +166,7 @@ public class EnemyPathfinder : MonoBehaviour
         }
 
         currentPath = AStarPathFinder.FindPath(enemyPos, targetPos, grid, maxPathfindingIterations);
-
         pathIndex = 0;
-
-        if (currentPath != null && currentPath.Count > 0)
-        {
-            pathIndex = 0;
-        }
 
         lastTargetPosition = currentTarget.position;
         lastEnemyGridPos = enemyPos;
@@ -185,7 +183,7 @@ public class EnemyPathfinder : MonoBehaviour
             return false;
 
         float distanceToTarget = currentTarget != null
-            ? Vector2.Distance(transform.position, currentTarget.position)
+            ? Vector2.Distance(transform.position, GetEffectiveTargetPosition())
             : float.MaxValue;
 
         if (distanceToTarget <= attackRange)

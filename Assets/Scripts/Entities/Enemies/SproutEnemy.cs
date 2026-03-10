@@ -45,7 +45,6 @@ public class SproutEnemy : Enemy
                 {
                     playerHp.TakeHit(damage);
                     Debug.Log($"Sprout hit player for {damage} damage!");
-                    cameraShake.StartShake(force: 0.1f);
                 }
             }
 

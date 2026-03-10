@@ -12,6 +12,11 @@ public class TutorialScene : MonoBehaviour
     private int currentPanelIndex = -1;
     private bool isShowingTutorial = false;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = -1;
+        QualitySettings.vSyncCount = 1;
+    }
     void Start()
     {
         HideAllPanels();

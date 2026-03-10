@@ -304,7 +304,6 @@ public class SeekerBoss : Enemy
                 if (playerHp != null)
                 {
                     playerHp.TakeHit(damage);
-                    cameraShake.StartShake(force: 0.1f);
                 }
             }
 
