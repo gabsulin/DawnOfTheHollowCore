@@ -7,7 +7,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     public Sound[] music, sfx;
-    public AudioSource musicSource, loopSource, sfxSource;
+    public AudioSource musicSource, loopSource, sfxSource, sfxLoopSource;
 
     [Header("Crossfade")]
     public float fadeDuration = 1.5f;
@@ -137,6 +137,27 @@ public class AudioManager : MonoBehaviour
         AudioClip clip = s.GetRandomClip();
         if (clip != null)
             sfxSource?.PlayOneShot(clip);
+    }
+
+    public void PlaySFXLoop(string name)
+    {
+        Sound s = Array.Find(sfx, x => x.name == name);
+        if (s == null) return;
+
+        AudioClip clip = s.GetRandomClip();
+        if (clip == null) return;
+
+        if (sfxLoopSource.clip == clip && sfxLoopSource.isPlaying) return;
+
+        sfxLoopSource.clip = clip;
+        sfxLoopSource.loop = true;
+        sfxLoopSource.Play();
+    }
+
+    public void StopSFXLoop()
+    {
+        sfxLoopSource.Stop();
+        sfxLoopSource.clip = null;
     }
 
     public void ToggleMusic()

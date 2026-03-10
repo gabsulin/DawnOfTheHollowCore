@@ -193,6 +193,7 @@ public class Laser : MonoBehaviour
     // ============================================================
     void EnableLaser()
     {
+        AudioManager.Instance?.PlaySFXLoop("Laser");
         lineRenderer.enabled = true;
         SetLaserModeVisuals();
 
@@ -202,6 +203,7 @@ public class Laser : MonoBehaviour
 
     private void DisableLaser()
     {
+        AudioManager.Instance?.StopSFXLoop();
         lineRenderer.enabled = false;
 
         foreach (var ps in particles)
