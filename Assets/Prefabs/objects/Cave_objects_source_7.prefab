@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 60930209286629743}
   - component: {fileID: 5746004465618247928}
-  - component: {fileID: -4733077063822444470}
   - component: {fileID: -8503570000598918081}
+  - component: {fileID: 3011773382882792865}
   m_Layer: 7
   m_Name: Cave_objects_source_7
   m_TagString: Untagged
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 7
   m_Sprite: {fileID: 6674020307270321034, guid: 50246345b47d64646b4d75ec2c9a3c1f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,8 +89,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &-4733077063822444470
-PolygonCollider2D:
+--- !u!50 &-8503570000598918081
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730262577066195635}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &3011773382882792865
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,7 +150,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.008790851, y: -0.6272721}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -132,60 +159,6 @@ PolygonCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 1
-  m_Points:
-    m_Paths:
-    - - {x: 0.59375, y: -0.671875}
-      - {x: 0.4375, y: -0.609375}
-      - {x: 0.71875, y: -0.296875}
-      - {x: 0.84375, y: 0.078125}
-      - {x: 0.84375, y: 0.390625}
-      - {x: 0.625, y: 0.609375}
-      - {x: 0.65625, y: 0.890625}
-      - {x: 0.4375, y: 1.359375}
-      - {x: 0.25, y: 1.546875}
-      - {x: 0.03125, y: 1.546875}
-      - {x: -0.15625, y: 1.484375}
-      - {x: -0.59375, y: 1.390625}
-      - {x: -0.625, y: 0.890625}
-      - {x: -0.625, y: 0.671875}
-      - {x: -0.84375, y: 0.453125}
-      - {x: -0.84375, y: 0.078125}
-      - {x: -0.625, y: -0.484375}
-      - {x: -0.65625, y: -0.953125}
-      - {x: -0.84375, y: -1.171875}
-      - {x: -0.84375, y: -1.359375}
-      - {x: -0.78125, y: -1.421875}
-      - {x: -0.15625, y: -1.546875}
-      - {x: 0.375, y: -1.546875}
-      - {x: 0.59375, y: -1.390625}
-      - {x: 0.6875, y: -1.171875}
-      - {x: 0.6875, y: -0.921875}
-  m_UseDelaunayMesh: 0
---- !u!50 &-8503570000598918081
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3730262577066195635}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.0897381, y: 1.3293495}
+  m_EdgeRadius: 0

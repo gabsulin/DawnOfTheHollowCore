@@ -18,6 +18,7 @@ public abstract class Enemy : MonoBehaviour
     public GridManager grid;
     public Animator animator;
     public Rigidbody2D rb;
+    public CameraShake cameraShake;
 
     [Header("Attack Settings")]
     public Collider2D attackHitbox;
@@ -50,6 +51,8 @@ public abstract class Enemy : MonoBehaviour
 
         if (attackHitbox != null)
             attackHitbox.enabled = false;
+
+        cameraShake = GetComponent<CameraShake>();
     }
 
     public virtual Transform GetCurrentTarget()

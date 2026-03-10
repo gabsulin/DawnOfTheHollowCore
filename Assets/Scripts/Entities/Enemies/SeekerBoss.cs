@@ -302,7 +302,10 @@ public class SeekerBoss : Enemy
             {
                 var playerHp = collider.GetComponent<PlayerHpSystem>();
                 if (playerHp != null)
+                {
                     playerHp.TakeHit(damage);
+                    cameraShake.StartShake(force: 0.1f);
+                }
             }
 
             if (collider.gameObject.GetComponent<Core>() != null)
@@ -313,7 +316,7 @@ public class SeekerBoss : Enemy
             }
         }
     }
-    
+
     public override void OnCollisionEnter2D(Collision2D collision) { }
 
     protected override void OnDrawGizmos()

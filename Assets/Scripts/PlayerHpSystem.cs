@@ -11,8 +11,10 @@ public class PlayerHpSystem : MonoBehaviour
     [SerializeField] Image shieldsBar;
     [SerializeField] TMP_Text hpTMP;
     [SerializeField] TMP_Text shieldsTMP;
+    [SerializeField] CameraShake cameraShake;
     GameObject deathScreen;
     Camera cam;
+
     public float currentHp;
     public float currentShields;
     public float maxHp;
@@ -68,6 +70,9 @@ public class PlayerHpSystem : MonoBehaviour
         if (isImmune || isDead) return;
         (AudioManager.Instance)?.PlaySFX("Hit");
         wasntHit = 0;
+
+        cameraShake?.StartShake(force: 0.1f);
+
         if (currentShields > 0)
         {
             float shieldDamage = Mathf.Min(currentShields, damage);

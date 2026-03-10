@@ -5,6 +5,7 @@ public class PlayerDamage : MonoBehaviour
 {
     PlayerHpSystem playerHp;
     Animator anim;
+    CameraShake cameraShake;
 
     [SerializeField] int damage;
     [SerializeField] bool destroy = true;
@@ -19,6 +20,7 @@ public class PlayerDamage : MonoBehaviour
     {
         playerHp = FindFirstObjectByType<PlayerHpSystem>();
         anim = GetComponent<Animator>();
+        cameraShake = GetComponent<CameraShake>();
 
         if (useLifetime)
             StartCoroutine(LifetimeDespawn());
@@ -38,6 +40,7 @@ public class PlayerDamage : MonoBehaviour
         if (playerHp != null)
         {
             playerHp.TakeHit(damage);
+            cameraShake.StartShake(force: 0.1f);
 
             if (anim != null)
             {

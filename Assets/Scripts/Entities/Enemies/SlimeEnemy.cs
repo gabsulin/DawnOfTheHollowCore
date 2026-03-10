@@ -75,6 +75,7 @@ public class SlimeEnemy : Enemy
             {
                 PlayerHpSystem playerHp = collision.GetComponent<PlayerHpSystem>();
                 playerHp.TakeHit(damage);
+                cameraShake.StartShake(force: 0.1f);
                 rb.linearVelocity = Vector3.zero;
                 player.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
                 currentState = EnemyState.Idle;

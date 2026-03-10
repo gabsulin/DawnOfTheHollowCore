@@ -230,6 +230,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   animator: {fileID: 4010692523077825243}
   rb: {fileID: 9091795588254226400}
+  cameraShake: {fileID: 0}
   attackHitbox: {fileID: 0}
   damage: 1
   playerAggroRange: 4
