@@ -82,7 +82,7 @@ public class UpgradeManager : MonoBehaviour
             Debug.LogWarning($"Tried to consume item '{item.name}' but it's not a Consumable.");
             return;
         }
-
+        AudioManager.Instance?.PlaySFX("Upgrade");
         if (item.healAmount != 0)
         {
             hp.Heal(item.healAmount);

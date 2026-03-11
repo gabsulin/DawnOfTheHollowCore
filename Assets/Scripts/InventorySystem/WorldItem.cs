@@ -32,7 +32,6 @@ public class WorldItem : MonoBehaviour
 
     private void Start()
     {
-        // Fallback: if Initialize() wasn't called, set startPos here
         if (startPos == Vector3.zero)
         {
             startPos = transform.position;
@@ -79,6 +78,7 @@ public class WorldItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             TryPickup(other.gameObject);
+            AudioManager.Instance?.PlaySFX("PickUp");
         }
     }
 

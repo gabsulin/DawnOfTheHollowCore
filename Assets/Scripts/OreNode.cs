@@ -39,7 +39,7 @@ public class OreNode : MonoBehaviour
     {
         for (int i = 0; i < dropAmount; i++)
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
-
+        AudioManager.Instance?.PlaySFX("ItemDrop");
         Destroy(gameObject);
     }
 }

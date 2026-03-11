@@ -57,6 +57,7 @@ public class CraftingPool : MonoBehaviour
         {
             Debug.Log("[CRAFTING] No recipe matched.");
             OnCraftResult?.Invoke(false, null);
+            AudioManager.Instance?.PlaySFX("Deny");
         }
     }
 
@@ -161,6 +162,7 @@ public class CraftingPool : MonoBehaviour
                 wi.Initialize(item, amount);
                 wi.ApplyPickupDelay();
             }
+            AudioManager.Instance?.PlaySFX("PoolAccept");
         }
         else
         {

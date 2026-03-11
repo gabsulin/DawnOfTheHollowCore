@@ -46,5 +46,6 @@ public class ItemDropper : MonoBehaviour
             wi.Initialize(item, amount);
             wi.ApplyPickupDelay();
         }
+        AudioManager.Instance?.PlaySFX("ItemDrop");
     }
 }
