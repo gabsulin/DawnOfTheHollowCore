@@ -13,7 +13,6 @@ public class Laser : MonoBehaviour
     public GameObject startVFX;
     public GameObject endVFX;
     private TutorialScene tutorialManager;
-
     private InventoryController inventoryController;
 
     [Header("Layer Settings")]
@@ -26,6 +25,7 @@ public class Laser : MonoBehaviour
     [Header("Laser Colors")]
     public Color attackColor = Color.red;
     public Color miningColor = Color.cyan;
+    [Range(1f, 10f)] public float colorIntensity = 3f;
 
     private List<ParticleSystem> particles = new List<ParticleSystem>();
     private Quaternion rotation;
@@ -97,6 +97,7 @@ public class Laser : MonoBehaviour
 
         RotateToMouse();
     }
+
     private bool IsPlayerBlocked()
     {
         if (Time.timeScale == 0f)
@@ -147,9 +148,6 @@ public class Laser : MonoBehaviour
         }
     }
 
-    // ============================================================
-    // MINING LASER
-    // ============================================================
     private void UpdateLaser_Mine()
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -221,12 +219,15 @@ public class Laser : MonoBehaviour
             _ => Color.white
         };
 
+        // Multiply into HDR range to trigger bloom
+        Color hdrColor = color * colorIntensity;
+
         lineRenderer.GetPropertyBlock(mpb);
-        mpb.SetColor("_Color", color);
+        mpb.SetColor("_Color", hdrColor);
         lineRenderer.SetPropertyBlock(mpb);
 
-        ApplyColorToVFX(startVFX, color);
-        ApplyColorToVFX(endVFX, color);
+        ApplyColorToVFX(startVFX, hdrColor);
+        ApplyColorToVFX(endVFX, hdrColor);
     }
 
     private void ApplyColorToVFX(GameObject vfxObject, Color color)

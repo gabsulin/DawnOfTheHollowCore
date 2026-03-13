@@ -7,6 +7,7 @@ public class InventoryUI : MonoBehaviour
     public InventoryManager inventoryManager;
     public GameObject slotPrefab;
     public Transform gridParent;
+    public RectTransform slotGridRect;
 
     private List<InventorySlotUI> uiSlots = new List<InventorySlotUI>();
 

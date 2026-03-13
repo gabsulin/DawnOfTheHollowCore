@@ -128,6 +128,8 @@ public class InventorySlotUI : MonoBehaviour,
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (MouseItemSlot.Instance.item == null) return;
+
         var result = eventData.pointerCurrentRaycast.gameObject;
 
         if (result == null)
@@ -144,26 +146,77 @@ public class InventorySlotUI : MonoBehaviour,
             return;
         }
 
+        if (parentUI.slotGridRect != null &&
+        RectTransformUtility.RectangleContainsScreenPoint(
+            parentUI.slotGridRect,
+            eventData.position,
+            eventData.pressEventCamera))
+        {
+            ReturnToOriginalSlot();
+            return;
+        }
+
         DropStackAtCursor();
     }
-
     private void DropStackAtCursor()
     {
-        if (MouseItemSlot.Instance.item != null)
-        {
-            var dropper = inventoryManager.GetComponent<ItemDropper>();
-            if (dropper != null)
-                dropper.DropAtCursor(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount);
+        if (MouseItemSlot.Instance.item == null) return;
 
+        var dropper = inventoryManager.GetComponent<ItemDropper>();
+        if (dropper != null)
+        {
+            dropper.DropAtCursor(MouseItemSlot.Instance.item, MouseItemSlot.Instance.amount);
             MouseItemSlot.Instance.Clear();
             parentUI.RefreshAll();
         }
+        else
+        {
+            ReturnToOriginalSlot();
+        }
 
+        ForceTooltipRefresh();
+    }
+    private void ReturnToOriginalSlot()
+    {
+        if (MouseItemSlot.Instance.item == null) return;
+
+        var heldItem = MouseItemSlot.Instance.item;
+        var heldAmount = MouseItemSlot.Instance.amount;
+
+        var originalSlot = inventoryManager.slots[slotIndex];
+
+        if (originalSlot.IsEmpty)
+        {
+            originalSlot.Set(heldItem, heldAmount);
+        }
+        else
+        {
+            int idx = inventoryManager.FindFirstAvailableSlot(heldItem);
+            if (idx >= 0)
+            {
+                inventoryManager.slots[idx].Set(heldItem, heldAmount);
+            }
+            else
+            {
+                var dropper = inventoryManager.GetComponent<ItemDropper>();
+                if (dropper != null)
+                    dropper.DropAtCursor(heldItem, heldAmount);
+            }
+        }
+
+        MouseItemSlot.Instance.Clear();
+        parentUI.RefreshAll();
         ForceTooltipRefresh();
     }
 
     private void HandleSlotDrop(InventorySlotUI otherSlot)
     {
+        if (otherSlot.slotIndex == slotIndex)
+        {
+            ReturnToOriginalSlot();
+            return;
+        }
+
         var target = inventoryManager.slots[otherSlot.slotIndex];
         var heldItem = MouseItemSlot.Instance.item;
         var heldAmount = MouseItemSlot.Instance.amount;
@@ -180,7 +233,15 @@ public class InventorySlotUI : MonoBehaviour,
             {
                 int idx = inventoryManager.FindFirstAvailableSlot(heldItem);
                 if (idx >= 0)
+                {
                     inventoryManager.slots[idx].Set(heldItem, heldAmount);
+                }
+                else
+                {
+                    var dropper = inventoryManager.GetComponent<ItemDropper>();
+                    if (dropper != null)
+                        dropper.DropAtCursor(heldItem, heldAmount);
+                }
             }
         }
         else
