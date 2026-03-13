@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2974494833650607249}
   - component: {fileID: -8598333198566100841}
   - component: {fileID: 6948226036681174815}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Soul_idle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 6496712732815232826}
   - component: {fileID: 2226752997411154538}
   - component: {fileID: 4080671995010118142}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PromptText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 5393312028736000432}
   - component: {fileID: 6643421118408213829}
   - component: {fileID: 2124686029145264033}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: InteractionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

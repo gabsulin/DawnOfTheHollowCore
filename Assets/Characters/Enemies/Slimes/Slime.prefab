@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 8151624271133117760}
   - component: {fileID: -6590725740623981426}
   - component: {fileID: 2918194451891197130}
+  - component: {fileID: 5611098720496915589}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -298,7 +299,9 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 500
+  pathfindingClearance: 1
   attackCooldownDuration: 0.5
+  showGizmos: 0
 --- !u!114 &8151624271133117760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 15
+  maxHealth: 200
   currentHealth: 0
 --- !u!114 &-6590725740623981426
 MonoBehaviour:
@@ -339,3 +342,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startsFlipped: 1
+--- !u!114 &5611098720496915589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7552444464748751244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9aa8acf348a24b8a81fd55fb10027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitColor: {r: 1, g: 0.34528297, b: 0.34528297, a: 1}
+  resetDelay: 0.15

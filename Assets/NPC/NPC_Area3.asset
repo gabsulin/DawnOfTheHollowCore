@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f0c535d535ee3ad40b718f2509ca7e6e, type: 2}
   - {fileID: 11400000, guid: 1aba85af44e5f1246a160e8a07c6f4f5, type: 2}
   - {fileID: 11400000, guid: 62165f4956e66794b94b4ee4eccb0d61, type: 2}
+  - {fileID: 11400000, guid: 5c5efd0de4991974fb91dc618f238bc5, type: 2}
   ambientDialogue:
   - Dig. Wait. Dig. Wait. The rhythm never changes.
   - "I buried my name a long time ago. Don\u2019t ask for it."

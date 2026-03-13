@@ -86,7 +86,11 @@ public class TilemapRandomizer : MonoBehaviour
 
             PaintArea(area, settings, nextSettings);
         }
+        var grid = FindFirstObjectByType<GridManager>();
+        if (grid != null)
+            grid.BakePhysicsCache();
 
+        Debug.Log("[TilemapRandomizer] Tilemap generation complete.");
         Debug.Log("[TilemapRandomizer] Tilemap generation complete.");
     }
 

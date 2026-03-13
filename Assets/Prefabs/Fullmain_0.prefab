@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2681539181301689421}
   - component: {fileID: 785474548610590821}
   - component: {fileID: 3080586785102677325}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: InteractionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 3625289789671365362}
   - component: {fileID: 404177926463978339}
   - component: {fileID: 765479323395534088}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PromptText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 8216764196757946480}
   - component: {fileID: 4788740770149902463}
   - component: {fileID: 1314603995005322385}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fullmain_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,4 +434,5 @@ MonoBehaviour:
   npcData: {fileID: 11400000, guid: 681dd3919194db14b8ebea04bae0d1c0, type: 2}
   interactionRange: 2
   interactKey: 101
+  unlocksAreaId: -1
   interactionPrompt: {fileID: 1412470730247780679}

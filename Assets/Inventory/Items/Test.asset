@@ -17,6 +17,12 @@ MonoBehaviour:
   maxStack: 64
   type: 3
   rarity: 3
-  description: This is a tool.
-  value: 0
-  tags: []
+  description: This is a test.
+  moveSpeedBonus: 0
+  miningSpeedMultiplier: 0
+  maxHealthBonus: 0
+  maxShieldBonus: 0
+  damageBonus: 0
+  dashCooldownReduction: 0
+  healAmount: 0
+  coreHealAmount: 0

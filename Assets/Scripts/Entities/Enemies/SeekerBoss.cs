@@ -12,7 +12,7 @@ public class SeekerBoss : Enemy
     [SerializeField] private float pathUpdateInterval = 0.2f;
     [SerializeField] private float targetMovementThreshold = 0.8f;
     [SerializeField] private int maxPathfindingIterations = 500;
-    EnemyPathfinder pathfinder;
+    [SerializeField] private int pathfindingClearance = 2;
 
     [Header("Boss Stats")]
     [SerializeField] private float spawnDuration = 1.5f;
@@ -37,6 +37,7 @@ public class SeekerBoss : Enemy
 
     private float attackTimer = 0f;
     private EnemyFlip flip;
+    private Collider2D col;
 
     private static readonly int AnimAttack = Animator.StringToHash("Attack");
     private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
@@ -62,7 +63,7 @@ public class SeekerBoss : Enemy
         base.Start();
 
         flip = GetComponent<EnemyFlip>();
-        pathfinder = GetComponent<EnemyPathfinder>();
+        col = GetComponent<Collider2D>();
 
         pathTimer = Random.Range(0f, pathUpdateInterval * 0.5f);
         lastGridPos = grid != null ? grid.WorldToGrid(transform.position) : Vector2Int.zero;
@@ -80,6 +81,10 @@ public class SeekerBoss : Enemy
     {
         return player;
     }
+    private Vector2 GetBodyCenter()
+    {
+        return col != null ? col.bounds.center : transform.position;
+    }
     void Update()
     {
         if (currentBossState == SeekerState.Spawn || currentBossState == SeekerState.Death)
@@ -95,7 +100,7 @@ public class SeekerBoss : Enemy
         if (currentTarget == null)
             return;
 
-        float distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+        float distanceToTarget = Vector2.Distance(GetBodyCenter(), currentTarget.position);
 
         pathTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
@@ -150,7 +155,7 @@ public class SeekerBoss : Enemy
                 return false;
         }
 
-        Vector2Int currentGridPos = grid.WorldToGrid(transform.position);
+        Vector2Int currentGridPos = grid.WorldToGrid(GetBodyCenter());
         if (currentGridPos == lastGridPos && currentPath != null && currentPath.Count > 0)
             return false;
 
@@ -159,7 +164,7 @@ public class SeekerBoss : Enemy
 
     void RecalculatePath(Transform currentTarget)
     {
-        Vector2Int startPos = grid.WorldToGrid(transform.position);
+        Vector2Int startPos = grid.WorldToGrid(GetBodyCenter());
         Vector2Int targetPos = grid.WorldToGrid(currentTarget.position);
 
         if (startPos == targetPos)
@@ -171,9 +176,13 @@ public class SeekerBoss : Enemy
             return;
         }
 
-        currentPath = AStarPathFinder.FindPath(startPos, targetPos, grid, maxPathfindingIterations);
-        pathIndex = 0;
+        currentPath = AStarPathFinder.FindPath(startPos, targetPos, grid, maxPathfindingIterations, pathfindingClearance);
 
+        // FIX: fallback if boss is already in a tight spot
+        if (currentPath.Count == 0 && pathfindingClearance > 0)
+            currentPath = AStarPathFinder.FindPath(startPos, targetPos, grid, maxPathfindingIterations, 0);
+
+        pathIndex = 0;
         lastTargetPosition = currentTarget.position;
         lastGridPos = startPos;
         pathTimer = pathUpdateInterval;
@@ -187,7 +196,7 @@ public class SeekerBoss : Enemy
 
         Transform currentTarget = GetCurrentTarget();
         float distanceToTarget = currentTarget != null
-            ? Vector2.Distance(transform.position, currentTarget.position)
+            ? Vector2.Distance(GetBodyCenter(), currentTarget.position)
             : float.MaxValue;
 
         if (distanceToTarget <= attackRange)
@@ -321,6 +330,20 @@ public class SeekerBoss : Enemy
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
+        if (centerOfAttack != null)
+            Gizmos.DrawWireSphere(centerOfAttack.position, attackRadius);
+
+        // FIX: clearance gizmo
+        float cellSize = (grid != null && grid.groundTilemap != null) ? grid.groundTilemap.cellSize.x : 1f;
+        if (pathfindingClearance > 0)
+        {
+            Collider2D col = GetComponent<Collider2D>();
+            Vector3 center = col != null ? col.bounds.center : transform.position;
+            float clearanceWorldSize = (pathfindingClearance * 2 + 1) * cellSize;
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.4f);
+            Gizmos.DrawCube(center, new Vector3(clearanceWorldSize, clearanceWorldSize, 0f));
+            Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
+            Gizmos.DrawWireCube(center, new Vector3(clearanceWorldSize, clearanceWorldSize, 0f));
+        }
     }
 }

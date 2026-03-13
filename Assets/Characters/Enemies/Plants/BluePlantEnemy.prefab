@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 977418769993609790}
   - component: {fileID: -2870435634484964336}
   - component: {fileID: 3969591048956117196}
+  - component: {fileID: -784144957067245725}
   m_Layer: 0
   m_Name: BluePlantEnemy
   m_TagString: Enemy
@@ -313,6 +314,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   animator: {fileID: 2461002572209112637}
   rb: {fileID: 433070923003801837}
+  cameraShake: {fileID: 0}
   attackHitbox: {fileID: 5905488914511009062}
   damage: 1
   playerAggroRange: 10
@@ -345,7 +347,9 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 1000
+  pathfindingClearance: 1
   attackCooldownDuration: 1.5
+  showGizmos: 0
 --- !u!114 &977418769993609790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 250
   currentHealth: 0
 --- !u!114 &-2870435634484964336
 MonoBehaviour:
@@ -386,6 +390,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startsFlipped: 1
+--- !u!114 &-784144957067245725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296691699685153092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9aa8acf348a24b8a81fd55fb10027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitColor: {r: 1, g: 0.41320753, b: 0.41320753, a: 1}
+  resetDelay: 0.15
 --- !u!1 &9057169255069582233
 GameObject:
   m_ObjectHideFlags: 0

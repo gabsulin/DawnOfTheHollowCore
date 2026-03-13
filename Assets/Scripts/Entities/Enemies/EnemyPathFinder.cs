@@ -17,6 +17,7 @@ public class EnemyPathfinder : MonoBehaviour
     public float pathUpdateInterval = 0.5f;
     public float targetMovementThreshold = 1.5f;
     public int maxPathfindingIterations = 500;
+    public int pathfindingClearance = 1;
 
     [Header("Combat Settings")]
     public float attackCooldownDuration = 1.5f;
@@ -24,6 +25,9 @@ public class EnemyPathfinder : MonoBehaviour
     private Rigidbody2D rb;
     private EnemyFlip flip;
     private Enemy enemy;
+    private Collider2D col;
+
+    [SerializeField] bool showGizmos;
 
     private List<Vector2Int> currentPath = new List<Vector2Int>();
     private int pathIndex = 0;
@@ -54,6 +58,7 @@ public class EnemyPathfinder : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         flip = GetComponent<EnemyFlip>();
         enemy = GetComponent<Enemy>();
+        col = GetComponent<Collider2D>();
 
         // --- FIX: grab the collider from the Core GameObject ---
         var coreObj = FindFirstObjectByType<Core>();
@@ -82,7 +87,10 @@ public class EnemyPathfinder : MonoBehaviour
             
         return currentTarget.position;
     }
-
+    private Vector2 GetBodyCenter()
+    {
+        return col != null ? col.bounds.center : transform.position;
+    }
     void Update()
     {
         if (enemy != null)
@@ -93,7 +101,7 @@ public class EnemyPathfinder : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName(AttackStateName))
             return;
 
-        float distanceToTarget = Vector2.Distance(transform.position, GetEffectiveTargetPosition());
+        float distanceToTarget = Vector2.Distance(GetBodyCenter(), GetEffectiveTargetPosition());
 
         attackCooldown -= Time.deltaTime;
         pathTimer -= Time.deltaTime;
@@ -143,7 +151,7 @@ public class EnemyPathfinder : MonoBehaviour
                 return false;
         }
 
-        Vector2Int currentGridPos = grid.WorldToGrid(transform.position);
+        Vector2Int currentGridPos = grid.WorldToGrid(GetBodyCenter());
         if (currentGridPos == lastEnemyGridPos && currentPath != null && currentPath.Count > 0)
             return false;
 
@@ -152,8 +160,7 @@ public class EnemyPathfinder : MonoBehaviour
 
     void RecalculatePath()
     {
-        Vector2Int enemyPos = grid.WorldToGrid(transform.position);
-
+        Vector2Int enemyPos = grid.WorldToGrid(GetBodyCenter());
         Vector2Int targetPos = grid.WorldToGrid(GetEffectiveTargetPosition());
 
         if (enemyPos == targetPos)
@@ -165,9 +172,13 @@ public class EnemyPathfinder : MonoBehaviour
             return;
         }
 
-        currentPath = AStarPathFinder.FindPath(enemyPos, targetPos, grid, maxPathfindingIterations);
-        pathIndex = 0;
+        currentPath = AStarPathFinder.FindPath(enemyPos, targetPos, grid, maxPathfindingIterations, pathfindingClearance);
 
+        // FIX: if enemy is in a tight spot and clearance blocks all exits, retry without padding
+        if (currentPath.Count == 0 && pathfindingClearance > 0)
+            currentPath = AStarPathFinder.FindPath(enemyPos, targetPos, grid, maxPathfindingIterations, 0);
+
+        pathIndex = 0;
         lastTargetPosition = currentTarget.position;
         lastEnemyGridPos = enemyPos;
         pathTimer = pathUpdateInterval;
@@ -183,7 +194,7 @@ public class EnemyPathfinder : MonoBehaviour
             return false;
 
         float distanceToTarget = currentTarget != null
-            ? Vector2.Distance(transform.position, GetEffectiveTargetPosition())
+            ? Vector2.Distance(GetBodyCenter(), GetEffectiveTargetPosition())
             : float.MaxValue;
 
         if (distanceToTarget <= attackRange)
@@ -221,21 +232,39 @@ public class EnemyPathfinder : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        if (currentPath == null || currentPath.Count == 0 || grid == null) return;
-
-        Gizmos.color = Color.red;
-        for (int i = 0; i < currentPath.Count; i++)
+        if (showGizmos)
         {
-            Vector2 worldPos = grid.GridToWorld(currentPath[i]);
-            Gizmos.DrawSphere(worldPos, 0.1f);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
 
-            if (i < currentPath.Count - 1)
+            float cellSize = 1f;
+            if (grid != null && grid.groundTilemap != null)
+                cellSize = grid.groundTilemap.cellSize.x;
+
+            if (pathfindingClearance > 0)
             {
-                Vector2 nextWorld = grid.GridToWorld(currentPath[i + 1]);
-                Gizmos.DrawLine(worldPos, nextWorld);
+                Collider2D col = GetComponent<Collider2D>();
+                Vector3 center = col != null ? col.bounds.center : transform.position;
+                float clearanceWorldSize = (pathfindingClearance * 2 + 1) * cellSize;
+                Gizmos.color = new Color(1f, 0.5f, 0f, 0.4f);
+                Gizmos.DrawCube(center, new Vector3(clearanceWorldSize, clearanceWorldSize, 0f));
+                Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
+                Gizmos.DrawWireCube(center, new Vector3(clearanceWorldSize, clearanceWorldSize, 0f));
+            }
+
+            if (currentPath == null || currentPath.Count == 0 || grid == null) return;
+
+            Gizmos.color = Color.red;
+            for (int i = 0; i < currentPath.Count; i++)
+            {
+                Vector2 worldPos = grid.GridToWorld(currentPath[i]);
+                Gizmos.DrawSphere(worldPos, 0.1f);
+
+                if (i < currentPath.Count - 1)
+                {
+                    Vector2 nextWorld = grid.GridToWorld(currentPath[i + 1]);
+                    Gizmos.DrawLine(worldPos, nextWorld);
+                }
             }
         }
     }

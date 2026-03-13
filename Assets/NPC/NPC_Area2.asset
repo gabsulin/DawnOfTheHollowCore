@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022b5572ae95c9c4680f902d062e211e, type: 3}
   m_Name: NPC_Area2
   m_EditorClassIdentifier: 
-  npcName: "Prdom\xEDr \u0160oustalump"
+  npcName: "Prdom\xEDr Bustalump"
   dialogueLines:
   - We thought guarding it was enough.
   - "Turns out\u2026\nnothing like this survives by being guarded forever."

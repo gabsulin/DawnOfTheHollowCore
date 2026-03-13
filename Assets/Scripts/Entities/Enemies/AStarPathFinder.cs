@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class AStarPathFinder : MonoBehaviour
 {
-    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal, GridManager grid, int maxIterations = 1000)
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal, GridManager grid, int maxIterations = 1000, int clearance = 0)
     {
         if (!grid.IsWalkable(goal))
         {
@@ -33,7 +33,6 @@ public class AStarPathFinder : MonoBehaviour
         var openSet = new PriorityQueue<Vector2Int>();
         var closedSet = new HashSet<Vector2Int>();
         var cameFrom = new Dictionary<Vector2Int, Vector2Int>();
-
         var gScore = new Dictionary<Vector2Int, float>();
 
         openSet.Enqueue(start, 0);
@@ -50,7 +49,7 @@ public class AStarPathFinder : MonoBehaviour
 
             closedSet.Add(current);
 
-            foreach (Vector2Int neighbour in GetNeighbours(current, grid))
+            foreach (Vector2Int neighbour in GetNeighbours(current, grid, clearance))
             {
                 if (closedSet.Contains(neighbour))
                     continue;
@@ -81,18 +80,18 @@ public class AStarPathFinder : MonoBehaviour
     {
         int dx = Mathf.Abs(a.x - b.x);
         int dy = Mathf.Abs(a.y - b.y);
-
         return (dx + dy) + (1.414f - 2) * Mathf.Min(dx, dy);
     }
-    private static readonly Vector2Int[] Directions = new Vector2Int[]
-{
-    Vector2Int.down, Vector2Int.up,
-    Vector2Int.left, Vector2Int.right,
-    new Vector2Int(1,1), new Vector2Int(-1,1),
-    new Vector2Int(1,-1), new Vector2Int(-1,-1)
-};
 
-    static List<Vector2Int> GetNeighbours(Vector2Int pos, GridManager grid)
+    private static readonly Vector2Int[] Directions = new Vector2Int[]
+    {
+        Vector2Int.down, Vector2Int.up,
+        Vector2Int.left, Vector2Int.right,
+        new Vector2Int(1,1), new Vector2Int(-1,1),
+        new Vector2Int(1,-1), new Vector2Int(-1,-1)
+    };
+
+    static List<Vector2Int> GetNeighbours(Vector2Int pos, GridManager grid, int clearance)
     {
         List<Vector2Int> neighbours = new List<Vector2Int>(8);
 
@@ -104,11 +103,11 @@ public class AStarPathFinder : MonoBehaviour
             {
                 Vector2Int side1 = pos + new Vector2Int(dir.x, 0);
                 Vector2Int side2 = pos + new Vector2Int(0, dir.y);
-                if (!grid.IsWalkable(side1) || !grid.IsWalkable(side2))
+                if (!grid.IsWalkableWithClearance(side1, clearance) || !grid.IsWalkableWithClearance(side2, clearance))
                     continue;
             }
 
-            if (grid.IsWalkable(next))
+            if (grid.IsWalkableWithClearance(next, clearance))
                 neighbours.Add(next);
         }
         return neighbours;
@@ -122,7 +121,6 @@ public class AStarPathFinder : MonoBehaviour
             current = cameFrom[current];
             path.Insert(0, current);
         }
-
         return path;
     }
 }

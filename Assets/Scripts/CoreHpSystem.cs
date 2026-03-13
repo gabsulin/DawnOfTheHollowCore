@@ -5,8 +5,8 @@ public class CoreHpSystem : MonoBehaviour
 {
     [SerializeField] Image hpBar;
     [SerializeField] Animator animator;
-    public int maxHp = 100;
-    public int currentHp;
+    public float maxHp = 100;
+    public float currentHp;
     public bool isDead = false;
 
     void Start()
@@ -36,5 +36,12 @@ public class CoreHpSystem : MonoBehaviour
             GameManager.Instance.EndGame(reason);
         else
             Debug.LogError("[CoreHpSystem] GameManager instance not found!");
+    }
+
+    public void HealCore(float amount)
+    {
+        if (isDead) return;
+        currentHp = Mathf.Min(currentHp + amount, maxHp);
+        hpBar.fillAmount = (float)currentHp / maxHp;
     }
 }

@@ -584,6 +584,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   animator: {fileID: 0}
   rb: {fileID: 0}
+  cameraShake: {fileID: 0}
   attackHitbox: {fileID: 0}
   damage: 1
   playerAggroRange: 15
@@ -595,6 +596,7 @@ MonoBehaviour:
   pathUpdateInterval: 0.3
   targetMovementThreshold: 1
   maxPathfindingIterations: 500
+  pathfindingClearance: 2
   spawnDuration: 1.5
   deathDuration: 2
   centerOfAttack: {fileID: 6736245313996134378}

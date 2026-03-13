@@ -96,8 +96,6 @@ public class EnemySpawner : MonoBehaviour
     {
         while (isNight)
         {
-            activeEnemies.RemoveAll(enemy => enemy == null);
-
             if (activeEnemies.Count >= maxActiveEnemies)
             {
                 yield return new WaitForSeconds(2f);
@@ -124,6 +122,8 @@ public class EnemySpawner : MonoBehaviour
 
             int enemiesPerArea = Mathf.Max(1, totalWaveSize / unlockedAreas.Count);
 
+            Debug.Log($"Spawning wave | Night: {nightCount} | Total enemies: {totalWaveSize} | Areas: {unlockedAreas.Count}");
+
             foreach (var area in unlockedAreas)
             {
                 for (int i = 0; i < enemiesPerArea; i++)
@@ -139,8 +139,28 @@ public class EnemySpawner : MonoBehaviour
                     break;
             }
 
-            float delayTime = Mathf.Max(15f, 30f - nightCount * 0.5f);
-            yield return new WaitForSeconds(delayTime);
+            float waveTimer = Mathf.Max(15f, 30f - nightCount * 0.5f);
+            float elapsed = 0f;
+            bool clearedByPlayer = false;
+
+            yield return new WaitUntil(() =>
+            {
+                activeEnemies.RemoveAll(enemy => enemy == null);
+                elapsed += Time.deltaTime;
+
+                if (activeEnemies.Count == 0)
+                {
+                    clearedByPlayer = true;
+                    return true;
+                }
+
+                return elapsed >= waveTimer;
+            });
+
+            if (clearedByPlayer)
+                Debug.Log("Wave cleared | Spawning new wave");
+            else
+                Debug.Log($"Timer reached 0 | {activeEnemies.Count} enemies still alive | Spawning new wave");
         }
     }
 

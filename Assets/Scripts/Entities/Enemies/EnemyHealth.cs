@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    //private MapFunctionality manager;
-
     Enemy enemy;
     Animator anim;
-    Knockback knockback;
+    EnemyHitFlash hitFlash;
 
     public int maxHealth = 100;
     public int currentHealth;
@@ -19,15 +17,18 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
+
     private void Start()
     {
         enemy = GetComponent<Enemy>();
         anim = GetComponentInChildren<Animator>();
-        knockback = GetComponent<Knockback>();
+        hitFlash = GetComponent<EnemyHitFlash>();
     }
+
     public void TakeDamage(int damage)
     {
         (AudioManager.Instance)?.PlaySFX("EnemyHit");
+        hitFlash?.Flash();
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -43,7 +44,6 @@ public class EnemyHealth : MonoBehaviour
         if (!isAddedToGameStats)
         {
             isAddedToGameStats = true;
-            //GameStats.Instance.AddEnemyKill();
         }
 
         enemy.currentState = EnemyState.Death;
@@ -65,19 +65,4 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-
-    /*private void RemoveFromList()
-    {
-        MapFunctionality manager = FindFirstObjectByType<MapFunctionality>();
-
-        if (manager != null && manager.enemies.Contains(this))
-        {
-            manager.enemies.Remove(this);
-        }
-    }
-
-    public void SetManager(MapFunctionality manager)
-    {
-        this.manager = manager;
-    }*/
 }

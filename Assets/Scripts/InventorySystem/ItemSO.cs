@@ -24,4 +24,5 @@ public class ItemSO : ScriptableObject
     [Range(0f, 1f)] public float dashCooldownReduction;
     [Header("Consumable Stats")]
     public float healAmount;
+    public float coreHealAmount;
 }

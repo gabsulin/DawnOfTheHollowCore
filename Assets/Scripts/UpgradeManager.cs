@@ -8,6 +8,7 @@ public class UpgradeManager : MonoBehaviour
     private PlayerHpSystem hp;
     private Laser laser;
     private AbilityHolder abilityHolder;
+    private CoreHpSystem coreHpSystem;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class UpgradeManager : MonoBehaviour
         hp = FindFirstObjectByType<PlayerHpSystem>();
         laser = FindFirstObjectByType<Laser>();
         abilityHolder = FindFirstObjectByType<AbilityHolder>();
+        coreHpSystem = FindFirstObjectByType<CoreHpSystem>();
     }
 
     public void ApplyUpgrade(ItemSO item)
@@ -88,6 +90,12 @@ public class UpgradeManager : MonoBehaviour
             hp.Heal(item.healAmount);
             AudioManager.Instance?.PlaySFX("Heal");
             Debug.Log($"Healed for {item.healAmount}. Current HP: {hp.currentHp}/{hp.maxHp}");
+        }
+        if(item.coreHealAmount != 0)
+        {
+            coreHpSystem.HealCore(item.coreHealAmount);
+            AudioManager.Instance?.PlaySFX("Heal");
+            Debug.Log($"Healed Core for {item.coreHealAmount}. Current Core HP: {coreHpSystem.currentHp}/{coreHpSystem.maxHp}");
         }
     }
 }

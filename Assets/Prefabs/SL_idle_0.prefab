@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7476113873561878165}
   - component: {fileID: 4561543620817434994}
   - component: {fileID: 7736324194000785377}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SL_idle_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 2866681782948034124}
   - component: {fileID: 2211637762129209642}
   - component: {fileID: 5430870974036200017}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: InteractionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 2063025173318773405}
   - component: {fileID: 44680857836067037}
   - component: {fileID: 8471535056126583378}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PromptText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

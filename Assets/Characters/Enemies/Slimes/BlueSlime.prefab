@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 9004516186468703147}
   - component: {fileID: 129878925248353301}
   - component: {fileID: 6489113801517676769}
+  - component: {fileID: 5298866964825259506}
   m_Layer: 0
   m_Name: BlueSlime
   m_TagString: Enemy
@@ -230,7 +231,9 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 500
+  pathfindingClearance: 1
   attackCooldownDuration: 0.6
+  showGizmos: 0
 --- !u!114 &9004516186468703147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 15
+  maxHealth: 200
   currentHealth: 0
 --- !u!114 &129878925248353301
 MonoBehaviour:
@@ -271,6 +274,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startsFlipped: 1
+--- !u!114 &5298866964825259506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004291611995489673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9aa8acf348a24b8a81fd55fb10027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitColor: {r: 1, g: 0.34528297, b: 0.34528297, a: 1}
+  resetDelay: 0.15
 --- !u!1 &6981071971166780230
 GameObject:
   m_ObjectHideFlags: 0

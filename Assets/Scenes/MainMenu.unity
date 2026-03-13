@@ -4101,7 +4101,7 @@ MonoBehaviour:
   sfx:
   - name: PlayerDeath
     clips:
-    - {fileID: 8300000, guid: 602745403bec2484cb9cc3ed55c554e2, type: 3}
+    - {fileID: 8300000, guid: b3f6a4ebf7845be4d83d83e97687a0ea, type: 3}
   - name: Dash
     clips:
     - {fileID: 8300000, guid: 455f13914b6ef284287c869025d2fa4a, type: 3}

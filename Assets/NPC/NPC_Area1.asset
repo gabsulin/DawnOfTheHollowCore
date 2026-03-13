@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022b5572ae95c9c4680f902d062e211e, type: 3}
   m_Name: NPC_Area1
   m_EditorClassIdentifier: 
-  npcName: "Kundrl\xE1r Fondr\u0161uk"
+  npcName: Bural Muragut
   dialogueLines:
   - "These materials didn\u2019t change on their own.\nThey reacted."
   - 'The Core reshaped everything around it.

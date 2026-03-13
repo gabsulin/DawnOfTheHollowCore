@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 2355526504795340203}
   - component: {fileID: -1117748208855994021}
   - component: {fileID: 2145122268759229545}
+  - component: {fileID: 6575065707435503949}
   m_Layer: 0
   m_Name: PurplePlantEnemy
   m_TagString: Enemy
@@ -344,6 +345,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   animator: {fileID: 131275768835225371}
   rb: {fileID: 632693803449828849}
+  cameraShake: {fileID: 0}
   attackHitbox: {fileID: 6547645756288221313}
   damage: 1
   playerAggroRange: 10
@@ -375,7 +377,9 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 1000
+  pathfindingClearance: 1
   attackCooldownDuration: 1.5
+  showGizmos: 0
 --- !u!114 &2355526504795340203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
+  maxHealth: 250
   currentHealth: 0
 --- !u!114 &-1117748208855994021
 MonoBehaviour:
@@ -416,3 +420,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startsFlipped: 1
+--- !u!114 &6575065707435503949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104708556104262166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9aa8acf348a24b8a81fd55fb10027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitColor: {r: 1, g: 0.41320753, b: 0.41320753, a: 1}
+  resetDelay: 0.15

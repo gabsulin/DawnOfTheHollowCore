@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OreNode : MonoBehaviour
 {
@@ -37,9 +38,13 @@ public class OreNode : MonoBehaviour
 
     void Mine()
     {
+        var grid = FindFirstObjectByType<GridManager>();
+        if (grid != null && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Tutorial"))
+            grid.InvalidateCell(grid.WorldToGrid(transform.position));
+
         for (int i = 0; i < dropAmount; i++)
             Instantiate(dropPrefab, transform.position, Quaternion.identity);
-        AudioManager.Instance?.PlaySFX("ItemDrop");
+
         Destroy(gameObject);
     }
 }

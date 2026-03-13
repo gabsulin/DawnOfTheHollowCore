@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2267320759784746655}
   - component: {fileID: 5170834875587401858}
   - component: {fileID: 7630887614818525742}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: InteractionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 6835262014290515963}
   - component: {fileID: 8917968686468705970}
   - component: {fileID: 6624859470271873543}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: PromptText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 1104013336371772321}
   - component: {fileID: 4811188581620403064}
   - component: {fileID: -7511598668707016863}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Character1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

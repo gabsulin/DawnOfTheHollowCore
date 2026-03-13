@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3922064657865030142}
   - component: {fileID: -416463071141442028}
   - component: {fileID: 4141358424001483043}
+  - component: {fileID: -7759307179228609787}
   m_Layer: 0
   m_Name: BlueOrc
   m_TagString: Enemy
@@ -230,7 +231,9 @@ MonoBehaviour:
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 1500
+  pathfindingClearance: 1
   attackCooldownDuration: 1.5
+  showGizmos: 0
 --- !u!114 &3922064657865030142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
+  maxHealth: 300
   currentHealth: 0
 --- !u!114 &-416463071141442028
 MonoBehaviour:
@@ -271,6 +274,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startsFlipped: 1
+--- !u!114 &-7759307179228609787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244491403492122524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc9aa8acf348a24b8a81fd55fb10027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitColor: {r: 1, g: 0.3679244, b: 0.3679244, a: 1}
+  resetDelay: 0.15
 --- !u!1 &5893855603689218478
 GameObject:
   m_ObjectHideFlags: 0
