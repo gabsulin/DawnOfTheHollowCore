@@ -70,7 +70,7 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(true);
     }
 
-    public void GoToMainMenu()
+    void ResetProgression()
     {
         Time.timeScale = 1f;
 
@@ -81,7 +81,16 @@ public class PauseMenu : MonoBehaviour
 
         if (RecipeManager.Instance != null)
             RecipeManager.Instance.ResetAllRecipes();
+    }
+    public void GoToMainMenu()
+    {
+        ResetProgression();
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void OnApplicationQuit()
+    {
+        ResetProgression();
     }
 }
