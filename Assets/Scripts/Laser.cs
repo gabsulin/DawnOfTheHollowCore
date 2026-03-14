@@ -219,7 +219,6 @@ public class Laser : MonoBehaviour
             _ => Color.white
         };
 
-        // Multiply into HDR range to trigger bloom
         Color hdrColor = color * colorIntensity;
 
         lineRenderer.GetPropertyBlock(mpb);

@@ -41,7 +41,6 @@ public class DayNightCycle : MonoBehaviour
 
         if (currentlyNight != isNight)
         {
-
             isNight = currentlyNight;
 
             if (isNight)
