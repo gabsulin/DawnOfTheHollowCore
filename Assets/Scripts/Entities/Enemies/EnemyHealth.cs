@@ -8,8 +8,8 @@ public class EnemyHealth : MonoBehaviour
     Animator anim;
     EnemyHitFlash hitFlash;
 
-    public int maxHealth = 100;
-    public int currentHealth;
+    public float maxHealth = 100;
+    public float currentHealth;
 
     bool isAddedToGameStats = false;
 
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         hitFlash = GetComponent<EnemyHitFlash>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         (AudioManager.Instance)?.PlaySFX("EnemyHit");
         hitFlash?.Flash();

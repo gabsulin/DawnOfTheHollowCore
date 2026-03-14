@@ -20,8 +20,6 @@ MonoBehaviour:
   description: 'Right click on item to apply upgrade.
 
     10% Dash Cooldown Reduction'
-  value: 0
-  tags: []
   moveSpeedBonus: 0
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
@@ -29,3 +27,4 @@ MonoBehaviour:
   damageBonus: 0
   dashCooldownReduction: 0.1
   healAmount: 0
+  coreHealAmount: 0

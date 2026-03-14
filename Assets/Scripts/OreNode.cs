@@ -6,8 +6,8 @@ public class OreNode : MonoBehaviour
     public enum Rarity { Common, Rare, Epic, Legendary, Mythic }
     public Rarity rarity;
 
-    public int maxHP = 20;
-    public int currentHP;
+    public float maxHP = 20;
+    public float currentHP;
 
     public GameObject dropPrefab;
     public int dropAmount = 1;
@@ -22,7 +22,7 @@ public class OreNode : MonoBehaviour
         material = sr.material;
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(float dmg)
     {
         currentHP -= dmg;
 

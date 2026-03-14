@@ -20,7 +20,7 @@ public class Laser : MonoBehaviour
     public LayerMask ignoreAttackHitboxLayer;
 
     [Header("Damage Settings")]
-    public int laserDamage = 1;
+    public float laserDamage = 1;
 
     [Header("Laser Colors")]
     public Color attackColor = Color.red;

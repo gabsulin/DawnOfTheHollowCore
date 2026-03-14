@@ -19,9 +19,7 @@ MonoBehaviour:
   rarity: 2
   description: 'Right click on item to consume.
 
-    +2 Health Points'
-  value: 0
-  tags: []
+    +2 HP'
   moveSpeedBonus: 0
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
@@ -29,3 +27,4 @@ MonoBehaviour:
   damageBonus: 0
   dashCooldownReduction: 0
   healAmount: 2
+  coreHealAmount: 0

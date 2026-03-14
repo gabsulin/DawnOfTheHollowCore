@@ -10,8 +10,8 @@ public class BossHpSystem : MonoBehaviour
     [SerializeField] private Image healthBar;
 
     [Header("Settings")]
-    [SerializeField] private int maxHealth = 150;
-    [SerializeField] private int currentHealth;
+    [SerializeField] private float maxHealth = 150;
+    [SerializeField] private float currentHealth;
     public bool isDead = false;
 
     [Header("Boss Loot")]
@@ -34,7 +34,7 @@ public class BossHpSystem : MonoBehaviour
     {
     }
 
-    public void TakeHit(int damageAmount)
+    public void TakeHit(float damageAmount)
     {
         if (isDead)
             return;

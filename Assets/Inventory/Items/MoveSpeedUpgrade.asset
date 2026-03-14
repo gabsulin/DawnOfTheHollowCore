@@ -19,13 +19,12 @@ MonoBehaviour:
   rarity: 0
   description: 'Right click on item to apply upgrade.
 
-    +5 Speed'
-  value: 0
-  tags: []
-  moveSpeedBonus: 5
+    +0.25 Speed'
+  moveSpeedBonus: 0.25
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
   maxShieldBonus: 0
   damageBonus: 0
   dashCooldownReduction: 0
   healAmount: 0
+  coreHealAmount: 0

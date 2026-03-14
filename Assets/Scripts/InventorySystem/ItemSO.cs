@@ -20,7 +20,7 @@ public class ItemSO : ScriptableObject
     public float miningSpeedMultiplier;
     public float maxHealthBonus;
     public float maxShieldBonus;
-    public int damageBonus;
+    public float damageBonus;
     [Range(0f, 1f)] public float dashCooldownReduction;
     [Header("Consumable Stats")]
     public float healAmount;
