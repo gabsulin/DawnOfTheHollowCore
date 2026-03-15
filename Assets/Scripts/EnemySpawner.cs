@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnDelay = 0.5f;
 
     [Header("Spawn Limits")]
-    public int maxActiveEnemies = 50;
+    public int maxActiveEnemies = 25;
 
     bool isNight = false;
     int nightCount = NightCounter.currentNight;
@@ -114,7 +114,7 @@ public class EnemySpawner : MonoBehaviour
             int mult = Mathf.Max(1, highestAreaId);
 
             int totalWaveSize = Mathf.RoundToInt(
-                baseEnemiesPerWave * (1f + nightCount * 0.2f) * mult
+                baseEnemiesPerWave * (1f + nightCount * 0.01f) * mult
             );
 
             int remainingCapacity = maxActiveEnemies - activeEnemies.Count;

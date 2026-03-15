@@ -7,9 +7,6 @@ public class AreaDeathZone : MonoBehaviour
     [Tooltip("Which area this death zone protects (1, 2, 3, or 4)")]
     [SerializeField] private int protectedAreaId = 1;
 
-    [Tooltip("Buffer distance INSIDE the area boundary (prevents NPC spawn before death)")]
-    [SerializeField] private float radiusOffset = 2f;
-
     [Tooltip("Instant death or damage over time?")]
     [SerializeField] private bool instantDeath = true;
 

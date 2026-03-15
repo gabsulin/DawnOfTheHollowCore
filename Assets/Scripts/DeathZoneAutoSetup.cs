@@ -23,9 +23,6 @@ public class DeathZoneAutoSetup : MonoBehaviour
     [Tooltip("Death zone protecting Area 4 (at Area 3's outer radius)")]
     [SerializeField] private AreaDeathZone deathZone_Area4;
 
-    [Header("Status")]
-    [SerializeField] private bool isSetupComplete = false;
-
     [ContextMenu("Setup Death Zones")]
     public void SetupDeathZones()
     {
@@ -71,7 +68,6 @@ public class DeathZoneAutoSetup : MonoBehaviour
             successCount++;
         }
 
-        isSetupComplete = true;
         Debug.Log($"[DeathZoneAutoSetup] Setup complete! Configured {successCount} death zones.");
     }
 
@@ -141,14 +137,6 @@ public class DeathZoneAutoSetup : MonoBehaviour
         Debug.Log($"[DeathZoneAutoSetup] Created {name}");
         return zone;
     }
-
-    [ContextMenu("Reset Setup")]
-    public void ResetSetup()
-    {
-        isSetupComplete = false;
-        Debug.Log("[DeathZoneAutoSetup] Setup reset. You can run Setup Death Zones again.");
-    }
-
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Heal Potion
   icon: {fileID: 21300000, guid: a601222f64bbc1a4fafb4b9027e3ee9b, type: 3}
-  maxStack: 4
+  maxStack: 12
   type: 4
   rarity: 2
   description: 'Right click on item to consume.

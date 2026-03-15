@@ -16,7 +16,6 @@ public class BossPositionIndicator : MonoBehaviour
     [SerializeField] private bool enableDebugLogs = true;
 
     private Camera mainCamera;
-    private bool wasOffScreen = false;
 
     void Start()
     {
