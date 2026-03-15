@@ -617,7 +617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boss: {fileID: 7928169081513099347}
   healthBar: {fileID: 4754484636056099430}
-  maxHealth: 10000
+  maxHealth: 12500
   currentHealth: 0
   isDead: 0
   worldItemPrefab: {fileID: 299269490681273432, guid: 803ca85cda133b14d8db6421e0fc8219, type: 3}

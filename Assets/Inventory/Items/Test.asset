@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5cf7cc07a464740a7d823d8a75167f, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  itemName: Test
+  itemName: Tutorial Item
   icon: {fileID: 21300000, guid: 1bf171428ef5bb442bf751cf43b6641a, type: 3}
   maxStack: 64
   type: 3
   rarity: 3
-  description: This is a test.
+  description: This item is only in the tutorial.
   moveSpeedBonus: 0
   miningSpeedMultiplier: 0
   maxHealthBonus: 0
