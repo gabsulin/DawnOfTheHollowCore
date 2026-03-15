@@ -226,8 +226,8 @@ MonoBehaviour:
   coreHp: {fileID: 0}
   animator: {fileID: 0}
   grid: {fileID: 0}
-  moveSpeed: 8
-  attackRange: 2
+  moveSpeed: 7
+  attackRange: 1.5
   pathUpdateInterval: 0.5
   targetMovementThreshold: 1.5
   maxPathfindingIterations: 1500
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4ba35793dc25d4a9c105c2dbb5680a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 300
+  maxHealth: 35
   currentHealth: 0
 --- !u!114 &-416463071141442028
 MonoBehaviour:
