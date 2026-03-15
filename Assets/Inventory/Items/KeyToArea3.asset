@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca5cf7cc07a464740a7d823d8a75167f, type: 3}
   m_Name: KeyToArea3
   m_EditorClassIdentifier: 
-  itemName: Verdant Key
+  itemName: Pondral Key
   icon: {fileID: 21300000, guid: ea2eb9711ddefec4e80f4b60971861d2, type: 3}
   maxStack: 1
   type: 3
@@ -26,3 +26,4 @@ MonoBehaviour:
   damageBonus: 0
   dashCooldownReduction: 0
   healAmount: 0
+  coreHealAmount: 0
