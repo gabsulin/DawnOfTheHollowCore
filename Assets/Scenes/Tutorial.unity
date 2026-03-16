@@ -25358,6 +25358,7 @@ MonoBehaviour:
   m_text: 'NPC''s will reveal part of the story and new recipes. You have to talk
     to them!
 
+
     Always craft the key first!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c59a69e0bd8a5440a269336220c61e1, type: 2}
